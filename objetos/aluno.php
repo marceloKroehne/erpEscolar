@@ -95,7 +95,6 @@ class Aluno extends Usuario{
             'alunoId' => $this->alunoId,
             'matricula' => $this->matricula
         ];
-    }
-    
+    }   
 }
 ?>
