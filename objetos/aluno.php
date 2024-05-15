@@ -98,5 +98,4 @@ class Aluno extends Usuario{
     }
 
 }
-
 ?>
