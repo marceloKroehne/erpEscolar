@@ -1,0 +1,16 @@
+.cabecalho_secundario{
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+}
+
+.gerenciar_input_pesquisa_index{
+
+    align-self: start;
+    position: relative;
+    height: 100%;
+    width: 50%;
+
+}

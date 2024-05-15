@@ -1,0 +1,28 @@
+create table CONTRATOS(
+    CONTRATO_ID int not null AUTO_INCREMENT,
+    TURMA_ID int not null,
+    ALUNO_ID int not null,
+    VENDEDOR_ID int not null,
+    EMPRESA_ID int not null,
+    VALOR DECIMAL(10,2) not null,
+    DESONTO DECIMAL(10,2),
+    SITUACAO_CONTRATO_ID int not null,
+    TIPO_CONTRATO_ID int not null,
+    DATA_INICIO date not null,
+    DATA_FIM date not null,
+    OBSERVACAO varchar(255),
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_CONTRATOS primary key(CONTRATO_ID),
+    constraint FK_CONTRATOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_CONTRATOS_TURMAS foreign key (TURMA_ID) references TURMAS(TURMA_ID),
+    constraint FK_CONTRATOS_ALUNOS foreign key (VENDEDOR_ID) references FUNCIONARIOS(FUNCIONARIO_ID),
+    constraint FK_CONTRATOS_FUNCIONARIOS foreign key (ALUNO_ID) references ALUNOS(ALUNO_ID),
+    constraint FK_CONTRATOS_SITUACAO_CONTRATOS foreign key (SITUACAO_CONTRATO_ID) references SITUACAO_CONTRATOS(SITUACAO_CONTRATO_ID),
+    constraint FK_CONTRATOS_TIPO_CONTRATOS foreign key (TIPO_CONTRATO_ID) references TIPO_CONTRATOS(TIPO_CONTRATO_ID),
+    constraint FK_CONTRATOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_CONTRATOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);

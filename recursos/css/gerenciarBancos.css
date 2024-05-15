@@ -1,0 +1,42 @@
+.info_banco{
+    width: 100%;
+    height: 80%;
+    margin-top: 2%;
+}
+
+.info_banco .topo{
+    display: flex;
+    flex-direction: row;
+}
+
+.info_banco .topo .coluna3{
+    display: flex;
+    flex-direction: row; 
+    justify-content: right;
+}
+
+.coluna1{
+    width: 100%; 
+}
+
+.coluna2{
+    width: 100%; 
+}
+
+.coluna3{
+    width: 100%; 
+}
+
+
+h1 {
+    text-align: center; 
+}
+
+#novo_banco{
+    margin: 1%;
+}
+
+#nova_conta{
+    margin: 1%;
+}
+

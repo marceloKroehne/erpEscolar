@@ -1,0 +1,9 @@
+.input_pesquisa{
+    width: 100%;
+}
+
+.seletor_usuario{
+    position: relative;
+    margin: 1%;
+    align-self: center;
+}

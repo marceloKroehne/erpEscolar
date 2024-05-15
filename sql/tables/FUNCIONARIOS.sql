@@ -1,0 +1,24 @@
+create table FUNCIONARIOS(
+    FUNCIONARIO_ID int not null AUTO_INCREMENT,
+    USUARIO_ID int not null,
+    CARGO_ID int not null,
+    BANCO_ID int,
+    AGENCIA int,
+    NUMERO_CONTA int,
+    PIX varchar(255),
+    TIPO_PIX_ID tinyint not null default 0 check(TIPO in(0,1,2,3)),
+    TIPO_PAGAMENTO_ID int,
+    USUARIO_ALTERACAO_ID int not null,
+    SENHA varchar(255) not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_FUNCIONARIOS primary key(FUNCIONARIO_ID),
+    constraint FK_FUNCIONARIOS_CARGOS foreign key (CARGO_ID) references CARGOS(CARGO_ID),
+    constraint FK_FUNCIONARIOS_USUARIOS foreign key (USUARIO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_FUNCIONARIOS_BANCOS foreign key (BANCO_ID) references BANCOS(BANCO_ID),
+    constraint FK_FUNCIONARIOS_TIPO_PAGAMENTOS foreign key (TIPO_PAGAMENTO_ID) references TIPO_PAGAMENTOS(TIPO_PAGAMENTO_ID),
+    constraint FK_FUNCIONARIOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_FUNCIONARIOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);

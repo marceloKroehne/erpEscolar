@@ -1,0 +1,44 @@
+.info_documento{
+    width: 100%;
+    height: 80%;
+    margin-top: 2%;
+}
+
+.info_documento .topo{
+    display: flex;
+    flex-direction: row;
+}
+
+.info_documento .topo .coluna3{
+    display: flex;
+    flex-direction: row; 
+    justify-content: right;
+}
+
+.coluna1{
+    width: 100%; 
+}
+
+.coluna2{
+    width: 100%; 
+}
+
+.coluna3{
+    width: 100%; 
+}
+
+.modal_corpo form{
+    display: flex;
+    flex-direction: column; 
+    justify-content: right;
+}
+
+h1 {
+    text-align: center; 
+}
+
+#novo_documento{
+    margin: 1%;
+}
+
+

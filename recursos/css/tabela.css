@@ -1,0 +1,71 @@
+
+.tabela{
+    width: 100%;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.tabela table {
+    margin-top: 3%;
+    border: 1px solid black;
+}
+
+.tabela tr {
+    text-align: center;
+    padding: 1%;
+}
+
+.titulo_tabela{
+    width: 100%;
+    text-align: start;
+}
+
+.tabela td {
+    display: flex;
+    flex-direction: row; 
+    text-align: start;
+    width: 100%;
+    padding: 1%;
+}
+
+
+.tabela_sec{
+    width: 100%;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.tabela_sec table {
+    margin-top: 3%;
+    border: 1px solid black;
+}
+
+.tabela_sec tr {
+    text-align: center;
+    padding: 1%;
+}
+
+.tabela_sec{
+    width: 100%;
+    text-align: start;
+}
+.tabela_sec td{
+    text-align: start;
+}
+
+.tabela_sec .celula {
+    display: flex;
+    flex-direction: row; 
+    text-align: start;
+    width: 100%;
+    padding: 1%;
+}
+
+.nome_celula{
+    width: 100%;
+}
+

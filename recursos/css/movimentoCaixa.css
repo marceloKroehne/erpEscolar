@@ -1,0 +1,93 @@
+table {
+    width: 100%;
+    border: 1px solid black;
+    overflow-y: auto;
+}
+
+td {
+    text-align: center;
+    padding: 1%;
+}
+
+h3 {
+    width: 100%;
+    margin-top: 3%;
+    text-align: center;
+}
+
+.aviso{
+    color: red;
+    text-align: center;
+}
+
+.filtro_movimento{
+    display: flex;
+    flex-direction: row; 
+    justify-content: start;
+    width: 100%;
+}
+
+.filtro_movimento form{
+    display: flex;
+    flex-direction: row; 
+    justify-content: start;
+}
+
+.info_movimento{
+    width: 100%;
+    height: 80%;
+    margin-top: 2%;
+}
+
+.info_movimento .topo{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.info_movimento .topo .importar_ofx{
+    margin: 1%;
+    width: 100%;
+}
+
+.info_movimento .topo .exportar_movimentos{
+    margin: 1%;
+    width: 100%;
+}
+
+.info_movimento .topo .novo_movimento{
+    width: 100%;
+    margin: 1%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.filtro_subconta{
+    width: 100%;
+    margin: 1%;
+}
+
+.filtro_conta{
+    width: 100%;
+    margin: 1%;
+}
+
+.filtro_botao{
+    display: flex;
+    margin: 1%;
+    flex-direction: column;
+    justify-content: end;
+
+}
+
+.filtro_data{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    margin: 1%;
+}
+
+.filtro_data label{
+    margin: 1%;
+}
