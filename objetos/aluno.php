@@ -75,7 +75,6 @@ class Aluno extends Usuario{
         ]);
     }
 
-    
     public function toJsonSemAspas() {
         return [
             'usuarioId' => $this->getUsuarioId(),
