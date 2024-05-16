@@ -92,7 +92,7 @@ class BancoBanco{
             return $retorno;
         }
     }
-
+    
     private static function updateBanco($usuarioId, $bancoId, $numeroBanco, $nome, $exigeOfx, $ativo){
         $conexao = new Conexao();
 

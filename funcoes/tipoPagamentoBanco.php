@@ -59,7 +59,6 @@ class TipoPagamentoBanco{
 
                 array_push($pagamentos, $horista);
             }
-    
            
         }
     
