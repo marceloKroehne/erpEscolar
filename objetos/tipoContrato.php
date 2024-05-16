@@ -18,7 +18,7 @@ class TipoContrato{
         $this->ativo = $ativo;
     }
 
-    public function getTipoContrato(){
+    public function getTipoContratoId(){
         return $this->tipoContratoId;
     }
 

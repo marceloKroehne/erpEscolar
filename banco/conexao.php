@@ -5,10 +5,10 @@ class Conexao{
     private $conexao;
     private $emUso = false;
 
-    public function novaConexao($banco = 'julia945_gestao_empresarial') {
-        $servidor = '162.241.3.1:3306';
-        $usuario = 'julia945_marcelojr';
-        $senha = 'Bancomarcelojrbotwhats@10';
+    public function novaConexao($banco = 'gestao_empresarial') {
+        $servidor = '127.0.0.1:3306';
+        $usuario = 'root';
+        $senha = 'root';
 
         $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
@@ -19,10 +19,10 @@ class Conexao{
         $this->conexao = $conexao;
     }
     
-    public function novaConexaoPDO($banco = 'julia945_gestao_empresarial') {
-        $servidor = '162.241.3.1:3306';
-        $usuario = 'julia945_marcelojr';
-        $senha = 'Bancomarcelojrbotwhats@10';
+    public function novaConexaoPDO($banco = 'gestao_empresarial') {
+        $servidor = '127.0.0.1:3306';
+        $usuario = 'root';
+        $senha = 'root';
 
         try {
             $conexao = new PDO("mysql:host=$servidor;dbname=$banco", $usuario, $senha);

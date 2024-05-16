@@ -2,8 +2,8 @@
 
 require("./requires.php");
 require("./funcoes/getDados.php");
-require("./funcoes/modalidadeBanco.php");
-require("./objetos/modalidade.php");
+require("./funcoes/situacaoContratoBanco.php");
+require("./objetos/situacaoContrato.php");
 
 $_SESSION['erros'] = null;
 
@@ -14,14 +14,13 @@ if(!($usuario->getCargo()->getPermissaoId() == 3 || $usuario->getCargo()->getPer
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
 
+    if(isset($_POST['modal_situacao_contrato_input_nome'])){
 
-    if(isset($_POST['modal_modalidade_input_nome'])){
+        $situacaoContratoId = intval($_POST["situacao_contrato_id"]);
 
-        $modalidadeId = intval($_POST["modalidade_id"]);
-
-        $ativo = $_POST['modalidade_ativo'] ? 1 : 0;
+        $ativo = $_POST['situacao_contrato_ativo'] ? 1 : 0;
        
-        $retorno = ModalidadeBanco::insertModalidade($empresa->getEmpresaId(), $usuario->getUsuarioId(), $modalidadeId, $_POST['modal_modalidade_input_nome'], $ativo);
+        $retorno = SituacaoContratoBanco::insertSituacaoContrato($empresa->getEmpresaId(), $usuario->getUsuarioId(), $situacaoContratoId, $_POST['modal_situacao_contrato_input_nome'], $ativo);
 
         if($retorno->houveErro){
             $_SESSION['erros'] = $retorno->mensagem;
@@ -30,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     }
 }
 
-$modalidades = ModalidadeBanco::getModalidades($empresa->getEmpresaId(), false);
+$situacoesContratos = SituacaoContratoBanco::getSituacaoContratos($empresa->getEmpresaId(), false);
 
 ?>
 
@@ -45,12 +44,12 @@ $modalidades = ModalidadeBanco::getModalidades($empresa->getEmpresaId(), false);
     <link rel="stylesheet" href="recursos/css/configuracoes.css">
     <link rel="stylesheet" href="recursos/css/modal.css">
     <link rel="stylesheet" href="recursos/css/tabela.css">
-    <link rel="stylesheet" href="recursos/css/gerenciarModalidades.css">
+    <link rel="stylesheet" href="recursos/css/situacaoContratos.css">
 
     <script src="./biblioteca/jquerry.js"></script>
     <script src="./scripts/script.js"></script>
     <script src="./scripts/seletor.js"></script>
-    <script src="./scripts/gerenciarModalidades.js"></script>
+    <script src="./scripts/situacaoContratos.js"></script>
 
     <link href="./biblioteca/bootstrap-5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="./biblioteca/bootstrap-5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -66,7 +65,7 @@ $modalidades = ModalidadeBanco::getModalidades($empresa->getEmpresaId(), false);
 
     <main class="principal">
 
-        <? require_once('./usaveis/modalModalidades.php');?>
+        <? require_once('./usaveis/modalSituacaoContratos.php');?>
 
         <div class="conteudo">  
 
@@ -76,7 +75,7 @@ $modalidades = ModalidadeBanco::getModalidades($empresa->getEmpresaId(), false);
                 </div>
             <?php endif ?>
 
-           <?require_once('./usaveis/tabelaModalidades.php')?>
+           <?require_once('./usaveis/tabelaSituacaoContratos.php')?>
 
         </div>
     </main>

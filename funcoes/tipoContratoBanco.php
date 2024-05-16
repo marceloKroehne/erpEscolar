@@ -17,7 +17,7 @@ class TipoContratoBanco{
             "  ATIVO, " .
             "  NOME ".
 
-            "FROM TIPOS_CONTRATOS " .
+            "FROM TIPO_CONTRATOS " .
 
             "WHERE EMPRESA_ID = ? ";
         if($filtrarAtivos){
@@ -42,7 +42,7 @@ class TipoContratoBanco{
             array_push($contratos, $contrato);
         }
     
-        return $contrato;
+        return $contratos;
     }
 
     public static function insertTipoContrato($empresaId, $usuarioId, $tipoContratoId, $nome, $ativo){
@@ -58,11 +58,11 @@ class TipoContratoBanco{
             $conexao->iniciarTranscacao();
 
             $sql =
-            "INSERT INTO TIPOS_CONTRATOS(" .
+            "INSERT INTO TIPO_CONTRATOS ( " .
             "  EMPRESA_ID, " .
             "  NOME, " .
             "  USUARIO_CRIACAO_ID, " .
-            "  USUARIO_ALTERACAO_ID) " .
+            "  USUARIO_ALTERACAO_ID ) " .
             "VALUES (?, ?, ?, ?) ";
 
             $parametros = array(
@@ -72,7 +72,7 @@ class TipoContratoBanco{
                 $usuarioId
             );
 
-            $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
+            $retorno = $conexao->insertUpdateExcluir($sql, $parametros, true);
 
             if ($retorno->houveErro) {
                 return $retorno;
@@ -91,7 +91,7 @@ class TipoContratoBanco{
         $conexao->iniciarTranscacao();
         
         $sql =
-        "UPDATE TIPOS_CURSOS SET " .
+        "UPDATE TIPO_CONTRATOS SET " .
         "  NOME = ?, " .
         "  ATIVO = ?, " .
         "  USUARIO_ALTERACAO_ID = ? " .

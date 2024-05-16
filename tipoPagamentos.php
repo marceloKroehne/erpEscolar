@@ -70,7 +70,7 @@ $pagamentos = TipoPagamentoBanco::getTipoPagamentos($empresa->getEmpresaId(), fa
         <?require_once('./usaveis/cabecalho.php');?>
     </header>
 
-    <? require_once('./usaveis/menuLateral.php'); ?>
+    
 
     <main class="principal">
 

@@ -62,7 +62,7 @@ $turnos = TurnoBanco::getTurnos($empresa->getEmpresaId(), false);
         <?require_once('./usaveis/cabecalho.php');?>
     </header>
 
-    <? require_once('./usaveis/menuLateral.php'); ?>
+    
 
     <main class="principal">
 

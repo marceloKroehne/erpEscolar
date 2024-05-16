@@ -62,7 +62,7 @@ $situacao_turmas = SituacaoTurmaBanco::getSituacaoTurmas($empresa->getEmpresaId(
         <?require_once('./usaveis/cabecalho.php');?>
     </header>
 
-    <? require_once('./usaveis/menuLateral.php'); ?>
+    
 
     <main class="principal">
 

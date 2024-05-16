@@ -1,0 +1,44 @@
+.info_tipo_contrato{
+    width: 100%;
+    height: 80%;
+    margin-top: 2%;
+}
+
+.info_tipo_contrato .topo{
+    display: flex;
+    flex-direction: row;
+}
+
+.info_tipo_contrato .topo .coluna3{
+    display: flex;
+    flex-direction: row; 
+    justify-content: right;
+}
+
+.coluna1{
+    width: 100%; 
+}
+
+.coluna2{
+    width: 100%; 
+}
+
+.coluna3{
+    width: 100%; 
+}
+
+.modal_corpo form{
+    display: flex;
+    flex-direction: column; 
+    justify-content: right;
+}
+
+h1 {
+    text-align: center; 
+}
+
+#novo_tipo_contrato{
+    margin: 1%;
+}
+
+

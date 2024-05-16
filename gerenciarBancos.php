@@ -85,8 +85,6 @@ $contas = ContasBancoBanco::getContasBanco($empresa->getEmpresaId(), false);
         <?require_once('./usaveis/cabecalho.php');?>
     </header>
 
-    <? require_once('./usaveis/menuLateral.php'); ?>
-
     <main class="principal">
 
         <? require_once('./usaveis/modalBancos.php');?>
