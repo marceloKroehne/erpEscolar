@@ -5,7 +5,7 @@ create table PARCELAS(
     STATUS_PAGAMENTO tinyint check(TIPO IN(0,1,2)) default 0, /*0 - NÃO PAGO, 1 - PENDENTE, 2 - PAGO*/
     CONTRATO_ID int not null,
     EMPRESA_ID int not null,
-    MOVIMENTO_ID int not null,
+    MOVIMENTO_ID int,
     ATIVO boolean default true,
     USUARIO_ALTERACAO_ID int not null,
     DATA_HORA_ALTERACAO datetime not null default now(),

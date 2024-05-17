@@ -45,7 +45,7 @@ function iniciarComponentesCadastroUsuario(){
     if(usuario.ativo === 1){
       $("#ativo").prop("checked", true);
     }
-    else if(usuario.ativo === 1){
+    else if(usuario.ativo === 0){
         $("#inativo").prop("checked", true);
     }
 

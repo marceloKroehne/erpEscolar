@@ -20,6 +20,7 @@
         <ul class="dropdown-menu dropdown-menu-start">
             <li><a class="dropdown-item" href="gerenciarCursos.php">Cursos</a></li>
             <li><a class="dropdown-item" href="matrizesCurriculares.php">Matrizes curriculares</a></li>
+            <li><a class="dropdown-item" href="gerenciarPlanoCursos.php">Planos de cursos</a></li>
             <li><a class="dropdown-item" href="tipoCursos.php">Tipos de cursos</a></li>
         </ul>
     </div>
@@ -34,6 +35,7 @@
     <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro de contratos</a>
         <ul class="dropdown-menu dropdown-menu-start">
+        <li><a class="dropdown-item" href="gerenciarContratos.php">Contratos</a></li>
             <li><a class="dropdown-item" href="situacaoContratos.php">Situações de contratos</a></li>
             <li><a class="dropdown-item" href="tipoContratos.php">Tipo de contratos</a></li>
         </ul>

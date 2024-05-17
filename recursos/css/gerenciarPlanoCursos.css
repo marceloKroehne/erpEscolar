@@ -1,0 +1,44 @@
+.info_plano_curso{
+    width: 100%;
+    height: 80%;
+    margin-top: 2%;
+}
+
+.info_plano_curso .topo{
+    display: flex;
+    flex-direction: row;
+}
+
+.info_plano_curso .topo .coluna3{
+    display: flex;
+    flex-direction: row; 
+    justify-content: right;
+}
+
+.coluna1{
+    width: 100%; 
+}
+
+.coluna2{
+    width: 100%; 
+}
+
+.coluna3{
+    width: 100%; 
+}
+
+.modal_corpo form{
+    display: flex;
+    flex-direction: column; 
+    justify-content: right;
+}
+
+h1 {
+    text-align: center; 
+}
+
+#novo_plano_curso{
+    margin: 1%;
+}
+
+

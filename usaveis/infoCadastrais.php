@@ -53,6 +53,17 @@ $bancos = BancoBanco::getBancos($empresa->getEmpresaId());
     <label for="usuario_nome">Nome:</label>
     <input type="text" id="usuario_nome" name="usuario_nome" required>
 
+    <?if($destino == "cadastroUsuarios.php" || $destino == "cadastroAlunos.php" ): ?>
+        <div id="usuario_status">
+            <label for="situacao">Situação:</label>
+            <div>
+                <label for="ativo">Ativo</label>
+                <input type="radio" id="ativo" name="situacao_usuario" value="1" checked>
+                <label for="inativo">Inativo</label>
+                <input type="radio" id="inativo" name="situacao_usuario" value="0">
+            </div>
+        </div>
+    <?endif;?>
     <?if($destino == "cadastroUsuarios.php"): ?>
 
         <label id="lb_cargo_id" for="cargo_id">Cargo:</label>
@@ -68,16 +79,6 @@ $bancos = BancoBanco::getBancos($empresa->getEmpresaId());
                 <option value="<?=$pagamento->getTipopagamentoId();?>"><?=$pagamento->getNome();?></option>
             <?endforeach;?>
         </select>
-
-        <div id="usuario_status">
-            <label for="situacao">Situação:</label>
-            <div>
-                <label for="ativo">Ativo</label>
-                <input type="radio" id="ativo" name="situacao_usuario" value="1" checked>
-                <label for="inativo">Inativo</label>
-                <input type="radio" id="inativo" name="situacao_usuario" value="0">
-            </div>
-        </div>
 
         <?
 

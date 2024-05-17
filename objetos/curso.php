@@ -76,6 +76,10 @@ class Curso{
     public function getCargaHoraria(){
         return $this->cargaHoraria; 
     }
+    public function getBolsas(){
+        return $this->bolsas; 
+    }
+    
     
     public function toJson() {
         return json_encode([
