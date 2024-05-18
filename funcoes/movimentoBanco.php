@@ -30,6 +30,7 @@ class MovimentoBanco{
             "  SUB.NOME AS NOME_SUBCONTA,".
             "  TPD.NOME AS NOME_TIPO_DOCUMENTO,".
             "  GRP.NOME AS NOME_GRUPOS_CONTAS,".
+            "  GRP.RECEBIMENTO_VENDAS, ".
             "  BNC.NOME AS NOME_BANCO,".
             "  BNC.EXIGE_OFX,".
             "  BNC.ATIVO AS BANCO_ATIVO,".
@@ -115,6 +116,7 @@ class MovimentoBanco{
                         $resultado['GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
                         $resultado['NOME_GRUPOS_CONTAS'],
+                        $resultado['RECEBIMENTO_VENDAS'],
                         true
                     ),
                     $resultado['TIPO'],
@@ -139,6 +141,113 @@ class MovimentoBanco{
         }
     
         return $movimentos;
+    }
+    
+    public static function getMovimentoPorId($movimentoId){
+
+        $parametros = [];
+
+        $conexao = new Conexao();
+    
+        $conexao->novaConexao();
+    
+        $sql =
+            "SELECT " .
+            "  MOV.MOVIMENTO_ID, " .
+            "  MOV.EMPRESA_ID,".
+            "  MOV.DATA_LANCAMENTO, " .
+            "  MOV.HISTORICO, " .
+            "  MOV.BANCO_ID,".
+            "  MOV.AGENCIA,".
+            "  MOV.NUMERO_CONTA,".
+            "  MOV.VALOR, " .
+            "  MOV.OBSERVACAO, " .
+            "  MOV.SUBCONTA_ID,".
+            "  MOV.NUMERO_DOCUMENTO,".
+            "  MOV.TIPO_DOCUMENTO_ID,".
+            "  SUB.GRUPO_CONTA_ID,".
+            "  MOV.NUMERO_MOVIMENTO,".
+            "  SUB.TIPO,".
+            "  SUB.NOME AS NOME_SUBCONTA,".
+            "  TPD.NOME AS NOME_TIPO_DOCUMENTO,".
+            "  GRP.NOME AS NOME_GRUPOS_CONTAS,".
+            "  GRP.RECEBIMENTO_VENDAS, ".
+            "  BNC.NOME AS NOME_BANCO,".
+            "  BNC.EXIGE_OFX,".
+            "  BNC.ATIVO AS BANCO_ATIVO,".
+            "  BNC.NUMERO_BANCO " .
+
+            "FROM MOVIMENTOS MOV " .
+
+            "INNER JOIN EMPRESAS EMP " .
+            "ON MOV.EMPRESA_ID = EMP.EMPRESA_ID " .
+
+            "INNER JOIN SUBCONTAS SUB " .
+            "ON MOV.SUBCONTA_ID = SUB.SUBCONTA_ID " .
+
+            "LEFT JOIN TIPO_DOCUMENTOS TPD " .
+            "ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID " .
+
+            "INNER JOIN GRUPOS_CONTAS GRP " .
+            "ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID " .
+
+            "INNER JOIN BANCOS BNC " .
+            "ON MOV.BANCO_ID = BNC.BANCO_ID " .
+
+            "WHERE MOV.MOVIMENTO_ID = ? ";
+
+        $parametros = array($movimentoId);
+
+        $resultados = $conexao->consulta($sql, $parametros);
+    
+        foreach ($resultados as $resultado) {
+
+            $movimento = new Movimento(
+                $resultado['MOVIMENTO_ID'],
+                $resultado['EMPRESA_ID'],
+                new Conta(
+                    new Banco(
+                        $resultado['BANCO_ID'],
+                        $resultado['NUMERO_BANCO'],
+                        $resultado['EMPRESA_ID'],
+                        $resultado['NOME_BANCO'],
+                        $resultado['EXIGE_OFX'],
+                        $resultado['BANCO_ATIVO']
+                    ),
+                    $resultado['AGENCIA'],
+                    $resultado['NUMERO_CONTA'],
+                    true
+                ),
+                new Subconta(
+                    $resultado['SUBCONTA_ID'],
+                    new GrupoContas(
+                        $resultado['GRUPO_CONTA_ID'],
+                        $resultado['EMPRESA_ID'],
+                        $resultado['NOME_GRUPOS_CONTAS'],
+                        $resultado['RECEBIMENTO_VENDAS'],
+                        true
+                    ),
+                    $resultado['TIPO'],
+                    $resultado['NOME_SUBCONTA'],
+                    true
+                ),
+                $resultado['VALOR'],
+                DateTime::createFromFormat('Y-m-d', $resultado['DATA_LANCAMENTO'])->format('d/m/Y'),
+                $resultado['HISTORICO'],
+                $resultado['OBSERVACAO'],
+                $resultado['NUMERO_DOCUMENTO'],
+                new TipoDocumento(
+                    $resultado['TIPO_DOCUMENTO_ID'],
+                    $resultado['EMPRESA_ID'],
+                    $resultado['NOME_TIPO_DOCUMENTO'],
+                    true
+                ),
+                $resultado['NUMERO_MOVIMENTO']
+            );
+    
+        }
+    
+        return $movimento;
     }
 
     public static function isMovimentoDuplicado($numeroMovimento, $empresaId){
@@ -167,6 +276,7 @@ class MovimentoBanco{
         "  SUB.NOME AS NOME_SUBCONTA,".
         "  TPD.NOME AS NOME_TIPO_DOCUMENTO,".
         "  GRP.NOME AS NOME_GRUPOS_CONTAS,".
+        "  GRP.RECEBIMENTO_VENDAS, ".
         "  BNC.NOME AS NOME_BANCO,".
         "  BNC.EXIGE_OFX,".
         "  BNC.ATIVO AS BANCO_ATIVO,".
@@ -220,6 +330,7 @@ class MovimentoBanco{
                         $resultado['GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
                         $resultado['NOME_GRUPOS_CONTAS'],
+                        $resultado['RECEBIMENTO_VENDAS'],
                         true
                     ),
                     $resultado['TIPO'],
@@ -342,6 +453,16 @@ class MovimentoBanco{
 
         $conexao->novaConexaoPDO();
         $conexao->iniciarTranscacao();
+
+        $sql ="UPDATE PARCELAS SET MOVIMENTO_ID = null, STATUS_PAGAMENTO = 1 WHERE MOVIMENTO_ID = ? ";
+
+        $parametros = array($movimentoId);
+
+        $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
+
+        if ($retorno->houveErro) {
+            return $retorno;
+        }
 
         $sql = "DELETE FROM MOVIMENTOS WHERE MOVIMENTO_ID = ? ";
 

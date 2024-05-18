@@ -44,7 +44,7 @@ class ContratoBanco{
             "ON CON.TIPO_CONTRATO_ID = TIP.TIPO_CONTRATO_ID ".
 
             
-            "INNER JOIN PLANOS_CURSOS PLN ".
+            "LEFT JOIN PLANOS_CURSOS PLN ".
             "ON CON.PLANO_CURSO_ID = PLN.PLANO_CURSO_ID ".
 
             "WHERE CON.EMPRESA_ID = ? ";
@@ -102,6 +102,105 @@ class ContratoBanco{
         }
     
         return $contratos;
+    }
+
+    public static function getContratoPorId($contratoId){
+
+        $parametros = [];
+
+        $conexao = new Conexao();
+    
+        $conexao->novaConexao();
+    
+        $sql =
+            "SELECT " .
+            "  CON.CONTRATO_ID, " .
+            "  CON.EMPRESA_ID, " .
+            "  CON.TURMA_ID, " .
+            "  CON.ALUNO_ID, " .
+            "  CON.VENDEDOR_ID, ".
+            "  CON.BOLSA_ID, ".
+            "  SIT.SITUACAO_CONTRATO_ID, " .
+            "  SIT.NOME AS SITUACAO_NOME, " .
+            "  SIT.ATIVO AS SITUACAO_ATIVO, " .
+            "  TIP.TIPO_CONTRATO_ID, " .
+            "  TIP.NOME AS TIPO_CONTRATO_NOME, " .
+            "  TIP.ATIVO AS TIPO_CONTRATO_ATIVO, " .
+            "  CON.PLANO_CURSO_ID, " .
+            "  PLN.NOME AS PLANOS_CURSOS_NOME, " .
+            "  PLN.ATIVO AS PLANOS_CURSOS_ATIVO, " .
+            "  PLN.NUMERO_PARCELAS, " .
+            "  PLN.VALOR_PARCELA, " .
+            "  PLN.VALOR_TOTAL, " .
+            "  PLN.NECESSITA_AUT_SUP, " .
+            "  CON.DATA_INICIO, " .
+            "  CON.DATA_FIM, " .
+            "  CON.OBSERVACAO ".
+
+            "FROM CONTRATOS CON " .
+
+            "INNER JOIN SITUACAO_CONTRATOS SIT ".
+            "ON CON.SITUACAO_CONTRATO_ID = SIT.SITUACAO_CONTRATO_ID ".
+
+            "INNER JOIN TIPO_CONTRATOS TIP ".
+            "ON CON.TIPO_CONTRATO_ID = TIP.TIPO_CONTRATO_ID ".
+
+            
+            "LEFT JOIN PLANOS_CURSOS PLN ".
+            "ON CON.PLANO_CURSO_ID = PLN.PLANO_CURSO_ID ".
+
+            "WHERE CON.CONTRATO_ID = ? ";
+
+        array_push($parametros, $contratoId);
+        
+        $resultados = $conexao->consulta($sql, $parametros);
+    
+        foreach ($resultados as $resultado) {
+
+            $turma = TurmaBanco::getTurmaPorId( $resultado['TURMA_ID']);
+            $vendedor = UsuarioBanco::getFuncionarioPorId( $resultado['VENDEDOR_ID']);
+            $aluno = UsuarioBanco::getAlunoPorId( $resultado['ALUNO_ID']);
+
+            $bolsaAplicada = BolsaBanco::getBolsaPorId($resultado['BOLSA_ID']);
+
+            $contrato =  new Contrato(
+                $resultado['CONTRATO_ID'],
+                $resultado['EMPRESA_ID'],
+                $aluno,
+                $turma,
+                $vendedor,
+                new SituacaoContrato(
+                    $resultado['SITUACAO_CONTRATO_ID'],
+                    $resultado['EMPRESA_ID'],
+                    $resultado['SITUACAO_NOME'],
+                    $resultado['SITUACAO_ATIVO']
+                ),
+                new TipoContrato(
+                    $resultado['TIPO_CONTRATO_ID'],
+                    $resultado['EMPRESA_ID'],
+                    $resultado['TIPO_CONTRATO_NOME'],
+                    $resultado['TIPO_CONTRATO_ATIVO']
+                ),
+                new PlanoCurso(
+                    $resultado['PLANO_CURSO_ID'],
+                    $turma->getCurso(),
+                    $resultado['EMPRESA_ID'],
+                    $resultado['PLANOS_CURSOS_NOME'],
+                    $resultado['PLANOS_CURSOS_ATIVO'],
+                    $resultado['NECESSITA_AUT_SUP'],
+                    $resultado['NUMERO_PARCELAS'],
+                    $resultado['VALOR_PARCELA'],
+                    $resultado['VALOR_TOTAL']
+                ),
+                $bolsaAplicada,
+                DateTime::createFromFormat('Y-m-d', $resultado['DATA_INICIO'])->format('d/m/Y'),
+                DateTime::createFromFormat('Y-m-d', $resultado['DATA_FIM'])->format('d/m/Y'),
+                $resultado['OBSERVACAO']
+            );
+    
+        }
+    
+        return $contrato;
     }
 
     public static function insertContrato(
@@ -177,7 +276,7 @@ class ContratoBanco{
                 $usuarioId
             );
 
-            $retorno = $conexao->insertUpdateExcluir($sql, $parametros, true);
+            $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
 
             if ($retorno->houveErro) {
                 return $retorno;
@@ -202,10 +301,7 @@ class ContratoBanco{
                 $valor = $plano->getValorTotal();
             }
 
-            
-
             $valor = $valor * $desconto;
-
 
             $retorno = ContratoBanco::inserirParcelas($conexao, $usuarioId, $empresaId, $contratoId, $plano, $valor);
 
@@ -237,7 +333,7 @@ class ContratoBanco{
         $sql ="DELETE FROM CONTRATOS WHERE CONTRATO_ID = ? ";
         $parametros = array($contratoId);
 
-        $retorno = $conexao->insertUpdateExcluir($sql, $parametros, true);
+        $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
 
         if($retorno->houveErro){
             return $retorno;
@@ -249,7 +345,7 @@ class ContratoBanco{
 
     }
 
-    private static function inserirParcelas(Conexao $conexao, $usuarioId, $empresaId, $contratoId, PlanoCurso $plano, $valor){
+    private static function inserirParcelas(Conexao $conexao, $usuarioId, $empresaId, $contratoId, $plano, $valor){
 
         $sql ="DELETE FROM PARCELAS WHERE CONTRATO_ID = ? ";
         $parametros = array($contratoId);
@@ -303,7 +399,7 @@ class ContratoBanco{
                 $usuarioId
             );
 
-            $retorno = $conexao->insertUpdateExcluir($sql, $parametros, true);
+            $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
         }
 
         return $retorno;

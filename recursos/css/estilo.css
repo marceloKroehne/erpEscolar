@@ -28,11 +28,12 @@ body {
     width: 100%;
 }
 
-.movimento_caixa{
+.item_menu{
     color: white;
     text-decoration: none;
     padding-right: 1%;
     border-right: 1px solid white;
+    margin-left: 1%;
 }
 
 .dropdown{

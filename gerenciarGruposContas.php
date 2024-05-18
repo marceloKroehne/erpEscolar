@@ -22,8 +22,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         }
 
         $ativo = $_POST['conta_ativo'] ? 1 : 0;
+        $recebVenda = $_POST['grupo_receb_vendas'] ? 1 : 0;
        
-        $retorno = GruposContasBanco::insertGrupoConta($empresa->getEmpresaId(), $usuario->getUsuarioId(), $grupoId, $_POST['modal_grp_input_nome'],  $ativo);
+        $retorno = GruposContasBanco::insertGrupoConta($empresa->getEmpresaId(), $usuario->getUsuarioId(), $grupoId, $_POST['modal_grp_input_nome'],  $ativo, $recebVenda);
 
         if($retorno->houveErro){
             $_SESSION['erros'] = $retorno->mensagem;

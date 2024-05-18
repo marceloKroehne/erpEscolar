@@ -3,6 +3,7 @@ create table GRUPOS_CONTAS(
     NOME varchar(255) not null,
     EMPRESA_ID int not null,
     USUARIO_ALTERACAO_ID int not null,
+    RECEBIMENTO_VENDAS boolean default false,
     ATIVO boolean default true,
     DATA_HORA_ALTERACAO datetime not null default now(),
     USUARIO_CRIACAO_ID int not null,

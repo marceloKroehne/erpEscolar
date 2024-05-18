@@ -1,42 +1,43 @@
 <?
-class Turno{
+class Parcela{
 
-    private $turnoId;
+    private $parcelaId;
     private $nome;
-    private $empresaId;
     private $valor;
     private $statusPagamento;
     private Movimento $movimento;
     private Contrato $contrato;
-
+    private Conta $conta;
+    private Subconta $subconta;
+    private $dataPagamento;
     function __construct(
-        $turnoId,
-        $empresaId,
+        $parcelaId,
         $nome,
         $valor,
         $statusPagamento,
         $movimento,
-        $contrato
+        $contrato,
+        $dataPagamento,
+        $conta,
+        $subconta
     ){
-        $this->turnoId = $turnoId;
-        $this->empresaId = $empresaId;
+        $this->parcelaId = $parcelaId;
         $this->nome = $nome;
         $this->valor = $valor;
         $this->statusPagamento = $statusPagamento;
         $this->movimento = $movimento;
         $this->contrato = $contrato;
+        $this->dataPagamento = $dataPagamento;
+        $this->conta = $conta;
+        $this->subconta = $subconta;
     }
 
-    public function getTurnoId(){
-        return $this->turnoId;
+    public function getparcelaId(){
+        return $this->parcelaId;
     }
 
     public function getNome(){
         return $this->nome;
-    }
-
-    public function getEmpresaId(){
-        return $this->empresaId;
     }
 
     public function getValor(){
@@ -51,33 +52,45 @@ class Turno{
         return $this->movimento; 
     }
     
-    
     public function getContrato(){
         return $this->contrato;
     }
+    public function getDataPagamento(){
+        return $this->dataPagamento;
+    }
     
+    public function getConta(){
+        return $this->conta;
+    }
+    public function getSubconta(){
+        return $this->subconta;
+    } 
     
     public function toJson() {
         return json_encode([
-            'turnoId' => $this->turnoId,
-            'empresaId' => $this->empresaId,
+            'parcelaId' => $this->parcelaId,
             'nome' => $this->nome,
             'valor' => $this->valor,
             'statusPagamento' => $this->statusPagamento,
-            'movimento' => $this->movimento,
-            'contrato' => $this->contrato
+            'movimento' => $this->movimento->toJsonSemAspas(),
+            'contrato' => $this->contrato->toJsonSemAspas(),
+            'dataPagamento' => $this->dataPagamento,
+            'conta' => $this->conta->toJsonSemAspas(),
+            'subconta' => $this->subconta->toJsonSemAspas()
         ]);
     }
 
     public function toJsonSemAspas() {
         return [
-            'turnoId' => $this->turnoId,
-            'empresaId' => $this->empresaId,
+            'parcelaId' => $this->parcelaId,
             'nome' => $this->nome,
             'valor' => $this->valor,
             'statusPagamento' => $this->statusPagamento,
-            'movimento' => $this->movimento,
-            'contrato' => $this->contrato
+            'movimento' => $this->movimento->toJsonSemAspas(),
+            'contrato' => $this->contrato->toJsonSemAspas(),
+            'dataPagamento' => $this->dataPagamento,
+            'conta' => $this->conta->toJsonSemAspas(),
+            'subconta' => $this->subconta->toJsonSemAspas()
         ];
     }
 

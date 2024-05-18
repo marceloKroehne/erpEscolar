@@ -73,7 +73,7 @@ function processarOFX($conteudo_ofx, $empresaId) {
                 0,
                 $empresaId,
                 $conta,
-                new Subconta(null, new GrupoContas(null, null, null, null), null, null, null),
+                new Subconta(null, new GrupoContas(null, null, null, null, null), null, null, null),
                 $trnamt[1],
                 $data_formatada,
                 $memo[1],

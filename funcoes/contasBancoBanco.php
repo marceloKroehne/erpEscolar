@@ -96,6 +96,60 @@ class ContasBancoBanco{
         return $contaBanco;
     }
 
+    public static function getContaBancoId($bancoId, $agencia, $numeroConta){
+
+        $conexao = new Conexao();
+    
+        $conexao->novaConexao();
+    
+        $sql =
+            "SELECT " .
+            "  CBN.BANCO_ID, " .
+            "  CBN.AGENCIA, " .
+            "  CBN.NUMERO_CONTA, " .
+            "  CBN.ATIVO AS CONTA_ATIVO, " .
+            "  BNC.BANCO_ID, " .
+            "  BNC.NUMERO_BANCO, " .
+            "  BNC.NOME, " .
+            "  BNC.EXIGE_OFX, " .
+            "  BNC.ATIVO AS BANCO_ATIVO, " .
+            "  BNC.EMPRESA_ID " .
+
+            "FROM CONTAS_BANCOS CBN " .
+
+            "INNER JOIN BANCOS BNC ".
+            "ON CBN.BANCO_ID = BNC.BANCO_ID ".
+
+            "WHERE BNC.BANCO_ID = ? ".
+            "AND CBN.AGENCIA = ? ".
+            "AND CBN.NUMERO_CONTA = ? ";
+
+        $parametros = array($bancoId, $agencia, $numeroConta);
+    
+        $resultados = $conexao->consulta($sql, $parametros);
+    
+        foreach ($resultados as $resultado) {
+
+            $contaBanco =  new Conta(
+                new Banco(
+                    $resultado['BANCO_ID'],
+                    $resultado['NUMERO_BANCO'],
+                    $resultado['EMPRESA_ID'],
+                    $resultado['NOME'],
+                    $resultado['EXIGE_OFX'],
+                    $resultado['BANCO_ATIVO']
+                ),
+                $resultado['AGENCIA'],
+                $resultado['NUMERO_CONTA'],
+                $resultado['CONTA_ATIVO']
+            );
+
+        }
+    
+        return $contaBanco;
+    }
+
+
 
     public static function getContasBanco($empresaId, $filtrarAtivos=true){
 

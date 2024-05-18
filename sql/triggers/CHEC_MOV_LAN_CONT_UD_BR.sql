@@ -10,7 +10,8 @@ begin
     from PARCELAS PAR 
     inner join CONTRATOS CON
     on PAR.CONTRATO_ID = new.CONTRATO_ID
-    where PAR.MOVIMENTO_ID is not null;
+    where PAR.MOVIMENTO_ID is not null
+    and PAR.STATUS_PAGAMENTO in (1,2);
 
     if xQTD > 0 then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possivel modificar um contrato que tenha lançamentos no caixa!';
@@ -30,7 +31,8 @@ begin
     from PARCELAS PAR 
     inner join CONTRATOS CON
     on PAR.CONTRATO_ID = old.CONTRATO_ID
-    where PAR.MOVIMENTO_ID is not null;
+    where PAR.MOVIMENTO_ID is not null
+    and PAR.STATUS_PAGAMENTO in (1,2);
 
     if xQTD > 0 then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possivel deletar um contrato que tenha lançamentos no caixa!';

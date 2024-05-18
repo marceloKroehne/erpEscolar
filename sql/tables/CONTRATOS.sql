@@ -3,7 +3,7 @@ create table CONTRATOS(
     TURMA_ID int not null,
     ALUNO_ID int not null,
     VENDEDOR_ID int not null,
-    PLANO_CURSO_ID int not null,
+    PLANO_CURSO_ID int,
     BOLSA_ID int,
     EMPRESA_ID int not null,
     SITUACAO_CONTRATO_ID int not null,

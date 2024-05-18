@@ -103,6 +103,22 @@ class Movimento{
             'numeroMovimento' => $this->numeroMovimento 
         ]);
     }
+
+    public function toJsonSemAspas() {
+        return [
+            'movimentoId' => $this->movimentoId,
+            'empresaId' => $this->empresaId,
+            'conta' => $this->conta->toJsonSemAspas(),
+            'subconta' =>  $this->subconta->toJsonSemAspas(),
+            'valor' =>  $this->valor,
+            'dataLancamento' => $this->dataLancamento,
+            'historico' => $this->historico,
+            'observacao' => $this->observacao,
+            'tipoDocumento' => $this->tipoDocumento->toJsonSemAspas(),
+            'duplicado' => $this->duplicado,
+            'numeroMovimento' => $this->numeroMovimento 
+        ];
+    }
     
 }
 

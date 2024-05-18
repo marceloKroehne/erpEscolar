@@ -5,18 +5,20 @@ class GrupoContas{
     private $nome;
     private $empresaId;
     private $ativo;
+    private $recebimentoVendas;
 
     function __construct(
         $grupoContaId,
         $empresaId,
         $nome,
-        $ativo
+        $ativo,
+        $recebimentoVendas
     ){
         $this->grupoContaId = $grupoContaId;
         $this->nome = $nome;
         $this->empresaId = $empresaId;
         $this->ativo = $ativo;
-
+        $this->recebimentoVendas = $recebimentoVendas;
     }
 
     public function getGrupoContaId(){
@@ -35,13 +37,16 @@ class GrupoContas{
         return $this->ativo; 
     }
 
-
+    public function isRecebimentoVendas(){
+        return $this->recebimentoVendas; 
+    }
     public function toJsonSemAspas() {
         return [
             'grupoContaId' => $this->grupoContaId,
             'empresaId' => $this->empresaId,
             'nome' => $this->nome,
-            'ativo' => $this->ativo
+            'ativo' => $this->ativo,
+            'recebimentoVendas' => $this->recebimentoVendas
         ];
     }
 
@@ -50,7 +55,8 @@ class GrupoContas{
             'grupoContaId' => $this->grupoContaId,
             'empresaId' => $this->empresaId,
             'nome' => $this->nome,
-            'ativo' => $this->ativo
+            'ativo' => $this->ativo,
+            'recebimentoVendas' => $this->recebimentoVendas
         ]);
     }
 

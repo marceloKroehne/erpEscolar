@@ -2,7 +2,9 @@
 
 <div class="menus_selecionar">
     
-    <a class="movimento_caixa" href="movimentoCaixa.php">Movimento de caixa</a>
+    <a class="item_menu" href="movimentoCaixa.php">Movimento de caixa</a>
+    <a class="item_menu" href="gerenciarParcelas.php">Lançar pagamentos</a>
+    
 
     <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro de turmas</a>

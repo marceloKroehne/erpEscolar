@@ -47,6 +47,7 @@ function iniciarComponentesModalGrp(grupo){
     if(grupo !== null){
         $("#modal_grp_titulo").text("Grupo de contas: " + grupo.nome);
         $("#modal_grp_input_nome").val(grupo.nome);
+        $("#grupo_receb_vendas").prop("checked", grupo.recebimentoVendas);
         $("#grupo_ativo").prop("checked", grupo.ativo);
         $("#grupo_ativo").show();
         $("#grupo_ativo").parent().show();

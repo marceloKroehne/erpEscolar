@@ -15,6 +15,7 @@ class GruposContasBanco{
             "  EMPRESA_ID, " .
             "  GRUPO_CONTA_ID, " .
             "  ATIVO, " .
+            "  RECEBIMENTO_VENDAS, " .
             "  NOME ".
 
             "FROM GRUPOS_CONTAS " .
@@ -37,7 +38,8 @@ class GruposContasBanco{
                 $resultado['GRUPO_CONTA_ID'],
                 $resultado['EMPRESA_ID'],
                 $resultado['NOME'],
-                $resultado['ATIVO']
+                $resultado['ATIVO'],
+                $resultado['RECEBIMENTO_VENDAS']
             );
     
             array_push($grupos, $grupo);
@@ -46,10 +48,10 @@ class GruposContasBanco{
         return $grupos;
     }
 
-    public static function insertGrupoConta($empresaId, $usuarioId, $grupoId, $nome, $ativo){
+    public static function insertGrupoConta($empresaId, $usuarioId, $grupoId, $nome, $ativo, $recebVenda){
 
         if($grupoId !== 0){
-            return GruposContasBanco::updateGrupoConta($usuarioId, $grupoId, $nome,$ativo);
+            return GruposContasBanco::updateGrupoConta($usuarioId, $grupoId, $nome, $ativo, $recebVenda);
         }
         else{
 
@@ -62,13 +64,15 @@ class GruposContasBanco{
             "INSERT INTO GRUPOS_CONTAS(" .
             "  EMPRESA_ID, " .
             "  NOME, " .
+            "  RECEBIMENTO_VENDAS, " .
             "  USUARIO_CRIACAO_ID, " .
             "  USUARIO_ALTERACAO_ID) " .
-            "VALUES (?, ?, ?, ?) ";
+            "VALUES (?, ?, ?, ?, ?) ";
 
             $parametros = array(
                 $empresaId,
                 $nome,
+                $recebVenda,
                 $usuarioId,
                 $usuarioId
             );
@@ -85,7 +89,7 @@ class GruposContasBanco{
         }
     }
 
-    private static function updateGrupoConta($usuarioId, $grupoId, $nome, $ativo){
+    private static function updateGrupoConta($usuarioId, $grupoId, $nome, $ativo, $recebVenda){
         $conexao = new Conexao();
 
         $conexao->novaConexaoPDO();
@@ -95,12 +99,14 @@ class GruposContasBanco{
         "UPDATE GRUPOS_CONTAS SET " .
         "  NOME = ?, " .
         "  ATIVO = ?, " .
+        "  RECEBIMENTO_VENDAS = ?, " .
         "  USUARIO_ALTERACAO_ID = ? " .
         "WHERE GRUPO_CONTA_ID = ? ";
 
         $parametros = array(
             $nome,
             $ativo,
+            $recebVenda,
             $usuarioId,
             $grupoId
         );

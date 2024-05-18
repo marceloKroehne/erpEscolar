@@ -19,7 +19,7 @@ end$$
 DELIMITER ;
 
 DELIMITER $$
-create trigger CHEC_UPDT_CARG_USU_U_BR
+create trigger CHEC_INSER_TURMA_U_BR
 before update on TURMAS
 for each row
 begin

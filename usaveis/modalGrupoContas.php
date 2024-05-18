@@ -13,6 +13,7 @@
                         <label for="modal_grp_input_nome">Nome:</label>
                         <input name="modal_grp_input_nome" type="text" id="modal_grp_input_nome" required>
                         <label>Ativo: <input type="checkbox" id="grupo_ativo" name="grupo_ativo"></label>
+                        <label>Recebimento de vendas: <input type="checkbox" id="grupo_receb_vendas" name="grupo_receb_vendas"></label>
                         <input value="0" id="grupo_conta_id" name="grupo_conta_id" hidden>
                     </form>
                 </div>    
