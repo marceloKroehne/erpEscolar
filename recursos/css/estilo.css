@@ -206,3 +206,18 @@ margin-top: 0px;
 margin-bottom: 10px;
 }
   
+.dropdown:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0.125em;
+}
+
+.dropend:hover > .dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+}
+
+.dropend{
+    padding: 5%;
+}
+
