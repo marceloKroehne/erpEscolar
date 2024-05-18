@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="modal_corpo">
-                    <form id="modal_cargo_form" action="gerenciarcargos.php" method="post">
+                    <form id="modal_cargo_form" action="gerenciarCargos.php" method="post">
                         <label for="cargo_nome">Nome:</label>
                         <input name="cargo_nome" type="text" id="cargo_nome" required>
 
