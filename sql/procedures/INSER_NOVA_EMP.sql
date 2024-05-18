@@ -102,13 +102,17 @@ insert into CARGOS (
   EMPRESA_ID,
   PERMISSAO_ID,
   NOME,
-  IS_ADMIN,
+  ADMIN,
+  PROFESSOR,
+  ATENDENTE,
   USUARIO_ALTERACAO_ID,
   USUARIO_CRIACAO_ID
 ) values (
   xEMPRESA_ID,
   3,
   'Admin',
+  true,
+  true,
   true,
   xUSUARIO_ID,
   xUSUARIO_ID
