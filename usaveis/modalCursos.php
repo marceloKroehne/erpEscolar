@@ -71,7 +71,7 @@
                         $parametrosPesquisa = [];
 
                         foreach($coordenadores as $coordenador){
-                            if($coordenador->getCargo()->isProfessor()){
+                            if($coordenador->isProfessor()){
                                 $parametro = new Parametro($coordenador->getFuncionarioId(), $coordenador->getNome());
                                 $parametro->dados = json_decode($coordenador->toJson());
                                 array_push($parametrosPesquisa, $parametro);

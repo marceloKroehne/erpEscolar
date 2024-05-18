@@ -4,8 +4,6 @@ class Cargo{
     private $cargoId;
     private $empresaId;
     private $permissaoId;
-    private $professor;
-    private $atendente;
     private $nome;
     private $isAdmin; 
     private $ativo;
@@ -15,8 +13,6 @@ class Cargo{
         $cargoId, 
         $empresaId,
         $permissaoId,
-        $professor,
-        $atendente,
         $nome, 
         $isAdmin,
         $ativo
@@ -27,8 +23,6 @@ class Cargo{
         $this->permissaoId = $permissaoId;
         $this->isAdmin = $isAdmin;
         $this->ativo = $ativo;
-        $this->professor = $professor;
-        $this->atendente = $atendente;
     }
 
     public function getCargoId(){
@@ -51,21 +45,12 @@ class Cargo{
     public function isAtivo(){
         return $this->ativo; 
     }
-    public function isProfessor(){
-        return $this->professor;
-    }
-    public function isAtendente(){
-        return $this->atendente; 
-    }
-
     public function toJson() {
         return json_encode([
             'cargoId' => $this->cargoId,
             'permissaoId' => $this->permissaoId,
             'isAdmin' => $this->isAdmin,
             'empresaId' => $this->empresaId,
-            'professor' => $this->professor,
-            'atendente' => $this->atendente,
             'nome' => $this->nome,
             'ativo' => $this->ativo
         ]);
@@ -76,8 +61,6 @@ class Cargo{
             'permissaoId' => $this->permissaoId,
             'isAdmin' => $this->isAdmin,
             'empresaId' => $this->empresaId,
-            'professor' => $this->professor,
-            'atendente' => $this->atendente,
             'nome' => $this->nome,
             'ativo' => $this->ativo
         ];

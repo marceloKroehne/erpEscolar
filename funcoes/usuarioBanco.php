@@ -24,8 +24,8 @@ class UsuarioBanco{
         "  CAR.CARGO_ID, ".
         "  CAR.PERMISSAO_ID, ".
         "  CAR.ADMIN, ".
-        "  CAR.PROFESSOR, ".
-        "  CAR.ATENDENTE, ".
+        "  FUN.PROFESSOR, ".
+        "  FUN.ATENDENTE, ".
         "  CAR.NOME AS NOME_CARGO, ".
         "  CAR.ATIVO AS CARGO_ATIVO, ".
         "  FUN.BANCO_ID, ".
@@ -78,6 +78,8 @@ class UsuarioBanco{
             $funcionario = new Funcionario(
                 $resultado['USUARIO_ID'],
                 $resultado['ATIVO'],
+                $resultado['PROFESSOR'],
+                $resultado['ATENDENTE'],
                 $resultado['EMPRESA_ID'],
                 $resultado['USUARIO_NOME'],
                 $resultado['EMAIL'],
@@ -96,8 +98,6 @@ class UsuarioBanco{
                     $resultado['CARGO_ID'],
                     $resultado['EMPRESA_ID'],
                     $resultado['PERMISSAO_ID'],
-                    $resultado['PROFESSOR'],
-                    $resultado['ATENDENTE'],
                     $resultado['NOME_CARGO'],
                     $resultado['ADMIN'],
                     $resultado['CARGO_ATIVO']
@@ -238,8 +238,8 @@ class UsuarioBanco{
         "  CAR.CARGO_ID, ".
         "  CAR.PERMISSAO_ID, ".
         "  CAR.ADMIN, ".
-        "  CAR.PROFESSOR, ".
-        "  CAR.ATENDENTE, ".
+        "  FUN.PROFESSOR, ".
+        "  FUN.ATENDENTE, ".
         "  CAR.NOME AS NOME_CARGO, ".
         "  CAR.ATIVO AS CARGO_ATIVO, ".
         "  FUN.BANCO_ID, ".
@@ -292,6 +292,8 @@ class UsuarioBanco{
             $funcionario = new Funcionario(
                 $resultado['USUARIO_ID'],
                 $resultado['ATIVO'],
+                $resultado['PROFESSOR'],
+                $resultado['ATENDENTE'],
                 $resultado['EMPRESA_ID'],
                 $resultado['USUARIO_NOME'],
                 $resultado['EMAIL'],
@@ -310,8 +312,6 @@ class UsuarioBanco{
                     $resultado['CARGO_ID'],
                     $resultado['EMPRESA_ID'],
                     $resultado['PERMISSAO_ID'],
-                    $resultado['PROFESSOR'],
-                    $resultado['ATENDENTE'],
                     $resultado['NOME_CARGO'],
                     $resultado['ADMIN'],
                     $resultado['CARGO_ATIVO']
@@ -380,8 +380,8 @@ class UsuarioBanco{
         "  CAR.CARGO_ID, ".
         "  CAR.PERMISSAO_ID, ".
         "  CAR.ADMIN, ".
-        "  CAR.PROFESSOR, ".
-        "  CAR.ATENDENTE, ".
+        "  FUN.PROFESSOR, ".
+        "  FUN.ATENDENTE, ".
         "  CAR.NOME AS NOME_CARGO, ".
         "  CAR.ATIVO AS CARGO_ATIVO, ".
         "  FUN.BANCO_ID, ".
@@ -429,6 +429,8 @@ class UsuarioBanco{
             $funcionario = new Funcionario(
                 $resultado['USUARIO_ID'],
                 $resultado['ATIVO'],
+                $resultado['PROFESSOR'],
+                $resultado['ATENDENTE'],
                 $resultado['EMPRESA_ID'],
                 $resultado['USUARIO_NOME'],
                 $resultado['EMAIL'],
@@ -447,8 +449,6 @@ class UsuarioBanco{
                     $resultado['CARGO_ID'],
                     $resultado['EMPRESA_ID'],
                     $resultado['PERMISSAO_ID'],
-                    $resultado['PROFESSOR'],
-                    $resultado['ATENDENTE'],
                     $resultado['NOME_CARGO'],
                     $resultado['ADMIN'],
                     $resultado['CARGO_ATIVO']
@@ -658,6 +658,8 @@ class UsuarioBanco{
         $usuarioId,
         $funcionarioId,
         $cargoId,
+        $professor,
+        $atendente,
         $bancoId,
         $agencia,
         $numeroConta,
@@ -675,6 +677,8 @@ class UsuarioBanco{
                 $usuarioAltId,
                 $funcionarioId,
                 $cargoId,
+                $professor,
+                $atendente,
                 $bancoId,
                 $agencia,
                 $numeroConta,
@@ -692,6 +696,8 @@ class UsuarioBanco{
         "INSERT INTO FUNCIONARIOS(" .
         "  USUARIO_ID, " .
         "  CARGO_ID, " .
+        "  PROFESSOR, " .
+        "  ATENDENTE, " .
         "  BANCO_ID, " .
         "  AGENCIA, " .
         "  NUMERO_CONTA,".
@@ -701,11 +707,13 @@ class UsuarioBanco{
         "  USUARIO_CRIACAO_ID, ".
         "  USUARIO_ALTERACAO_ID, ".
         "  SENHA) ".
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         $parametros = array(
             $usuarioId,
             $cargoId,
+            $professor,
+            $atendente,
             $bancoId,
             $agencia,
             $numeroConta,
@@ -834,13 +842,14 @@ class UsuarioBanco{
         
         return $retorno;
     }
-
     
     private static function updateFuncionario(
         $conexao,
         $usuarioAltId,
         $funcionarioId,
         $cargoId,
+        $professor,
+        $atendente,
         $bancoId,
         $agencia,
         $numeroConta,
@@ -865,6 +874,8 @@ class UsuarioBanco{
         $sql =
             "UPDATE FUNCIONARIOS SET " .
             "  CARGO_ID = ?, " .
+            "  PROFESSOR = ?, " .
+            "  ATENDENTE = ?, " .
             "  BANCO_ID = ?, " .
             "  AGENCIA = ?, " .
             "  NUMERO_CONTA = ?, " .
@@ -874,6 +885,8 @@ class UsuarioBanco{
 
         $parametros = array(
             $cargoId,
+            $professor,
+            $atendente,
             $bancoId,
             $agencia,
             $numeroConta,

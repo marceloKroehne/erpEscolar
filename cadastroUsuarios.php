@@ -57,6 +57,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             $retorno->dados,
             $funcionarioId,
             $cargoId,
+            $professor,
+            $atendente,
             $banco_id,
             $agencia,
             $numeroConta,

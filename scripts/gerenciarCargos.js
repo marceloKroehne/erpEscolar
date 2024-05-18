@@ -29,8 +29,6 @@ function iniciarComponentesModalcargo(cargo){
         $("#cargo_nome").val(cargo.nome);
         $("#cargo_permissao_id").val(cargo.permissaoId);
         $("#cargo_id").val(cargo.cargoId);
-        $("#cargo_professor").prop("checked",cargo.professor);
-        $("#cargo_atendente").prop("checked",cargo.atendente);
         $("#cargo_ativo").prop("checked", cargo.ativo);
         $("#cargo_ativo").show();
         $("#cargo_ativo").parent().show();
@@ -41,8 +39,6 @@ function iniciarComponentesModalcargo(cargo){
         $("#cargo_id").val(0);
         $("#cargo_permissao_id").val(0);
         $("#cargo_ativo").prop("checked", true);
-        $("#cargo_professor").prop("checked",false);
-        $("#cargo_atendente").prop("checked",false);
         $("#cargo_ativo").hide();
         $("#cargo_ativo").parent().hide();
     }

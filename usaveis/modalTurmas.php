@@ -72,7 +72,7 @@
                         $parametrosPesquisa = [];
 
                         foreach($professores as $professor){
-                            if($professor->getCargo()->isProfessor()){
+                            if($professor->isProfessor()){
                                 $parametro = new Parametro($professor->getFuncionarioId(), $professor->getNome());
                                 $parametro->dados = json_decode($professor->toJson());
                                 array_push($parametrosPesquisa, $parametro);

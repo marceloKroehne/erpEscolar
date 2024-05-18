@@ -186,6 +186,15 @@ header {
     width: 20px;
 }
 
+.cargo_prof_ate label {
+    display: inline-block;
+}
+
+.cargo_prof_ate > input[type="checkbox"] {
+    display: inline-block;
+    width: 10%;
+}
+
 .salvar > p {
     font-size: 1.4rem;
     font-weight: 300;

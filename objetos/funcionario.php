@@ -2,6 +2,8 @@
 
 class Funcionario extends Usuario{
     private $funcionarioId;
+    private $professor;
+    private $atendente;
     private Cargo $cargo;
     private Conta $conta;
     private Pix $pix;
@@ -11,6 +13,8 @@ class Funcionario extends Usuario{
     function __construct(
         $usuarioId, 
         $ativo,
+        $professor,
+        $atendente,
         $empresaId, 
         $nome, 
         $email, 
@@ -55,6 +59,8 @@ class Funcionario extends Usuario{
         $this->pix = $pix;
         $this->mensalista = $mensalista;
         $this->horista = $horista;
+        $this->professor = $professor;
+        $this->atendente = $atendente;
     }
     
     public function getCargo(){
@@ -71,11 +77,20 @@ class Funcionario extends Usuario{
     public function getMensalista(){
         return $this->mensalista;
     }
+    public function isProfessor(){
+        return $this->professor;
+    }
+    public function isAtendente(){
+        return $this->atendente; 
+    }
+
 
     public function toJson() {
         return json_encode([
             'usuarioId' => $this->getUsuarioId(),
             'ativo' => $this->isAtivo(),
+            'professor' => $this->professor,
+            'atendente' => $this->atendente,
             'empresaId' => $this->getEmpresaId(),
             'nome' => $this->getNome(),
             'email' => $this->getEmail(),
@@ -102,6 +117,8 @@ class Funcionario extends Usuario{
         return [
             'usuarioId' => $this->getUsuarioId(),
             'ativo' => $this->isAtivo(),
+            'professor' => $this->professor,
+            'atendente' => $this->atendente,
             'empresaId' => $this->getEmpresaId(),
             'nome' => $this->getNome(),
             'email' => $this->getEmail(),

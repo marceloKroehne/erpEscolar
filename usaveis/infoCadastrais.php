@@ -76,13 +76,19 @@ if($destino != "cadastro.php"){
             <?endforeach;?>
         </select>
 
+        <div class="cargo_prof_ate">
+            <label for="cargo_professor">Professor: </label>
+            <input type="checkbox" id="cargo_professor" name="cargo_professor">
+            <label for="cargo_atendente">Atendente: </label>
+            <input type="checkbox" id="cargo_atendente" name="cargo_atendente">
+        </div>
+
         <label id="lb_pagamento_id" for="pagamento_id">Tipo pagamento:</label>
         <select id="pagamento_id" name="pagamento_id">
             <?foreach($pagamentos as $pagamento): ?>
-                <option value="<?=$pagamento->getTipopagamentoId();?>"><?=$pagamento->getNome();?></option>
+                <option value="<?=$pagamento->getTipoPagamentoId();?>"><?=$pagamento->getNome();?></option>
             <?endforeach;?>
         </select>
-
         <?
 
         $inputId = "input_gerenciar_banco";

@@ -14,8 +14,6 @@
                         <input name="cargo_nome" type="text" id="cargo_nome" required>
 
                         <label>Ativo: <input type="checkbox" id="cargo_ativo" name="cargo_ativo"></label>
-                        <label>Professor: <input type="checkbox" id="cargo_professor" name="cargo_professor"></label>
-                        <label>Atendente: <input type="checkbox" id="cargo_atendente" name="cargo_atendente"></label>
                         <label for="cargo_permissao_id">Permissão:</label>
                         <select id="cargo_permissao_id" name="cargo_permissao_id">
                             <?foreach($permissoes as $permissao):?>

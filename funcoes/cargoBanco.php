@@ -31,8 +31,6 @@ class CargosBanco{
                 $resultado["CARGO_ID"],
                 $resultado["EMPRESA_ID"],
                 $resultado["PERMISSAO_ID"],
-                $resultado['PROFESSOR'],
-                $resultado['ATENDENTE'],
                 $resultado["NOME"],
                 $resultado["ADMIN"],
                 $resultado["ATIVO"]
@@ -50,8 +48,6 @@ class CargosBanco{
         "SELECT ".
         "  CARGO_ID, " .
         "  NOME, " .
-        "  ATENDENTE, " .
-        "  PROFESSOR, " .
         "  EMPRESA_ID, " .
         "  ADMIN, " .
         "  ATIVO, " .
@@ -77,8 +73,6 @@ class CargosBanco{
                 $resultado["CARGO_ID"],
                 $resultado["EMPRESA_ID"],
                 $resultado["PERMISSAO_ID"],
-                $resultado["PROFESSOR"],
-                $resultado["ATENDENTE"],
                 $resultado["NOME"],
                 $resultado["ADMIN"],
                 $resultado["ATIVO"]
@@ -115,10 +109,10 @@ class CargosBanco{
         return $permissoes;
     }
 
-    public static function insertCargo($empresaId, $usuarioId, $cargoId, $nome, $ativo, $permissaoId, $professor, $atendente){
+    public static function insertCargo($empresaId, $usuarioId, $cargoId, $nome, $ativo, $permissaoId){
 
         if($cargoId !== 0){
-            return CargosBanco::updateCargo($usuarioId, $cargoId, $nome, $ativo, $permissaoId, $professor, $atendente);
+            return CargosBanco::updateCargo($usuarioId, $cargoId, $nome, $ativo, $permissaoId);
         }
         else{
 
@@ -132,18 +126,14 @@ class CargosBanco{
             "  EMPRESA_ID, " .
             "  NOME, " .
             "  PERMISSAO_ID, " .
-            "  PROFESSOR, " .
-            "  ATENDENTE, " .
             "  USUARIO_CRIACAO_ID, " .
             "  USUARIO_ALTERACAO_ID) " .
-            "VALUES (?, ?, ?, ?, ?, ?, ?) ";
+            "VALUES (?, ?, ?, ?, ?) ";
 
             $parametros = array(
                 $empresaId,
                 $nome,
                 $permissaoId,
-                $professor,
-                $atendente,
                 $usuarioId,
                 $usuarioId
             );
@@ -160,7 +150,7 @@ class CargosBanco{
         }
     }
 
-    private static function updateCargo($usuarioId, $cargoId, $nome, $ativo, $permissaoId, $professor, $atendente){
+    private static function updateCargo($usuarioId, $cargoId, $nome, $ativo, $permissaoId){
         $conexao = new Conexao();
 
         $conexao->novaConexaoPDO();
@@ -171,8 +161,6 @@ class CargosBanco{
         "  NOME = ?, " .
         "  ATIVO = ?, " .
         "  PERMISSAO_ID = ?, " .
-        "  PROFESSOR = ?, " .
-        "  ATENDENTE = ?, " .
         "  USUARIO_ALTERACAO_ID = ? " .
         "WHERE CARGO_ID = ? ";
 
@@ -180,8 +168,6 @@ class CargosBanco{
             $nome,
             $ativo,
             $permissaoId,
-            $professor,
-            $atendente,
             $usuarioId,
             $cargoId
         );

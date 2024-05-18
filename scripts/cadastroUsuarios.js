@@ -56,6 +56,8 @@ function iniciarComponentesCadastroUsuario(){
     $("#email_usuario").val(usuario.email);
     $("#telefone_usuario").val(usuario.telefone);
     $("#usuario_id").val(usuario.usuarioId);
+    $("#cargo_professor").prop("checked",cargo.professor);
+    $("#cargo_atendente").prop("checked",cargo.atendente);
 
 
     $("#cep_usuario").val(usuario.cep);
@@ -96,6 +98,8 @@ function iniciarComponentesCadastroUsuario(){
     $("#pagamento_id").val(0);
     $("#pix").val("");
     $("#tipo_pix").val(0);
+    $("#cargo_professor").prop("checked",false);
+    $("#cargo_atendente").prop("checked",false);
 
     $("#aluno_id").val(0);
     $("#matricula_aluno").val("");

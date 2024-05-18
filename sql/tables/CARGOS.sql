@@ -2,8 +2,6 @@ create table CARGOS(
     CARGO_ID int not null auto_increment,
     EMPRESA_ID int not null,
     PERMISSAO_ID tinyint not null default 0 check(TIPO in(0,1,2,3)),
-    PROFESSOR boolean default false,
-    ATENDENTE boolean default false,
     NOME varchar(255) not null,
     ADMIN boolean default false,
     ATIVO boolean default true,

@@ -62,7 +62,7 @@
                         $placeHolderPesquisa = "vendedor";
 
                         foreach($vendedores as $vendedor){
-                            if($vendedor->getCargo()->isAtendente()){
+                            if($vendedor->isAtendente()){
                                 $parametro = new Parametro($vendedor->getFuncionarioId(), $vendedor->getNome());
                                 $parametro->dados = json_decode($vendedor->toJson());
                                 
