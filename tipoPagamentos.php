@@ -74,7 +74,7 @@ $pagamentos = TipoPagamentoBanco::getTipoPagamentos($empresa->getEmpresaId(), fa
 
     <main class="principal">
 
-        <? require_once('./usaveis/modaltipoPagamentos.php');?>
+        <? require_once('./usaveis/modalTipoPagamentos.php');?>
 
         <div class="conteudo">  
 
