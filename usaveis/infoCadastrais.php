@@ -1,7 +1,10 @@
 <?
-$cargos = CargosBanco::getCargosEmpresa($empresa->getEmpresaId());
-$pagamentos = TipoPagamentoBanco::getTipoPagamentos($empresa->getEmpresaId());
-$bancos = BancoBanco::getBancos($empresa->getEmpresaId());
+
+if($destino != "cadastro.php"){
+    $cargos = CargosBanco::getCargosEmpresa($empresa->getEmpresaId());
+    $pagamentos = TipoPagamentoBanco::getTipoPagamentos($empresa->getEmpresaId());
+    $bancos = BancoBanco::getBancos($empresa->getEmpresaId());
+}
 ?>
 
 <br>
