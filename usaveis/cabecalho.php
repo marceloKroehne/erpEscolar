@@ -10,9 +10,7 @@
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastros</a>
         <ul class="dropdown-menu dropdown-menu-start">
             <li class="nav-item dropdown dropend">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Cadastro de turmas
-                </a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cad. de turmas</a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="gerenciarModalidades.php">Modalidades</a></li>
                     <li><a class="dropdown-item" href="gerenciarSalas.php">Salas</a></li>
@@ -22,7 +20,7 @@
                 </ul>
             </li>
             <li class="nav-item dropdown dropend">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro de cursos</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cad. de cursos</a>
                 <ul class="dropdown-menu dropdown-menu-start">
                     <li><a class="dropdown-item" href="gerenciarCursos.php">Cursos</a></li>
                     <li><a class="dropdown-item" href="matrizesCurriculares.php">Matrizes curriculares</a></li>
@@ -32,14 +30,14 @@
             </li>
 
             <li class="nav-item dropdown dropend">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro de alunos</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cad. de alunos</a>
                 <ul class="dropdown-menu dropdown-menu-start">
                     <li><a class="dropdown-item"  href="cadastroAlunos.php">Alunos</a></li>
                 </ul>
             </li>
 
             <li class="nav-item dropdown dropend">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro de contratos</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cad. de contratos</a>
                 <ul class="dropdown-menu dropdown-menu-start">
                 <li><a class="dropdown-item" href="gerenciarContratos.php">Contratos</a></li>
                     <li><a class="dropdown-item" href="situacaoContratos.php">Situações de contratos</a></li>
@@ -48,16 +46,16 @@
             </li>
 
             <li class="nav-item dropdown dropend">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro de funcionários</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cad. de funcionários</a>
                 <ul class="dropdown-menu dropdown-menu-start">
-                    <li><a class="dropdown-item" href="cadastroUsuarios.php">Cadastro funcionários</a></li>
+                    <li><a class="dropdown-item" href="cadastroUsuarios.php">Funcionários</a></li>
                     <li><a class="dropdown-item" href="gerenciarCargos.php">Cargos</a></li>
                     <li><a class="dropdown-item" href="tipoPagamentos.php">Tipos de pagamento</a></li>
                 </ul>
             </li>
 
             <li class="nav-item dropdown dropend">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cadastro financeiro</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Cad. financeiro</a>
                 <ul class="dropdown-menu dropdown-menu-start">
                     <li><a class="dropdown-item" href="gerenciarBancos.php">Bancos</a></li>
                     <li><a class="dropdown-item" href="gerenciarGruposContas.php">Grupos de contas</a></li>
