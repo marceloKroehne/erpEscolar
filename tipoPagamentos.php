@@ -84,7 +84,7 @@ $pagamentos = TipoPagamentoBanco::getTipoPagamentos($empresa->getEmpresaId(), fa
                 </div>
             <?php endif ?>
 
-           <?require_once('./usaveis/tabelatipoPagamentos.php')?>
+           <?require_once('./usaveis/tabelaTipoPagamentos.php')?>
 
         </div>
     </main>
