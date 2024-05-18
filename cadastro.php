@@ -5,7 +5,9 @@ require("./funcoes/usuarioBanco.php");
 require("./funcoes/empresaBanco.php");
 require("./funcoes/bancoBanco.php");
 require("./funcoes/getDados.php");
+require("./funcoes/cargoBanco.php");
 require("./usaveis/dadosCadastro.php");
+require("./funcoes/tipoPagamentoBanco.php");
 
 $destino = 'cadastro.php';
 

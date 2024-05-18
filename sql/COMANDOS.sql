@@ -43,6 +43,24 @@ create table USUARIOS(
 	constraint FK_USUARIOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID)
 );
 
+create table BANCOS(
+    BANCO_ID int not null auto_increment,
+    EMPRESA_ID int not null,
+    NUMERO_BANCO int not null unique,
+    NOME varchar(255) not null,
+    EXIGE_OFX boolean default false,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+    
+    constraint PK_BANCOS primary key(BANCO_ID),
+    constraint FK_BANCOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_BANCOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_BANCOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
 create table CARGOS(
     CARGO_ID int not null auto_increment,
     EMPRESA_ID int not null,
@@ -61,6 +79,22 @@ create table CARGOS(
     constraint FK_CARGOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
     constraint FK_CARGOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_CARGOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table CONTAS_BANCOS(
+    BANCO_ID int not null,
+    AGENCIA int not null,
+    NUMERO_CONTA int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+    
+    constraint PK_CONTAS_BANCOS primary key(BANCO_ID, AGENCIA, NUMERO_CONTA),
+    constraint FK_CONTAS_BANCOS_BANCOS foreign key (BANCO_ID) references BANCOS(BANCO_ID),
+    constraint FK_CONTAS_BANCOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_CONTAS_BANCOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
 
 create table TIPO_PAGAMENTOS(
@@ -82,59 +116,12 @@ create table TIPO_PAGAMENTOS(
     constraint FK_TIPO_TIPO_PAGAMENTOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
 
-create table BANCOS(
-    BANCO_ID int not null auto_increment,
-    EMPRESA_ID int not null,
-    NUMERO_BANCO int not null unique,
-    NOME varchar(255) not null,
-    EXIGE_OFX boolean default false,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
-    
-    constraint PK_BANCOS primary key(BANCO_ID),
-    constraint FK_BANCOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_BANCOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_BANCOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
-
-create table CONTAS_BANCOS(
-    BANCO_ID int not null,
-    AGENCIA int not null,
-    NUMERO_CONTA int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
-    
-    constraint PK_CONTAS_BANCOS primary key(BANCO_ID, AGENCIA, NUMERO_CONTA),
-    constraint FK_CONTAS_BANCOS_BANCOS foreign key (BANCO_ID) references BANCOS(BANCO_ID),
-    constraint FK_CONTAS_BANCOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_CONTAS_BANCOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
-create table TIPO_DOCUMENTOS(
-    TIPO_DOCUMENTO_ID int not null AUTO_INCREMENT,
-    EMPRESA_ID int not null,
-    NOME varchar(255) not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
-
-    constraint PK_TIPO_DOCUMENTOS primary key(TIPO_DOCUMENTO_ID),
-    constraint FK_TIPO_DOCUMENTOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_TIPO_DOCUMENTOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_TIPO_DOCUMENTOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
 create table GRUPOS_CONTAS(
     GRUPO_CONTA_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
     EMPRESA_ID int not null,
     USUARIO_ALTERACAO_ID int not null,
+    RECEBIMENTO_VENDAS boolean default false,
     ATIVO boolean default true,
     DATA_HORA_ALTERACAO datetime not null default now(),
     USUARIO_CRIACAO_ID int not null,
@@ -145,6 +132,7 @@ create table GRUPOS_CONTAS(
     constraint FK_GRUPOS_CONTAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_GRUPOS_CONTAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table SUBCONTAS(
     SUBCONTA_ID int not null AUTO_INCREMENT,
     GRUPO_CONTA_ID int not null, 
@@ -161,6 +149,7 @@ create table SUBCONTAS(
     constraint FK_SUBCONTAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_SUBCONTAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table ALUNOS(
     ALUNO_ID int not null AUTO_INCREMENT,
     USUARIO_ID int not null,
@@ -175,6 +164,7 @@ create table ALUNOS(
     constraint FK_ALUNOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_ALUNOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table FUNCIONARIOS(
     FUNCIONARIO_ID int not null AUTO_INCREMENT,
     USUARIO_ID int not null,
@@ -199,45 +189,7 @@ create table FUNCIONARIOS(
     constraint FK_FUNCIONARIOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_FUNCIONARIOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
-create table DISCIPLINAS(
-    DISCIPLINA_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
-    EMPRESA_ID int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
 
-    constraint PK_DISCIPLINAS primary key(DISCIPLINA_ID),
-    constraint FK_DISCIPLINAS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_DISCIPLINAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_DISCIPLINAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
-create table MATRIZES_CURRICULARES(
-    MATRIZ_CURRICULAR_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
-    EMPRESA_ID int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
-
-    constraint PK_MATRIZ_CURRICULAR primary key(MATRIZ_CURRICULAR_ID),
-    constraint FK_MATRIZ_CURRICULAR_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_MATRIZES_CURRICULARES_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_MATRIZES_CURRICULARES_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
-create table MATRIZES_DISCIPLINAS(
-    MATRIZ_DISCIPLINA_ID int not null AUTO_INCREMENT,
-    MATRIZ_CURRICULAR_ID int not null,
-    DISCIPLINA_ID int not null,
-
-    constraint PK_MATRIZES_DISCIPLINAS primary key(MATRIZ_DISCIPLINA_ID),
-    constraint FK_MATRIZES_DISCIPLINAS_MATRIZES foreign key (MATRIZ_CURRICULAR_ID) references MATRIZES_CURRICULARES(MATRIZ_CURRICULAR_ID),
-    constraint FK_MATRIZES_DISCIPLINAS_DISCIPLINAS foreign key (DISCIPLINA_ID) references DISCIPLINAS(DISCIPLINA_ID)
-);
 create table MODALIDADES(
     MODALIDADE_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
@@ -253,51 +205,7 @@ create table MODALIDADES(
     constraint FK_MODALIDADES_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_MODALIDADES_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
-create table TIPO_CURSOS(
-    TIPO_CURSO_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
-    EMPRESA_ID int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
 
-    constraint PK_TIPO_CURSOS primary key(TIPO_CURSO_ID),
-    constraint FK_TIPO_CURSOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_TIPO_CURSOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_TIPO_CURSOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
-create table TURNOS(
-    TURNO_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
-    EMPRESA_ID int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
-
-    constraint PK_TURNOS primary key(TURNO_ID),
-    constraint FK_TURNOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_TURNOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_TURNOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
-create table TIPO_CONTRATOS(
-    TIPO_CONTRATO_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
-    EMPRESA_ID int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
-
-    constraint PK_TIPO_CONTRATOS primary key(TIPO_CONTRATO_ID),
-    constraint FK_TIPO_CONTRATOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_TIPO_CONTRATOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_TIPO_CONTRATOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
 create table SITUACAO_TURMAS(
     SITUACAO_TURMA_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
@@ -313,36 +221,23 @@ create table SITUACAO_TURMAS(
     constraint FK_SITUACAO_TURMAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_SITUACAO_TURMAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
-create table SITUACAO_CONTRATOS(
-    SITUACAO_CONTRATO_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
+
+create table TIPO_DOCUMENTOS(
+    TIPO_DOCUMENTO_ID int not null AUTO_INCREMENT,
     EMPRESA_ID int not null,
+    NOME varchar(255) not null,
     ATIVO boolean default true,
     USUARIO_ALTERACAO_ID int not null,
     DATA_HORA_ALTERACAO datetime not null default now(),
     USUARIO_CRIACAO_ID int not null,
     DATA_HORA_CRIACAO datetime not null default now(),
 
-    constraint PK_SITUACAO_CONTRATOS primary key(SITUACAO_CONTRATO_ID),
-    constraint FK_SITUACAO_CONTRATOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_SITUACAO_CONTRATOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_SITUACAO_CONTRATOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+    constraint PK_TIPO_DOCUMENTOS primary key(TIPO_DOCUMENTO_ID),
+    constraint FK_TIPO_DOCUMENTOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_TIPO_DOCUMENTOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_TIPO_DOCUMENTOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
-create table SALAS(
-    SALA_ID int not null AUTO_INCREMENT,
-    NOME varchar(255) not null,
-    EMPRESA_ID int not null,
-    ATIVO boolean default true,
-    USUARIO_ALTERACAO_ID int not null,
-    DATA_HORA_ALTERACAO datetime not null default now(),
-    USUARIO_CRIACAO_ID int not null,
-    DATA_HORA_CRIACAO datetime not null default now(),
 
-    constraint PK_SALAS primary key(SALA_ID),
-    constraint FK_SALAS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
-    constraint FK_SALAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
-    constraint FK_SALAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
-);
 create table MOVIMENTOS(
     MOVIMENTO_ID int not null AUTO_INCREMENT,
     EMPRESA_ID int not null,
@@ -370,6 +265,129 @@ create table MOVIMENTOS(
     constraint FK_MOVIMENTOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_MOVIMENTOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
+create table TURNOS(
+    TURNO_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_TURNOS primary key(TURNO_ID),
+    constraint FK_TURNOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_TURNOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_TURNOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table TIPO_CURSOS(
+    TIPO_CURSO_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_TIPO_CURSOS primary key(TIPO_CURSO_ID),
+    constraint FK_TIPO_CURSOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_TIPO_CURSOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_TIPO_CURSOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table TIPO_CONTRATOS(
+    TIPO_CONTRATO_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_TIPO_CONTRATOS primary key(TIPO_CONTRATO_ID),
+    constraint FK_TIPO_CONTRATOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_TIPO_CONTRATOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_TIPO_CONTRATOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table SITUACAO_CONTRATOS(
+    SITUACAO_CONTRATO_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_SITUACAO_CONTRATOS primary key(SITUACAO_CONTRATO_ID),
+    constraint FK_SITUACAO_CONTRATOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_SITUACAO_CONTRATOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_SITUACAO_CONTRATOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table SALAS(
+    SALA_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_SALAS primary key(SALA_ID),
+    constraint FK_SALAS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_SALAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_SALAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table DISCIPLINAS(
+    DISCIPLINA_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_DISCIPLINAS primary key(DISCIPLINA_ID),
+    constraint FK_DISCIPLINAS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_DISCIPLINAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_DISCIPLINAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table MATRIZES_CURRICULARES(
+    MATRIZ_CURRICULAR_ID int not null AUTO_INCREMENT,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_MATRIZ_CURRICULAR primary key(MATRIZ_CURRICULAR_ID),
+    constraint FK_MATRIZ_CURRICULAR_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_MATRIZES_CURRICULARES_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_MATRIZES_CURRICULARES_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
+create table MATRIZES_DISCIPLINAS(
+    MATRIZ_DISCIPLINA_ID int not null AUTO_INCREMENT,
+    MATRIZ_CURRICULAR_ID int not null,
+    DISCIPLINA_ID int not null,
+
+    constraint PK_MATRIZES_DISCIPLINAS primary key(MATRIZ_DISCIPLINA_ID),
+    constraint FK_MATRIZES_DISCIPLINAS_MATRIZES foreign key (MATRIZ_CURRICULAR_ID) references MATRIZES_CURRICULARES(MATRIZ_CURRICULAR_ID),
+    constraint FK_MATRIZES_DISCIPLINAS_DISCIPLINAS foreign key (DISCIPLINA_ID) references DISCIPLINAS(DISCIPLINA_ID)
+);
+
 create table CURSOS(
     CURSO_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
@@ -394,6 +412,7 @@ create table CURSOS(
     constraint FK_CURSOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_CURSOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table BOLSAS(
     BOLSA_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
@@ -411,6 +430,7 @@ create table BOLSAS(
     constraint FK_BOLSAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_BOLSAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table BOLSAS_CURSOS(
     BOLSA_CURSO_ID int not null AUTO_INCREMENT,
     BOLSA_ID int not null,
@@ -420,6 +440,29 @@ create table BOLSAS_CURSOS(
     constraint FK_BOLSAS_bolsas_cursos foreign key (BOLSA_ID) references BOLSAS(BOLSA_ID),
     constraint FK_BOLSAS_CURSOS_CURSOS foreign key (CURSO_ID) references CURSOS(CURSO_ID)
 );
+
+create table PLANOS_CURSOS(
+    PLANO_CURSO_ID int not null AUTO_INCREMENT,
+    CURSO_ID int not null,
+    NOME varchar(255) not null,
+    EMPRESA_ID int not null,
+    NUMERO_PARCELAS INT(3) not null,
+    NECESSITA_AUT_SUP boolean default true,
+    VALOR_PARCELA decimal(10,2),
+    VALOR_TOTAL decimal(10,2),
+    ATIVO boolean default true,
+    USUARIO_ALTERACAO_ID int not null,
+    DATA_HORA_ALTERACAO datetime not null default now(),
+    USUARIO_CRIACAO_ID int not null,
+    DATA_HORA_CRIACAO datetime not null default now(),
+
+    constraint PK_PLANOS_CURSOS primary key(PLANO_CURSO_ID),
+    constraint FK_PLANOS_CURSOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_PLANOS_CURSOS_CURSOS foreign key (CURSO_ID) references CURSOS(CURSO_ID),
+    constraint FK_PLANOS_CURSOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
+    constraint FK_PLANOS_CURSOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
+);
+
 create table TURMAS(
     TURMA_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
@@ -457,9 +500,9 @@ create table CONTRATOS(
     TURMA_ID int not null,
     ALUNO_ID int not null,
     VENDEDOR_ID int not null,
+    PLANO_CURSO_ID int,
+    BOLSA_ID int,
     EMPRESA_ID int not null,
-    VALOR DECIMAL(10,2) not null,
-    DESONTO DECIMAL(10,2),
     SITUACAO_CONTRATO_ID int not null,
     TIPO_CONTRATO_ID int not null,
     DATA_INICIO date not null,
@@ -473,34 +516,43 @@ create table CONTRATOS(
     constraint PK_CONTRATOS primary key(CONTRATO_ID),
     constraint FK_CONTRATOS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
     constraint FK_CONTRATOS_TURMAS foreign key (TURMA_ID) references TURMAS(TURMA_ID),
-    constraint FK_CONTRATOS_ALUNOS foreign key (VENDEDOR_ID) references FUNCIONARIOS(FUNCIONARIO_ID),
-    constraint FK_CONTRATOS_FUNCIONARIOS foreign key (ALUNO_ID) references ALUNOS(ALUNO_ID),
+    constraint FK_CONTRATOS_FUNCIONARIOS foreign key (VENDEDOR_ID) references FUNCIONARIOS(FUNCIONARIO_ID),
+    constraint FK_CONTRATOS_ALUNOS foreign key (ALUNO_ID) references ALUNOS(ALUNO_ID),
+    constraint FK_CONTRATOS_PLANOS_CURSOS foreign key (PLANO_CURSO_ID) references PLANOS_CURSOS(PLANO_CURSO_ID),
+    constraint FK_CONTRATOS_BOLSAS foreign key (BOLSA_ID) references BOLSAS(BOLSA_ID),
     constraint FK_CONTRATOS_SITUACAO_CONTRATOS foreign key (SITUACAO_CONTRATO_ID) references SITUACAO_CONTRATOS(SITUACAO_CONTRATO_ID),
     constraint FK_CONTRATOS_TIPO_CONTRATOS foreign key (TIPO_CONTRATO_ID) references TIPO_CONTRATOS(TIPO_CONTRATO_ID),
     constraint FK_CONTRATOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_CONTRATOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table PARCELAS(
     PARCELA_ID int not null AUTO_INCREMENT,
     NOME varchar(255) not null,
     VALOR DECIMAL(10,2) not null,
-    STATUS_PAGAMENTO tinyint check(TIPO IN(0,1,2)) default 0, /*0 - NÃO PAGO, 1 - PENDENTE, 2 - PAGO*/
+    STATUS_PAGAMENTO tinyint default 0 check(TIPO IN(0,1,2)) , /*0 - NÃO PAGO, 1 - PENDENTE, 2 - PAGO*/
     CONTRATO_ID int not null,
-    EMPRESA_ID int not null,
-    MOVIMENTO_ID int not null,
+    BANCO_ID int,
+    AGENCIA int,
+    NUMERO_CONTA int,
+    SUBCONTA_ID int,
+    MOVIMENTO_ID int,
     ATIVO boolean default true,
+    DATA_PAGAMENTO date,
     USUARIO_ALTERACAO_ID int not null,
     DATA_HORA_ALTERACAO datetime not null default now(),
     USUARIO_CRIACAO_ID int not null,
     DATA_HORA_CRIACAO datetime not null default now(),
 
     constraint PK_PARCELAS primary key(PARCELA_ID),
-    constraint FK_PARCELAS_EMPRESAS foreign key (EMPRESA_ID) references EMPRESAS(EMPRESA_ID),
+    constraint FK_PARCELAS_CONTAS_BANCOS foreign key (BANCO_ID, AGENCIA, NUMERO_CONTA) references CONTAS_BANCOS(BANCO_ID, AGENCIA, NUMERO_CONTA),
+    constraint FK_PARCELAS_SUBCONTAS foreign key (SUBCONTA_ID) references SUBCONTAS(SUBCONTA_ID),
     constraint FK_PARCELAS_CONTRATOS foreign key (CONTRATO_ID) references CONTRATOS(CONTRATO_ID),
-    constraint FK_PARCELAS_MOVIMENTOS foreign key (MOVIMENTO_ID) references MOVIMENTOS(MOVIMENTO_ID),
+    constraint FK_PARCELAS_PARCELAS foreign key (MOVIMENTO_ID) references MOVIMENTOS(MOVIMENTO_ID),
     constraint FK_PARCELAS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_PARCELAS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
 create table DOCUMENTOS(
     DOCUMENTO_ID int not null AUTO_INCREMENT,
     CONTRATO_ID int not null,
@@ -516,12 +568,54 @@ create table DOCUMENTOS(
     constraint FK_DOCUMENTOS_USUARIOS_ALT foreign key (USUARIO_ALTERACAO_ID) references USUARIOS(USUARIO_ID),
     constraint FK_DOCUMENTOS_USUARIOS_CRI foreign key (USUARIO_CRIACAO_ID) references USUARIOS(USUARIO_ID)
 );
+
+DELIMITER $$
+create trigger CHEC_ALUNO_TURMA_CONT_I_BR
+before insert on CONTRATOS
+for each row
+begin
+
+    declare xQTD int;
+
+    select COUNT(*) INTO xQTD
+    from CONTRATOS
+
+    where ALUNO_ID = new.ALUNO_ID
+    and TURMA_ID = new.TURMA_ID;
+
+    if xQTD > 0 then
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possivel inserir um contrato de um aluno na mesma turma duas vezes!';
+    end if;
+end$$
+
+DELIMITER ;
+
+DELIMITER $$
+create trigger CHEC_ALUNO_TURMA_CONT_U_BR
+before update on CONTRATOS
+for each row
+begin
+    declare xQTD int;
+
+    select COUNT(*) INTO xQTD
+    from CONTRATOS
+
+    where ALUNO_ID = new.ALUNO_ID
+    and TURMA_ID = new.TURMA_ID;
+
+    if xQTD > 0 then
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possivel inserir um contrato de um aluno na mesma turma duas vezes!';
+    end if;
+end$$
+
+DELIMITER ;
+
 DELIMITER $$
 create trigger CHEC_INSER_CARG_USU_I_BR
 before insert on USUARIOS
 for each row
 begin
-    if NEW.USUARIO_STATUS not in (0, 1,2,3) then
+    if NEW.ATIVO not in (0, 1,2,3) then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|O Status deve conter apenas 0, 1, 2, 3.';
     end if;
 end$$
@@ -533,50 +627,77 @@ create trigger CHEC_UPDT_CARG_USU_U_BR
 before update on USUARIOS
 for each row
 begin
-    if NEW.USUARIO_STATUS not in (0, 1,2,3) then
+    if NEW.ATIVO not in (0, 1,2,3) then
         SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|O Status deve conter apenas 0, 1, 2, 3.';
     end if;
 end$$
 
 DELIMITER ;
+
 DELIMITER $$
-create trigger CHEC_INSER_TURMA_I_BR
-before insert on TURMAS
+create trigger CHEC_MOV_LAN_CONT_U_BR
+before update on CONTRATOS
 for each row
 begin
 
     declare xQTD int;
 
     select COUNT(*) INTO xQTD
-    from TURMAS 
-    where TURNO_ID = new.TURNO_ID 
-    and SALA_ID = new.SALA_ID;
+    from PARCELAS PAR 
+    inner join CONTRATOS CON
+    on PAR.CONTRATO_ID = new.CONTRATO_ID
+    where PAR.MOVIMENTO_ID is not null
+    and PAR.STATUS_PAGAMENTO in (1,2);
 
     if xQTD > 0 then
-        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Já existe uma turma nesta sala e turno!';
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possivel modificar um contrato que tenha lançamentos no caixa!';
     end if;
 end$$
 
 DELIMITER ;
 
 DELIMITER $$
-create trigger CHEC_UPDT_CARG_USU_U_BR
-before update on TURMAS
+create trigger CHEC_MOV_LAN_CONT_D_BR
+before delete on CONTRATOS
 for each row
 begin
     declare xQTD int;
 
     select COUNT(*) INTO xQTD
-    from TURMAS 
-    where TURNO_ID = new.TURNO_ID 
-    and SALA_ID = new.SALA_ID;
+    from PARCELAS PAR 
+    inner join CONTRATOS CON
+    on PAR.CONTRATO_ID = old.CONTRATO_ID
+    where PAR.MOVIMENTO_ID is not null
+    and PAR.STATUS_PAGAMENTO in (1,2);
 
     if xQTD > 0 then
-        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Já existe uma turma nesta sala e turno!';
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possivel deletar um contrato que tenha lançamentos no caixa!';
     end if;
 end$$
 
 DELIMITER ;
+
+DELIMITER $$
+create trigger CHEC_MOVI_PARCELA_D_BR
+before delete on PARCELAS
+for each row
+begin
+
+    declare xQTD int;
+
+    select COUNT(*) INTO xQTD
+    from MOVIMENTOS MOV
+
+    inner join PARCELAS PAR
+    on MOV.MOVIMENTO_ID = PAR.MOVIMENTO_ID;
+
+    if xQTD > 0 then
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Não é possível excluir uma parcela com movimento lançado!';
+    end if;
+end$$
+
+DELIMITER ;
+
 DELIMITER $$
 CREATE TRIGGER IMPE_ALTER_DATA_CRIA_EMP_U_BR
 BEFORE UPDATE ON EMPRESAS
@@ -684,6 +805,8 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
+
+
 DELIMITER $$
 create trigger IMPE_DELET_CARG_ADMIN_D_BR
 before delete on CARGOS
@@ -783,7 +906,6 @@ begin
 end$$
 
 DELIMITER ;
-
 DELIMITER $$
 create trigger VER_EMPRESA_EXISTE_I_BR
 before insert on EMPRESAS
@@ -813,6 +935,7 @@ begin
 end $$
 
 DELIMITER ;
+
 DELIMITER $$
 create trigger VER_USUARIO_EXISTE_I_BR
 before insert on USUARIOS
@@ -842,11 +965,6 @@ begin
 end $$
 
 DELIMITER ;
-create or replace view VW_PERMISSOES as
-select 0 as PERMISSAO_ID, 'Financeiro' as NOME from dual union all
-select 1, 'Vendedor' from dual union all
-select 2, 'Supervisor' from dual union all
-select 3, 'Gestor' from dual
 
 DELIMITER $$
 create procedure INSER_NOVA_EMP(
@@ -987,5 +1105,9 @@ $$
 DELIMITER ;
 
 
-
+create or replace view VW_PERMISSOES as
+select 0 as PERMISSAO_ID, 'Financeiro' as NOME from dual union all
+select 1, 'Vendedor' from dual union all
+select 2, 'Supervisor' from dual union all
+select 3, 'Gestor' from dual
 

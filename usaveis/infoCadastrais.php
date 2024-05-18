@@ -7,7 +7,7 @@ $bancos = BancoBanco::getBancos($empresa->getEmpresaId());
 <br>
 <form action="<?echo $destino?>" method="post">
     
-    <?if($usuario->getCargo()->getPermissaoId() === 3):?>
+    <?if($destino === "cadastro.php" || $usuario->getCargo()->getPermissaoId() === 3):?>
         <div id="info_empresa">
             
             <h2 id="titulo_empresa">Informações da Empresa</h2>
