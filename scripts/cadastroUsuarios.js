@@ -56,8 +56,8 @@ function iniciarComponentesCadastroUsuario(){
     $("#email_usuario").val(usuario.email);
     $("#telefone_usuario").val(usuario.telefone);
     $("#usuario_id").val(usuario.usuarioId);
-    $("#cargo_professor").prop("checked",cargo.professor);
-    $("#cargo_atendente").prop("checked",cargo.atendente);
+    $("#cargo_professor").prop("checked",usuario.professor);
+    $("#cargo_atendente").prop("checked",usuario.atendente);
 
 
     $("#cep_usuario").val(usuario.cep);
