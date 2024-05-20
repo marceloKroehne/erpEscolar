@@ -86,30 +86,11 @@ function iniciarComponentesMovimento(){
     if(filtroSubconta !== null){
         $("#filtro_input_subcontas").val(filtroSubconta.nome);
     }
-
-    $("#filtro_lista_contas option").each(function(){
-        $(this).on("click", function(){
-            var dados = JSON.parse($(this).val()).dados;
-            var conta = JSON.parse(dados);
-            $("#filtro_conta").val(JSON.stringify(conta));
-        })
-    });
-
-    var contaFiltro = JSON.parse($("#filtro_conta").val());
-    
-    if(contaFiltro !== null){
-        $("#filtro_input_contas").val(contaFiltro.banco.nome + "- Ag: " + contaFiltro.agencia + " N°: " + contaFiltro.numeroConta);
-    }
-
     
     $("#filtro_movimento_botao").on("click",function(){
 
         if($("#filtro_input_subcontas").val() === null || $("#filtro_input_subcontas").val() === ""){
             $("#filtro_subconta").val("");
-        }
-
-        if($("#filtro_input_contas").val() === null || $("#filtro_input_contas").val() === ""){
-            $("#filtro_conta").val("");
         }
 
         $("#filtro_movimento_form").submit();

@@ -2,7 +2,7 @@
 
 class MovimentoBanco{
 
-    public static function getMovimentos($empresaId, $dataIncio=null, $dataFim=null, $subcontaId=null, $agencia=null, $numeroConta=null, $bancoId=null){
+    public static function getMovimentos($empresaId, $dataIncio=null, $dataFim=null, $subcontaId=null){
 
         $parametros = [];
 
@@ -79,21 +79,6 @@ class MovimentoBanco{
             $sql .=
             "AND (SUB.SUBCONTA_ID = ? or SAI.SUBCONTA_ID = ? ) ";
             array_push($parametros, $subcontaId, $subcontaId);
-        }
-        if($agencia !== null){
-            $sql .=
-            "AND MOV.AGENCIA = ? ";
-            array_push($parametros, $agencia);
-        }
-        if($numeroConta !== null){
-            $sql .=
-            "AND MOV.NUMERO_CONTA = ? ";
-            array_push($parametros, $numeroConta);
-        }
-        if($bancoId !== null){
-            $sql .=
-            "AND MOV.BANCO_ID = ? ";
-            array_push($parametros, $bancoId);
         }
 
         $resultados = $conexao->consulta($sql, $parametros);

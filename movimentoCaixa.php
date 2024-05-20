@@ -106,16 +106,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $filtroSubcontaId = $filtroSubConta->subcontaId;
     }
 
-    if(isset($_POST['filtro_conta'])){
-        $filtroConta = json_decode($_POST['filtro_conta']);
-        $filtroContaAg = $filtroConta->agencia;
-        $filtroContaNr = $filtroConta->numeroConta;
-        $filtroContaBcId = $filtroConta->banco->bancoId;
-    }
-
 }
 
-$movimentos = MovimentoBanco::getMovimentos($empresa->getEmpresaId(), $dataIni, $dataFim, $filtroSubcontaId, $filtroContaAg, $filtroContaNr, $filtroContaBcId);
+$movimentos = MovimentoBanco::getMovimentos($empresa->getEmpresaId(), $dataIni, $dataFim, $filtroSubcontaId);
 
 $movimentosExp = [];
 
@@ -181,7 +174,6 @@ $tiposDocumentos = TipoDocumentoBanco::getTiposDocumentos($empresa->getEmpresaId
                 <form id="filtro_movimento_form" action="movimentoCaixa.php" method="post">
 
                     <input hidden value='<?=json_encode($filtroSubConta)?>' id="filtro_subconta" name="filtro_subconta">
-                    <input hidden value='<?=json_encode($filtroConta)?>' id="filtro_conta" name="filtro_conta">
 
                     <div class="filtro_data">
                         <label>Data início: 
@@ -216,28 +208,6 @@ $tiposDocumentos = TipoDocumentoBanco::getTiposDocumentos($empresa->getEmpresaId
                         ?>
                     </div>
 
-                    <?
-
-                    $parametrosPesquisa = [];
-                                                
-                    foreach($contas as $conta){
-                        $parametro = new Parametro($conta->getNumeroConta(),$conta->getBanco()->getNome(). " - Ag:" . $conta->getAgencia()." N°: ".$conta->getNumeroConta());
-                        $parametro->dados = $conta->toJson();
-
-                        array_push($parametrosPesquisa, $parametro);
-                    }
-                                                
-                    $inputId = "filtro_input_contas";
-                    $listaId = "filtro_lista_contas";
-                    $placeHolderPesquisa = "contas";
-                    ?>
-                    <div class="filtro_conta">
-                        <label for="filtro_input_contas">Contas:</label>
-
-                        <?
-                        require("./usaveis/seletor.php");
-                        ?>
-                    </div>
                 </form>
                 <div class="filtro_botao">
                     <button id="filtro_movimento_botao" type="submit">Filtrar</button>
