@@ -88,8 +88,8 @@ function iniciarComponentesModalSub(subconta){
         $("#modal_sub_grupo_id").val(subconta.grupoConta.grupoContaId);
         $("#input_gerenciar_grupo").val(subconta.grupoConta.nome);
         if(subconta.conta.banco.bancoId != null){
-            $("#agencia").val(subconta.agencia);
-            $("#numero_conta").val(subconta.numeroConta);
+            $("#agencia").val(subconta.conta.agencia);
+            $("#numero_conta").val(subconta.conta.numeroConta);
             $("#banco_id").val(subconta.conta.banco.bancoId);
             $("#input_contas").val(subconta.conta.banco.bancoId == null ? "" : subconta.conta.banco.nome + "- Ag: " + subconta.conta.agencia + " N°: " + subconta.conta.numeroConta);
         }
