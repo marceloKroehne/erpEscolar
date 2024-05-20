@@ -36,7 +36,7 @@ require("./objetos/tipoContrato.php");
 $_SESSION['erros'] = null;
 $planoCursos = [];
 
-if(!($usuario->getCargo()->getPermissaoId() == 3 || $usuario->getCargo()->getPermissaoId() == 0)){
+if(!($usuario->getPermissaoId() == 3 || $usuario->getPermissaoId() == 0)){
     header('Location: index.php');
 }
 

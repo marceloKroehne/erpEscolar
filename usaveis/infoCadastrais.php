@@ -4,13 +4,14 @@ if($destino != "cadastro.php"){
     $cargos = CargosBanco::getCargosEmpresa($empresa->getEmpresaId());
     $pagamentos = TipoPagamentoBanco::getTipoPagamentos($empresa->getEmpresaId());
     $bancos = BancoBanco::getBancos($empresa->getEmpresaId());
+    $permissoes = CargosBanco::getPermissoes();
 }
 ?>
 
 <br>
 <form action="<?echo $destino?>" method="post">
     
-    <?if($destino === "cadastro.php" || $usuario->getCargo()->getPermissaoId() === 3):?>
+    <?if($destino === "cadastro.php" || $usuario->getPermissaoId() === 3):?>
         <div id="info_empresa">
             
             <h2 id="titulo_empresa">Informações da Empresa</h2>
@@ -82,6 +83,13 @@ if($destino != "cadastro.php"){
             <label for="cargo_atendente">Atendente: </label>
             <input type="checkbox" id="cargo_atendente" name="cargo_atendente">
         </div>
+
+        <label for="cargo_permissao_id">Permissão:</label>
+        <select id="cargo_permissao_id" name="cargo_permissao_id">
+            <?foreach($permissoes as $permissao):?>
+                <option value='<?=$permissao->getPermissaoId();?>'><?=$permissao->getNome();?></option>
+            <?endforeach;?>
+        </select>
 
         <label id="lb_pagamento_id" for="pagamento_id">Tipo pagamento:</label>
         <select id="pagamento_id" name="pagamento_id">

@@ -14,12 +14,6 @@
                         <input name="cargo_nome" type="text" id="cargo_nome" required>
 
                         <label>Ativo: <input type="checkbox" id="cargo_ativo" name="cargo_ativo"></label>
-                        <label for="cargo_permissao_id">Permissão:</label>
-                        <select id="cargo_permissao_id" name="cargo_permissao_id">
-                            <?foreach($permissoes as $permissao):?>
-                                <option value='<?=$permissao->getPermissaoId();?>'><?=$permissao->getNome();?></option>
-                            <?endforeach;?>
-                        </select>
 
                         <input value="0" id="cargo_id" name="cargo_id" hidden>
                     </form>

@@ -44,6 +44,7 @@
     $funcionarioId = intval($_POST["funcionario_id"]);
     $professor = $_POST['cargo_professor'] ? 1 : 0;
     $atendente = $_POST['cargo_atendente'] ? 1 : 0;
+    $permissaoId = intVal($_POST['cargo_permissao_id']);
 
     //DADOS ALUNO
     $alunoId = intval($_POST["aluno_id"]);

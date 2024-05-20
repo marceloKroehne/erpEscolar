@@ -3,7 +3,6 @@
 class Cargo{
     private $cargoId;
     private $empresaId;
-    private $permissaoId;
     private $nome;
     private $isAdmin; 
     private $ativo;
@@ -12,7 +11,6 @@ class Cargo{
     function __construct(
         $cargoId, 
         $empresaId,
-        $permissaoId,
         $nome, 
         $isAdmin,
         $ativo
@@ -20,7 +18,6 @@ class Cargo{
         $this->cargoId = $cargoId;
         $this->empresaId = $empresaId;
         $this->nome = $nome;
-        $this->permissaoId = $permissaoId;
         $this->isAdmin = $isAdmin;
         $this->ativo = $ativo;
     }
@@ -36,9 +33,6 @@ class Cargo{
     public function getNome(){
         return $this->nome;
     }
-    public function getPermissaoId(){
-        return $this->permissaoId;
-    }
     public function isAdmin(){
         return $this->isAdmin;
     }
@@ -48,7 +42,6 @@ class Cargo{
     public function toJson() {
         return json_encode([
             'cargoId' => $this->cargoId,
-            'permissaoId' => $this->permissaoId,
             'isAdmin' => $this->isAdmin,
             'empresaId' => $this->empresaId,
             'nome' => $this->nome,
@@ -58,7 +51,6 @@ class Cargo{
     public function toJsonSemAspas() {
         return [
             'cargoId' => $this->cargoId,
-            'permissaoId' => $this->permissaoId,
             'isAdmin' => $this->isAdmin,
             'empresaId' => $this->empresaId,
             'nome' => $this->nome,

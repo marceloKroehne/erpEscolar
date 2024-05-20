@@ -19,7 +19,7 @@ $_SESSION['salvo'] = null;
 
 $destino = "cadastroAlunos.php";
 
-if($usuario->getCargo()->getPermissaoId() != 3){
+if($usuario->getPermissaoId() != 3){
     header('Location: index.php');
 }
 

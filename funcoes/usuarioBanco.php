@@ -22,7 +22,7 @@ class UsuarioBanco{
         "  USU.TELEFONE, ".
         "  FUN.FUNCIONARIO_ID, ".
         "  CAR.CARGO_ID, ".
-        "  CAR.PERMISSAO_ID, ".
+        "  FUN.PERMISSAO_ID, ".
         "  CAR.ADMIN, ".
         "  FUN.PROFESSOR, ".
         "  FUN.ATENDENTE, ".
@@ -97,7 +97,6 @@ class UsuarioBanco{
                 new Cargo(
                     $resultado['CARGO_ID'],
                     $resultado['EMPRESA_ID'],
-                    $resultado['PERMISSAO_ID'],
                     $resultado['NOME_CARGO'],
                     $resultado['ADMIN'],
                     $resultado['CARGO_ATIVO']
@@ -133,7 +132,8 @@ class UsuarioBanco{
                     $resultado['EMPRESA_ID'],
                     $resultado['TIPO_PAG_ATIVO'],
                     $resultado['VALOR_HORA']
-                )
+                ),
+                $resultado['PERMISSAO_ID'],
 
             );
         }
@@ -236,7 +236,7 @@ class UsuarioBanco{
         "  USU.TELEFONE, ".
         "  FUN.FUNCIONARIO_ID, ".
         "  CAR.CARGO_ID, ".
-        "  CAR.PERMISSAO_ID, ".
+        "  FUN.PERMISSAO_ID, ".
         "  CAR.ADMIN, ".
         "  FUN.PROFESSOR, ".
         "  FUN.ATENDENTE, ".
@@ -311,7 +311,6 @@ class UsuarioBanco{
                 new Cargo(
                     $resultado['CARGO_ID'],
                     $resultado['EMPRESA_ID'],
-                    $resultado['PERMISSAO_ID'],
                     $resultado['NOME_CARGO'],
                     $resultado['ADMIN'],
                     $resultado['CARGO_ATIVO']
@@ -347,7 +346,8 @@ class UsuarioBanco{
                     $resultado['EMPRESA_ID'],
                     $resultado['TIPO_PAG_ATIVO'],
                     $resultado['VALOR_HORA']
-                )
+                ),
+                $resultado['PERMISSAO_ID'],
 
             );
 
@@ -378,7 +378,7 @@ class UsuarioBanco{
         "  USU.TELEFONE, ".
         "  FUN.FUNCIONARIO_ID, ".
         "  CAR.CARGO_ID, ".
-        "  CAR.PERMISSAO_ID, ".
+        "  FUN.PERMISSAO_ID, ".
         "  CAR.ADMIN, ".
         "  FUN.PROFESSOR, ".
         "  FUN.ATENDENTE, ".
@@ -448,7 +448,6 @@ class UsuarioBanco{
                 new Cargo(
                     $resultado['CARGO_ID'],
                     $resultado['EMPRESA_ID'],
-                    $resultado['PERMISSAO_ID'],
                     $resultado['NOME_CARGO'],
                     $resultado['ADMIN'],
                     $resultado['CARGO_ATIVO']
@@ -484,7 +483,8 @@ class UsuarioBanco{
                     $resultado['EMPRESA_ID'],
                     $resultado['TIPO_PAG_ATIVO'],
                     $resultado['VALOR_HORA']
-                )
+                ),
+                $resultado['PERMISSAO_ID'],
 
             );
         }
@@ -666,6 +666,7 @@ class UsuarioBanco{
         $pix,
         $tipoPixId,
         $tipoPagamentoId,
+        $permissaoId,
         $senha,
         $repitaSenha
     ){
@@ -685,6 +686,7 @@ class UsuarioBanco{
                 $pix,
                 $tipoPixId,
                 $tipoPagamentoId,
+                $permissaoId,
                 $senha,
                 $repitaSenha
             );
@@ -698,6 +700,7 @@ class UsuarioBanco{
         "  CARGO_ID, " .
         "  PROFESSOR, " .
         "  ATENDENTE, " .
+        "  PERMISSAO_ID, " .
         "  BANCO_ID, " .
         "  AGENCIA, " .
         "  NUMERO_CONTA,".
@@ -707,19 +710,20 @@ class UsuarioBanco{
         "  USUARIO_CRIACAO_ID, ".
         "  USUARIO_ALTERACAO_ID, ".
         "  SENHA) ".
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         $parametros = array(
             $usuarioId,
             $cargoId,
             $professor,
             $atendente,
+            $permissaoId,
             $bancoId,
             $agencia,
             $numeroConta,
             $pix,
             $tipoPixId,
-            $tipoPagamentoId,
+            $tipoPagamentoId == 0 ? null : $tipoPagamentoId,
             $usuarioAltId,
             $usuarioAltId,
             password_hash($senha, PASSWORD_DEFAULT)
@@ -856,6 +860,7 @@ class UsuarioBanco{
         $pix,
         $tipoPixId,
         $tipoPagamentoId,
+        $permissaoId,
         $senha,
         $repitaSenha
 
@@ -876,6 +881,7 @@ class UsuarioBanco{
             "  CARGO_ID = ?, " .
             "  PROFESSOR = ?, " .
             "  ATENDENTE = ?, " .
+            "  PERMISSAO_ID = ?, " .
             "  BANCO_ID = ?, " .
             "  AGENCIA = ?, " .
             "  NUMERO_CONTA = ?, " .
@@ -887,6 +893,7 @@ class UsuarioBanco{
             $cargoId,
             $professor,
             $atendente,
+            $permissaoId,
             $bancoId,
             $agencia,
             $numeroConta,
@@ -904,7 +911,7 @@ class UsuarioBanco{
         "  TIPO_PAGAMENTO_ID = ? ".
         "WHERE FUNCIONARIO_ID = ?";
         
-        array_push($parametros, $tipoPagamentoId);
+        array_push($parametros, $tipoPagamentoId == 0 ? null : $tipoPagamentoId);
         array_push($parametros, $funcionarioId);
         
         $retorno = $conexao->insertUpdateExcluir($sql, $parametros);

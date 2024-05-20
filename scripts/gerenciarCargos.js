@@ -27,7 +27,6 @@ function iniciarComponentesModalcargo(cargo){
     if(cargo !== null){
         $("#modal_cargo_titulo").text("Cargo: " + cargo.nome);
         $("#cargo_nome").val(cargo.nome);
-        $("#cargo_permissao_id").val(cargo.permissaoId);
         $("#cargo_id").val(cargo.cargoId);
         $("#cargo_ativo").prop("checked", cargo.ativo);
         $("#cargo_ativo").show();
@@ -37,7 +36,6 @@ function iniciarComponentesModalcargo(cargo){
         $("#modal_cargo_titulo").text("Novo cargo");
         $("#cargo_nome").val("");
         $("#cargo_id").val(0);
-        $("#cargo_permissao_id").val(0);
         $("#cargo_ativo").prop("checked", true);
         $("#cargo_ativo").hide();
         $("#cargo_ativo").parent().hide();

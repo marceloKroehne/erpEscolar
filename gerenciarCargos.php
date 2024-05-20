@@ -3,9 +3,9 @@
 require("./requires.php");
 require("./funcoes/getDados.php");
 require("./funcoes/cargoBanco.php");
-require("./objetos/permissoes.php");
 
-if($usuario->getCargo()->getPermissaoId() != 3){
+
+if($usuario->getPermissaoId() != 3){
     header('Location: index.php');
 }
 
@@ -20,12 +20,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     ){
 
         $cargoId = intVal($_POST['cargo_id']);
-        $permissaoId = intVal($_POST['cargo_permissao_id']);
         $ativo = $_POST['cargo_ativo'] ? 1 : 0;
-        $professor = $_POST['cargo_professor'] ? 1 : 0;
-        $atendente = $_POST['cargo_atendente'] ? 1 : 0;
 
-        $retorno = CargosBanco::insertCargo($empresa->getEmpresaId(), $usuario->getUsuarioId(), $cargoId, $_POST['cargo_nome'], $ativo, $permissaoId, $professor, $atendente);
+        $retorno = CargosBanco::insertCargo($empresa->getEmpresaId(), $usuario->getUsuarioId(), $cargoId, $_POST['cargo_nome'], $ativo);
 
         if($retorno->houveErro){
             $_SESSION['erros'] = $retorno->mensagem;
@@ -35,7 +32,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 }
 
 $cargos = CargosBanco::getCargosEmpresa($empresa->getEmpresaId(), false);
-$permissoes = CargosBanco::getPermissoes();
 
 ?>
 

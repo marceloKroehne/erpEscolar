@@ -12,13 +12,14 @@ require("./funcoes/usuarioBanco.php");
 require("./funcoes/bancoBanco.php");
 require("./funcoes/getDados.php");
 require("./usaveis/dadosCadastro.php");
+require("./objetos/permissoes.php");
 
 $_SESSION['erros'] = null;
 $_SESSION['salvo'] = null;
 
 $destino = "cadastroUsuarios.php";
 
-if($usuario->getCargo()->getPermissaoId() != 3){
+if($usuario->getPermissaoId() != 3){
     header('Location: index.php');
 }
 
@@ -65,6 +66,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             $pix,
             $tipoPixId,
             $tipoPagamentoId,
+            $permissaoId,
             $senha,
             $repitaSenha
         );

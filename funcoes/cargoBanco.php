@@ -50,8 +50,7 @@ class CargosBanco{
         "  NOME, " .
         "  EMPRESA_ID, " .
         "  ADMIN, " .
-        "  ATIVO, " .
-        "  PERMISSAO_ID ". 
+        "  ATIVO " .
 
         "from CARGOS ".
 
@@ -72,7 +71,6 @@ class CargosBanco{
             $cargo = new Cargo(
                 $resultado["CARGO_ID"],
                 $resultado["EMPRESA_ID"],
-                $resultado["PERMISSAO_ID"],
                 $resultado["NOME"],
                 $resultado["ADMIN"],
                 $resultado["ATIVO"]
@@ -109,10 +107,10 @@ class CargosBanco{
         return $permissoes;
     }
 
-    public static function insertCargo($empresaId, $usuarioId, $cargoId, $nome, $ativo, $permissaoId){
+    public static function insertCargo($empresaId, $usuarioId, $cargoId, $nome, $ativo){
 
         if($cargoId !== 0){
-            return CargosBanco::updateCargo($usuarioId, $cargoId, $nome, $ativo, $permissaoId);
+            return CargosBanco::updateCargo($usuarioId, $cargoId, $nome, $ativo);
         }
         else{
 
@@ -125,7 +123,6 @@ class CargosBanco{
             "INSERT INTO CARGOS(" .
             "  EMPRESA_ID, " .
             "  NOME, " .
-            "  PERMISSAO_ID, " .
             "  USUARIO_CRIACAO_ID, " .
             "  USUARIO_ALTERACAO_ID) " .
             "VALUES (?, ?, ?, ?, ?) ";
@@ -133,7 +130,6 @@ class CargosBanco{
             $parametros = array(
                 $empresaId,
                 $nome,
-                $permissaoId,
                 $usuarioId,
                 $usuarioId
             );
@@ -150,7 +146,7 @@ class CargosBanco{
         }
     }
 
-    private static function updateCargo($usuarioId, $cargoId, $nome, $ativo, $permissaoId){
+    private static function updateCargo($usuarioId, $cargoId, $nome, $ativo){
         $conexao = new Conexao();
 
         $conexao->novaConexaoPDO();
@@ -160,14 +156,12 @@ class CargosBanco{
         "UPDATE CARGOS SET " .
         "  NOME = ?, " .
         "  ATIVO = ?, " .
-        "  PERMISSAO_ID = ?, " .
         "  USUARIO_ALTERACAO_ID = ? " .
         "WHERE CARGO_ID = ? ";
 
         $parametros = array(
             $nome,
             $ativo,
-            $permissaoId,
             $usuarioId,
             $cargoId
         );

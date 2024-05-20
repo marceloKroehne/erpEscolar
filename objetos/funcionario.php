@@ -9,6 +9,7 @@ class Funcionario extends Usuario{
     private Pix $pix;
     private Mensalista $mensalista;
     private Horista $horista;
+    private $permissaoId;
 
     function __construct(
         $usuarioId, 
@@ -33,7 +34,8 @@ class Funcionario extends Usuario{
         Conta $conta,
         Pix $pix,
         Mensalista $mensalista,
-        Horista $horista
+        Horista $horista,
+        $permissaoId
     ){
         parent::__construct(
             $usuarioId, 
@@ -61,6 +63,7 @@ class Funcionario extends Usuario{
         $this->horista = $horista;
         $this->professor = $professor;
         $this->atendente = $atendente;
+        $this->permissaoId = $permissaoId;
     }
     
     public function getCargo(){
@@ -82,6 +85,9 @@ class Funcionario extends Usuario{
     }
     public function isAtendente(){
         return $this->atendente; 
+    }
+    public function getPermissaoId(){
+        return $this->permissaoId;
     }
 
 
@@ -106,6 +112,7 @@ class Funcionario extends Usuario{
             'telefone' => $this->getTelefone(),
             'funcionarioId' => $this->funcionarioId,
             'cargo' => $this->cargo->toJsonSemAspas(),
+            'permissaoId' => $this->permissaoId,
             'conta' => $this->conta->toJsonSemAspas(),
             'pix' => $this->pix->toJsonSemAspas(),
             'mensalista' => $this->mensalista->toJsonSemAspas(),
@@ -134,6 +141,7 @@ class Funcionario extends Usuario{
             'telefone' => $this->getTelefone(),
             'funcionarioId' => $this->funcionarioId,
             'cargo' => $this->cargo->toJsonSemAspas(),
+            'permissaoId' => $this->permissaoId,
             'conta' => $this->conta->toJsonSemAspas(),
             'pix' => $this->pix->toJsonSemAspas()
         ];

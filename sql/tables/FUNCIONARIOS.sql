@@ -10,6 +10,7 @@ create table FUNCIONARIOS(
     TIPO_PAGAMENTO_ID int,
     PROFESSOR boolean default false,
     ATENDENTE boolean default false,
+    PERMISSAO_ID tinyint not null default 0 check(TIPO in(0,1,2,3)),
     USUARIO_ALTERACAO_ID int not null,
     SENHA varchar(255) not null,
     DATA_HORA_ALTERACAO datetime not null default now(),

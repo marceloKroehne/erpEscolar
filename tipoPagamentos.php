@@ -4,7 +4,7 @@ require("./requires.php");
 require("./funcoes/getDados.php");
 require("./funcoes/tipoPagamentoBanco.php");
 
-if($usuario->getCargo()->getPermissaoId() != 3){
+if($usuario->getPermissaoId() != 3){
     header('Location: index.php');
 }
 

@@ -100,19 +100,13 @@ set xUSUARIO_ID = last_insert_id();
 
 insert into CARGOS (
   EMPRESA_ID,
-  PERMISSAO_ID,
   NOME,
   ADMIN,
-  PROFESSOR,
-  ATENDENTE,
   USUARIO_ALTERACAO_ID,
   USUARIO_CRIACAO_ID
 ) values (
   xEMPRESA_ID,
-  3,
   'Admin',
-  true,
-  true,
   true,
   xUSUARIO_ID,
   xUSUARIO_ID
@@ -123,6 +117,9 @@ set xCARGO_ID = last_insert_id();
 insert into FUNCIONARIOS(
   USUARIO_ID,
   CARGO_ID,
+  PROFESSOR,
+  ATENDENTE,
+  PERMISSAO_ID,
   SENHA,
   USUARIO_ALTERACAO_ID,
   USUARIO_CRIACAO_ID
@@ -130,6 +127,9 @@ insert into FUNCIONARIOS(
 values(
   xUSUARIO_ID,
   xCARGO_ID,
+  true,
+  true,
+  3,
   xSENHA,
   xUSUARIO_ID,
   xUSUARIO_ID
