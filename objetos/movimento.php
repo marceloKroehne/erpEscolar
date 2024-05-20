@@ -5,7 +5,8 @@ class Movimento{
     private $movimentoId;
     private $empresaId;
     private Conta $conta;
-    private Subconta $subconta;
+    private Subconta $subcontaEntrada;
+    private Subconta $subcontaSaida;
     private $valor;
     private $dataLancamento;
     private $historico;
@@ -14,24 +15,26 @@ class Movimento{
     private TipoDocumento $tipoDocumento;
     private $numeroMovimento;
     private $duplicado;
+    private $importacaoOfx;
 
     function __construct(
         $movimentoId,
         $empresaId,
-        Conta $conta,
-        Subconta $subconta,
+        Subconta $subcontaEntrada,
+        Subconta $subcontaSaida,
         $valor,
         $dataLancamento,
         $historico,
         $observacao,
         $numeroDocumento,
         TipoDocumento $tipoDocumento,
-        $numeroMovimento
+        $numeroMovimento,
+        $importacaoOfx=false
     ){
         $this->movimentoId = $movimentoId;
         $this->empresaId = $empresaId;
-        $this->conta = $conta;
-        $this->subconta = $subconta;
+        $this->subcontaEntrada = $subcontaEntrada;
+        $this->subcontaSaida = $subcontaSaida;
         $this->valor = $valor;
         $this->dataLancamento = $dataLancamento;
         $this->historico = $historico;
@@ -39,6 +42,7 @@ class Movimento{
         $this->numeroDocumento = $numeroDocumento;
         $this->tipoDocumento = $tipoDocumento;
         $this->numeroMovimento = $numeroMovimento;
+        $this->importacaoOfx = $importacaoOfx;
     }
 
     public function getMovimentoId(){
@@ -60,12 +64,12 @@ class Movimento{
         return $this->empresaId;
     }
 
-    public function getConta(){
-        return $this->conta;
+    public function getSubcontaEntrada(){
+        return $this->subcontaEntrada;
     }
 
-    public function getSubconta(){
-        return $this->subconta;
+    public function getSubcontaSaida(){
+        return $this->subcontaSaida;
     }
     public function getValor(){
         return $this->valor;
@@ -87,19 +91,24 @@ class Movimento{
     public function getTipoDocumento(){
         return $this->tipoDocumento;
     }
+    
+    public function isImportacaoOfx(){
+        return $this->importacaoOfx;
+    }
 
     public function toJson() {
         return json_encode([
             'movimentoId' => $this->movimentoId,
             'empresaId' => $this->empresaId,
-            'conta' => $this->conta->toJsonSemAspas(),
-            'subconta' =>  $this->subconta->toJsonSemAspas(),
+            'subcontaEntrada' => $this->subcontaEntrada->toJsonSemAspas(),
+            'subcontaSaida' =>  $this->subcontaSaida->toJsonSemAspas(),
             'valor' =>  $this->valor,
             'dataLancamento' => $this->dataLancamento,
             'historico' => $this->historico,
             'observacao' => $this->observacao,
             'tipoDocumento' => $this->tipoDocumento->toJsonSemAspas(),
             'duplicado' => $this->duplicado,
+            'importacaoOfx' => $this->importacaoOfx,
             'numeroMovimento' => $this->numeroMovimento 
         ]);
     }
@@ -108,14 +117,15 @@ class Movimento{
         return [
             'movimentoId' => $this->movimentoId,
             'empresaId' => $this->empresaId,
-            'conta' => $this->conta->toJsonSemAspas(),
-            'subconta' =>  $this->subconta->toJsonSemAspas(),
+            'subcontaEntrada' => $this->subcontaEntrada->toJsonSemAspas(),
+            'subcontaSaida' =>  $this->subcontaSaida->toJsonSemAspas(),
             'valor' =>  $this->valor,
             'dataLancamento' => $this->dataLancamento,
             'historico' => $this->historico,
             'observacao' => $this->observacao,
             'tipoDocumento' => $this->tipoDocumento->toJsonSemAspas(),
             'duplicado' => $this->duplicado,
+            'importacaoOfx' => $this->importacaoOfx,
             'numeroMovimento' => $this->numeroMovimento 
         ];
     }

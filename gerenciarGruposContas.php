@@ -4,6 +4,7 @@ require("./requires.php");
 require("./funcoes/getDados.php");
 require("./funcoes/gruposContasBanco.php");
 require("./funcoes/subcontasBanco.php");
+require("./funcoes/contasBancoBanco.php");
 require("./objetos/grupoContas.php");
 require("./objetos/subconta.php");
 
@@ -38,9 +39,23 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             $subContaId = intval($_POST["subconta_id"]);
         }
 
-        $ativo = $_POST['suconta_ativo'] ? 1 : 0;
+        $ativo = $_POST['subconta_ativo'] ? 1 : 0;
 
-        $retorno = SubContasBanco::insertSubconta($usuario->getUsuarioId(), $subContaId, $_POST['modal_sub_grupo_id'], $_POST['modal_sub_input_nome'], $_POST['modal_sub_select_tipo_id'], $ativo);
+        $bancoId = intVal($_POST['banco_id']);
+        $agencia = intVal($_POST['agencia']);
+        $numeroConta = intVal($_POST['numero_conta']);
+
+        $retorno = SubContasBanco::insertSubconta(
+            $usuario->getUsuarioId(), 
+            $subContaId, 
+            $bancoId,
+            $agencia,
+            $numeroConta,
+            $_POST['modal_sub_grupo_id'], 
+            $_POST['modal_sub_input_nome'], 
+            $_POST['modal_sub_select_tipo_id'], 
+            $ativo
+        );
 
         if($retorno->houveErro){
             $_SESSION['erros'] = $retorno->mensagem;
@@ -51,19 +66,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 $grupos = GruposContasBanco::getGrupos($empresa->getEmpresaId(), false);
 
+$contas = ContasBancoBanco::getContasBanco($empresa->getEmpresaId());
+
 $subcontas = SubcontasBanco::getSubcontas($empresa->getEmpresaId(), false);
-
-$inputId = "input_gerenciar_grupo";
-$listaId = "lista_gerenciar_grupo";
-
-$parametrosPesquisa = [];
-$placeHolderPesquisa = "grupos de contas";
-
-foreach($grupos as $grupo){
-    $parametro = new Parametro($grupo->getGrupoContaId(), $grupo->getNome());
-    $parametro->dados = json_decode($grupo->toJson());
-    array_push($parametrosPesquisa, $parametro);
-}
 
 ?>
 

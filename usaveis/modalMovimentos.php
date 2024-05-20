@@ -20,10 +20,13 @@
                             $parametrosPesquisa = [];
 
                             foreach($subcontas as $subconta){
-                                $parametro = new Parametro($subconta->getSubcontaId(), $subconta->getNome());
-                                $parametro->dados = $subconta->toJson();
+                                if($subconta->getTipo() == 0){
+                                    $parametro = new Parametro($subconta->getSubcontaId(), $subconta->getNome());
+                                    $parametro->dados = $subconta->toJson();
+    
+                                    array_push($parametrosPesquisa, $parametro);
+                                }
 
-                                array_push($parametrosPesquisa, $parametro);
                             }
                             
                             $inputId = "input_subcontas";
@@ -31,26 +34,28 @@
                             $placeHolderPesquisa = "subcontas";
                             ?>
 
-                            <label for="input_subcontas">Subcontas:</label>
+                            <label for="input_subcontas">Subconta entrada:</label>
 
                             <?
                             require("./usaveis/seletor.php");
 
                             $parametrosPesquisa = [];
                             
-                            foreach($contas as $conta){
-                                $parametro = new Parametro($conta->getNumeroConta(),$conta->getBanco()->getNome(). " - Ag:" . $conta->getAgencia()." N°: ".$conta->getNumeroConta());
-                                $parametro->dados = $conta->toJson();
+                            foreach($subcontas as $subSaida){
+                                if($subSaida->getTipo() == 1){
+                                    $parametro = new Parametro($subSaida->getSubcontaId(), $subSaida->getNome());
+                                    $parametro->dados = $subSaida->toJson();
 
-                                array_push($parametrosPesquisa, $parametro);
+                                    array_push($parametrosPesquisa, $parametro);
+                                }
                             }
                                                         
-                            $inputId = "input_contas";
-                            $listaId = "lista_contas";
-                            $placeHolderPesquisa = "contas";
+                            $inputId = "input_subcontas_saida";
+                            $listaId = "lista_subcontas_saida";
+                            $placeHolderPesquisa = "subcontas_saida";
                             ?>
 
-                            <label for="input_contas">Contas:</label>
+                            <label for="input_subcontas_saida">Subconta saída:</label>
                             
                             <?
                             require("./usaveis/seletor.php");
@@ -88,10 +93,8 @@
                             <input name="modal_movimento_obs" type="text" id="modal_movimento_obs" required>
 
                             <input value="0" id="movimento_id" name="movimento_id" hidden>
-                            <input value="0" id="subconta_id" name="subconta_id" hidden>
-                            <input value="0" id="agencia" name="agencia" hidden>
-                            <input value="0" id="numero_conta" name="numero_conta" hidden>
-                            <input value="0" id="banco_id" name="banco_id" hidden>
+                            <input value="0" id="subconta_entrada_id" name="subconta_entrada_id" hidden>
+                            <input value="0" id="subconta_saida_id" name="subconta_saida_id" hidden>
                             <input value="0" id="tipo_documento_id" name="tipo_documento_id" hidden>
                             <input value="0" id="numero_movimento" name="numero_movimento" hidden>
                            

@@ -28,10 +28,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     if(
         isset($_POST['movimento_id']) &&
         isset($_POST['modal_movimento_data']) &&
-        isset($_POST['subconta_id']) &&
-        isset($_POST['banco_id']) &&
-        isset($_POST['agencia']) &&
-        isset($_POST['numero_conta']) &&
+        isset($_POST['subconta_entrada_id']) &&
+        isset($_POST['subconta_saida_id']) &&
         isset($_POST['modal_movimento_historico']) &&
         isset($_POST['tipo_documento_id']) &&
         isset($_POST['modal_movimento_nr_documento']) &&
@@ -43,10 +41,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     ){
         $movimentoId = intVal($_POST['movimento_id']);
         $data = $_POST['modal_movimento_data'];
-        $subcontaId = intVal($_POST['subconta_id']);
-        $bancoId = intVal($_POST['banco_id']);
-        $agencia = intVal($_POST['agencia']);
-        $numeroConta = intVal($_POST['numero_conta']);
+        $subcontaEntradaId = intVal($_POST['subconta_entrada_id']);
+        $subcontaSaidaId = intVal($_POST['subconta_saida_id']);
         $historico = $_POST['modal_movimento_historico'];
         $tipoDocumentoId = intVal($_POST['tipo_documento_id']);
         $numeroDocumento = $_POST['modal_movimento_nr_documento'];
@@ -64,10 +60,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                 $empresa->getEmpresaId(),
                 $usuario->getUsuarioId(), 
                 $data, 
-                $subcontaId, 
-                $bancoId, 
-                $agencia, 
-                $numeroConta, 
+                $subcontaEntradaId, 
+                $subcontaSaidaId,
                 $historico, 
                 $tipoDocumentoId, 
                 $numeroDocumento, 

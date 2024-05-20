@@ -38,20 +38,18 @@ class ParcelaBanco{
             $movimento = new Movimento(
                 null,
                 null,
-                new Conta(
-                    new Banco(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                    ),
+                new Subconta(null, new GrupoContas(null, null, null, null, null),new Conta(
+                    new Banco(null, null, null, null, null, null),
                     null,
                     null,
                     null
-                ),
-                new Subconta(null, new GrupoContas(null, null, null, null, null), null, null, null),
+                ), null, null, null), 
+                new Subconta(null, new GrupoContas(null, null, null, null, null),new Conta(
+                    new Banco(null, null, null, null, null, null),
+                    null,
+                    null,
+                    null
+                ), null, null, null),
                 null,
                 null,
                 null,
@@ -76,6 +74,12 @@ class ParcelaBanco{
                 new GrupoContas(
                     null,
                     null,
+                    null,
+                    null,
+                    null
+                ),
+                new Conta(
+                    new Banco(null, null, null, null, null, null),
                     null,
                     null,
                     null

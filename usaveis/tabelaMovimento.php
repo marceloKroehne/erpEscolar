@@ -102,22 +102,48 @@
                             </div>
                         </th>
                         <td><?=$movimento->getDataLancamento();?></td>
-                        <td><?=$movimento->getConta()->getAgencia()." - ".$movimento->getConta()->getNumeroConta();?></td>
-                        <td><?=$movimento->getConta()->getBanco()->getNome();?></td>
+                        <td><?=$movimento->getSubcontaEntrada()->getConta()->getAgencia()." - ".$movimento->getSubcontaEntrada()->getConta()->getNumeroConta();?></td>
+                        <td><?=$movimento->getSubcontaEntrada()->getConta()->getBanco()->getNome();?></td>
                         <td><?=$movimento->getHistorico();?></td>
-                        <td><?=$movimento->getSubconta()->getGrupoConta()->getNome();?></td>
-                        <td><?=$movimento->getSubconta()->getNome();?></td>
+                        <td><?=$movimento->getSubcontaEntrada()->getGrupoConta()->getNome();?></td>
+                        <td><?=$movimento->getSubcontaEntrada()->getNome();?></td>
                         <td><?=$movimento->getTipoDocumento()->getNome();?></td>
                         <td><?=$movimento->getNumeroDocumento();?></td>
-                        <?if($movimento->getSubconta()->getTipo() == 1):?>
-                            <?$totalSaida = $totalSaida + $movimento->getValor();?>
-                            <td></td>
-                            <td><?="R$ ".str_replace(".",",",$movimento->getValor());?></td>
-                        <?else:?>
-                            <?$totalEntrada = $totalEntrada + $movimento->getValor();?>
-                            <td><?="R$ ".str_replace(".",",",$movimento->getValor());?></td>
-                            <td></td>
-                        <?endif;?>
+                      
+                        <?$totalEntrada = $totalEntrada + $movimento->getValor();?>
+                     
+                        <td><?="R$ ".str_replace(".",",",$movimento->getValor());?></td>
+                        <td></td>
+                        
+                        <td><?=$movimento->getObservacao();?></td>
+                        <td data-value='<?=$movimento->toJson();?>'>
+                            <div class="celula">
+                                <div class="nome_celula">
+                                </div> 
+                                <button>Editar</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">
+                            <div class="titulo_tabela">
+                                <?=$movimento->getMovimentoId();?>
+                            </div>
+                        </th>
+                        <td><?=$movimento->getDataLancamento();?></td>
+                        <td><?=$movimento->getSubcontaSaida()->getConta()->getAgencia()." - ".$movimento->getSubcontaSaida()->getConta()->getNumeroConta();?></td>
+                        <td><?=$movimento->getSubcontaSaida()->getConta()->getBanco()->getNome();?></td>
+                        <td><?=$movimento->getHistorico();?></td>
+                        <td><?=$movimento->getSubcontaSaida()->getGrupoConta()->getNome();?></td>
+                        <td><?=$movimento->getSubcontaSaida()->getNome();?></td>
+                        <td><?=$movimento->getTipoDocumento()->getNome();?></td>
+                        <td><?=$movimento->getNumeroDocumento();?></td>
+
+                        <?$totalSaida = $totalSaida + $movimento->getValor();?>
+                        <td></td>
+                        <td><?="R$ ".str_replace(".",",",$movimento->getValor());?></td>
+         
                         <td><?=$movimento->getObservacao();?></td>
                         <td data-value='<?=$movimento->toJson();?>'>
                             <div class="celula">

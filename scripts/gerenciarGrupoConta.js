@@ -87,6 +87,18 @@ function iniciarComponentesModalSub(subconta){
         $("#modal_sub_select_tipo_id").val(subconta.tipo);
         $("#modal_sub_grupo_id").val(subconta.grupoConta.grupoContaId);
         $("#input_gerenciar_grupo").val(subconta.grupoConta.nome);
+        if(subconta.conta.banco.bancoId != null){
+            $("#agencia").val(subconta.agencia);
+            $("#numero_conta").val(subconta.numeroConta);
+            $("#banco_id").val(subconta.conta.banco.bancoId);
+            $("#input_contas").val(subconta.conta.banco.bancoId == null ? "" : subconta.conta.banco.nome + "- Ag: " + subconta.conta.agencia + " N°: " + subconta.conta.numeroConta);
+        }
+        else{
+            $("#agencia").val(0);
+            $("#numero_conta").val(0);
+            $("#banco_id").val(0);
+        }
+
         $("#subconta_ativo").prop("checked", subconta.ativo);
         $("#subconta_ativo").show();
         $("#subconta_ativo").parent().show();
@@ -96,11 +108,27 @@ function iniciarComponentesModalSub(subconta){
         $("#modal_sub_input_nome").val("");
         $("#modal_sub_select_tipo_id").val(0);
         $("#modal_sub_grupo_id").val(0);
+        $("#agencia").val(0);
+        $("#numero_conta").val(0);
+        $("#banco_id").val(0);
         $("#input_gerenciar_grupo").val("");
         $("#subconta_ativo").prop("checked", true);
         $("#subconta_ativo").hide();
         $("#subconta_ativo").parent().hide();
     }
+
+    
+    $("#lista_contas option").each(function(){
+        $(this).on("click", function(){
+
+            var dados = JSON.parse($(this).val()).dados;
+            var conta = JSON.parse(dados);
+
+            $("#agencia").val(conta.agencia);
+            $("#numero_conta").val(conta.numeroConta);
+            $("#banco_id").val(conta.banco.bancoId);
+        })
+    });
 
     $("#modal_sub_bt_fechar").on("click",function(){
         $("#modal_sub").modal('hide');

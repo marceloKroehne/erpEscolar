@@ -11,49 +11,57 @@ class MovimentoBanco{
         $conexao->novaConexao();
     
         $sql =
-            "SELECT " .
-            "  MOV.MOVIMENTO_ID, " .
-            "  MOV.EMPRESA_ID,".
-            "  MOV.DATA_LANCAMENTO, " .
-            "  MOV.HISTORICO, " .
-            "  MOV.BANCO_ID,".
-            "  MOV.AGENCIA,".
-            "  MOV.NUMERO_CONTA,".
-            "  MOV.VALOR, " .
-            "  MOV.OBSERVACAO, " .
-            "  MOV.SUBCONTA_ID,".
-            "  MOV.NUMERO_DOCUMENTO,".
-            "  MOV.TIPO_DOCUMENTO_ID,".
-            "  SUB.GRUPO_CONTA_ID,".
-            "  MOV.NUMERO_MOVIMENTO,".
-            "  SUB.TIPO,".
-            "  SUB.NOME AS NOME_SUBCONTA,".
-            "  TPD.NOME AS NOME_TIPO_DOCUMENTO,".
-            "  GRP.NOME AS NOME_GRUPOS_CONTAS,".
-            "  GRP.RECEBIMENTO_VENDAS, ".
-            "  BNC.NOME AS NOME_BANCO,".
-            "  BNC.EXIGE_OFX,".
-            "  BNC.ATIVO AS BANCO_ATIVO,".
-            "  BNC.NUMERO_BANCO " .
+            "SELECT 
+            MOV.MOVIMENTO_ID, 
+            MOV.EMPRESA_ID,
+            MOV.DATA_LANCAMENTO, 
+            MOV.HISTORICO, 
+            MOV.VALOR, 
+            MOV.OBSERVACAO, 
+            MOV.SUBCONTA_ENTRADA_ID,
+            MOV.SUBCONTA_SAIDA_ID,
+            MOV.NUMERO_DOCUMENTO,
+            MOV.TIPO_DOCUMENTO_ID,
+            MOV.NUMERO_MOVIMENTO,
+            SUB.GRUPO_CONTA_ID AS ENTRADA_GRUPO_CONTA_ID,
+            SUB.TIPO AS ENTRADA_TIPO,
+            SUB.NOME AS ENTRADA_NOME_SUBCONTA,
+            SUB.BANCO_ID AS ENTRADA_BANCO_ID,
+            SUB.AGENCIA AS ENTRADA_AGENCIA,
+            SUB.NUMERO_CONTA AS ENTRADA_NUMERO_CONTA,
+            GRP.NOME AS ENTRADA_NOME_GRUPOS_CONTAS,
+            GRP.RECEBIMENTO_VENDAS as ENTRADA_RECEBIMENTO_VENDAS, 
+            SAI.GRUPO_CONTA_ID AS SAIDA_GRUPO_CONTA_ID,
+            SAI.TIPO AS SAIDA_TIPO,
+            SAI.NOME AS SAIDA_NOME_SUBCONTA,
+            SAI.BANCO_ID AS SAIDA_BANCO_ID,
+            SAI.AGENCIA AS SAIDA_AGENCIA,
+            SAI.NUMERO_CONTA AS SAIDA_NUMERO_CONTA,
+            GAI.NOME AS SAIDA_NOME_GRUPOS_CONTAS,
+            GAI.RECEBIMENTO_VENDAS as SAIDA_RECEBIMENTO_VENDAS, 
+            TPD.NOME AS NOME_TIPO_DOCUMENTO
 
-            "FROM MOVIMENTOS MOV " .
+            FROM MOVIMENTOS MOV 
 
-            "INNER JOIN EMPRESAS EMP " .
-            "ON MOV.EMPRESA_ID = EMP.EMPRESA_ID " .
+            INNER JOIN EMPRESAS EMP 
+            ON MOV.EMPRESA_ID = EMP.EMPRESA_ID 
 
-            "INNER JOIN SUBCONTAS SUB " .
-            "ON MOV.SUBCONTA_ID = SUB.SUBCONTA_ID " .
+            INNER JOIN SUBCONTAS SUB 
+            ON MOV.SUBCONTA_ENTRADA_ID = SUB.SUBCONTA_ID 
+            
+            INNER JOIN SUBCONTAS SAI 
+            ON MOV.SUBCONTA_SAIDA_ID = SAI.SUBCONTA_ID 
 
-            "LEFT JOIN TIPO_DOCUMENTOS TPD " .
-            "ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID " .
+            LEFT JOIN TIPO_DOCUMENTOS TPD 
+            ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID 
 
-            "INNER JOIN GRUPOS_CONTAS GRP " .
-            "ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID " .
+            INNER JOIN GRUPOS_CONTAS GRP 
+            ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID 
+            
+            INNER JOIN GRUPOS_CONTAS GAI
+            ON SAI.GRUPO_CONTA_ID = GAI.GRUPO_CONTA_ID 
 
-            "INNER JOIN BANCOS BNC " .
-            "ON MOV.BANCO_ID = BNC.BANCO_ID " .
-
-            "WHERE EMP.EMPRESA_ID = ? ";
+            WHERE EMP.EMPRESA_ID = ? ";
 
         array_push($parametros, $empresaId);
 
@@ -69,8 +77,8 @@ class MovimentoBanco{
         }
         if($subcontaId !== null){
             $sql .=
-            "AND SUB.SUBCONTA_ID = ? ";
-            array_push($parametros, $subcontaId);
+            "AND (SUB.SUBCONTA_ID = ? or SAI.SUBCONTA_ID = ? ) ";
+            array_push($parametros, $subcontaId, $subcontaId);
         }
         if($agencia !== null){
             $sql .=
@@ -94,33 +102,44 @@ class MovimentoBanco{
     
         foreach ($resultados as $resultado) {
 
+            $contaEntrada = ContasBancoBanco::getContaBancoId($resultado['ENTRADA_BANCO_ID'],$resultado['ENTRADA_AGENCIA'], $resultado['ENTRADA_NUMERO_CONTA']);
+            if($contaEntrada == null){
+                $contaEntrada = new Conta(new Banco(null,null,null,null,null, null),null,null,null);
+            }
+            $contaSaida = ContasBancoBanco::getContaBancoId($resultado['SAIDA_BANCO_ID'],$resultado['SAIDA_AGENCIA'], $resultado['SAIDA_NUMERO_CONTA']);
+            if($contaSaida == null){
+                $contaSaida = new Conta(new Banco(null,null,null,null,null, null),null,null,null);
+            }
+
             $movimento = new Movimento(
                 $resultado['MOVIMENTO_ID'],
                 $resultado['EMPRESA_ID'],
-                new Conta(
-                    new Banco(
-                        $resultado['BANCO_ID'],
-                        $resultado['NUMERO_BANCO'],
+                new Subconta(
+                    $resultado['SUBCONTA_ENTRADA_ID'],
+                    new GrupoContas(
+                        $resultado['ENTRADA_GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
-                        $resultado['NOME_BANCO'],
-                        $resultado['EXIGE_OFX'],
-                        $resultado['BANCO_ATIVO']
+                        $resultado['ENTRADA_NOME_GRUPOS_CONTAS'],
+                        $resultado['ENTRADA_RECEBIMENTO_VENDAS'],
+                        true
                     ),
-                    $resultado['AGENCIA'],
-                    $resultado['NUMERO_CONTA'],
+                    $contaEntrada,
+                    $resultado['ENTRADA_TIPO'],
+                    $resultado['ENTRADA_NOME_SUBCONTA'],
                     true
                 ),
                 new Subconta(
-                    $resultado['SUBCONTA_ID'],
+                    $resultado['SUBCONTA_SAIDA_ID'],
                     new GrupoContas(
-                        $resultado['GRUPO_CONTA_ID'],
+                        $resultado['SAIDA_GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
-                        $resultado['NOME_GRUPOS_CONTAS'],
-                        $resultado['RECEBIMENTO_VENDAS'],
+                        $resultado['SAIDA_NOME_GRUPOS_CONTAS'],
+                        $resultado['SAIDA_RECEBIMENTO_VENDAS'],
                         true
                     ),
-                    $resultado['TIPO'],
-                    $resultado['NOME_SUBCONTA'],
+                    $contaSaida,
+                    $resultado['SAIDA_TIPO'],
+                    $resultado['SAIDA_NOME_SUBCONTA'],
                     true
                 ),
                 $resultado['VALOR'],
@@ -152,49 +171,56 @@ class MovimentoBanco{
         $conexao->novaConexao();
     
         $sql =
-            "SELECT " .
-            "  MOV.MOVIMENTO_ID, " .
-            "  MOV.EMPRESA_ID,".
-            "  MOV.DATA_LANCAMENTO, " .
-            "  MOV.HISTORICO, " .
-            "  MOV.BANCO_ID,".
-            "  MOV.AGENCIA,".
-            "  MOV.NUMERO_CONTA,".
-            "  MOV.VALOR, " .
-            "  MOV.OBSERVACAO, " .
-            "  MOV.SUBCONTA_ID,".
-            "  MOV.NUMERO_DOCUMENTO,".
-            "  MOV.TIPO_DOCUMENTO_ID,".
-            "  SUB.GRUPO_CONTA_ID,".
-            "  MOV.NUMERO_MOVIMENTO,".
-            "  SUB.TIPO,".
-            "  SUB.NOME AS NOME_SUBCONTA,".
-            "  TPD.NOME AS NOME_TIPO_DOCUMENTO,".
-            "  GRP.NOME AS NOME_GRUPOS_CONTAS,".
-            "  GRP.RECEBIMENTO_VENDAS, ".
-            "  BNC.NOME AS NOME_BANCO,".
-            "  BNC.EXIGE_OFX,".
-            "  BNC.ATIVO AS BANCO_ATIVO,".
-            "  BNC.NUMERO_BANCO " .
+            "SELECT 
+            MOV.MOVIMENTO_ID, 
+            MOV.EMPRESA_ID,
+            MOV.DATA_LANCAMENTO, 
+            MOV.HISTORICO, 
+            MOV.VALOR, 
+            MOV.OBSERVACAO, 
+            MOV.SUBCONTA_ENTRADA_ID,
+            MOV.NUMERO_DOCUMENTO,
+            MOV.TIPO_DOCUMENTO_ID,
+            MOV.NUMERO_MOVIMENTO,
+            SUB.GRUPO_CONTA_ID AS ENTRADA_GRUPO_CONTA_ID,
+            SUB.TIPO AS ENTRADA_TIPO,
+            SUB.NOME AS ENTRADA_NOME_SUBCONTA,
+            SUB.BANCO_ID AS ENTRADA_BANCO_ID,
+            SUB.AGENCIA AS ENTRADA_AGENCIA,
+            SUB.NUMERO_CONTA AS ENTRADA_NUMERO_CONTA,
+            GRP.NOME AS ENTRADA_NOME_GRUPOS_CONTAS,
+            GRP.RECEBIMENTO_VENDAS as ENTRADA_RECEBIMENTO_VENDAS, 
+            SAI.GRUPO_CONTA_ID AS SAIDA_GRUPO_CONTA_ID,
+            SAI.TIPO AS SAIDA_TIPO,
+            SAI.NOME AS SAIDA_NOME_SUBCONTA,
+            SAI.BANCO_ID AS SAIDA_BANCO_ID,
+            SAI.AGENCIA AS SAIDA_AGENCIA,
+            SAI.NUMERO_CONTA AS SAIDA_NUMERO_CONTA,
+            GAI.NOME AS SAIDA_NOME_GRUPOS_CONTAS,
+            GAI.RECEBIMENTO_VENDAS as SAIDA_RECEBIMENTO_VENDAS, 
+            TPD.NOME AS NOME_TIPO_DOCUMENTO
 
-            "FROM MOVIMENTOS MOV " .
+            FROM MOVIMENTOS MOV 
 
-            "INNER JOIN EMPRESAS EMP " .
-            "ON MOV.EMPRESA_ID = EMP.EMPRESA_ID " .
+            INNER JOIN EMPRESAS EMP 
+            ON MOV.EMPRESA_ID = EMP.EMPRESA_ID 
 
-            "INNER JOIN SUBCONTAS SUB " .
-            "ON MOV.SUBCONTA_ID = SUB.SUBCONTA_ID " .
+            INNER JOIN SUBCONTAS SUB 
+            ON MOV.SUBCONTA_ENTRADA_ID = SUB.SUBCONTA_ID 
+            
+            INNER JOIN SUBCONTAS SAI 
+            ON MOV.SUBCONTA_SAIDA_ID = SAI.SUBCONTA_ID 
 
-            "LEFT JOIN TIPO_DOCUMENTOS TPD " .
-            "ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID " .
+            LEFT JOIN TIPO_DOCUMENTOS TPD 
+            ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID 
 
-            "INNER JOIN GRUPOS_CONTAS GRP " .
-            "ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID " .
+            INNER JOIN GRUPOS_CONTAS GRP 
+            ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID 
+            
+            INNER JOIN GRUPOS_CONTAS GAI
+            ON SAI.GRUPO_CONTA_ID = GAI.GRUPO_CONTA_ID 
 
-            "INNER JOIN BANCOS BNC " .
-            "ON MOV.BANCO_ID = BNC.BANCO_ID " .
-
-            "WHERE MOV.MOVIMENTO_ID = ? ";
+            WHERE MOV.MOVIMENTO_ID = ? ";
 
         $parametros = array($movimentoId);
 
@@ -202,33 +228,43 @@ class MovimentoBanco{
     
         foreach ($resultados as $resultado) {
 
+            $contaEntrada = ContasBancoBanco::getContaBancoId($resultado['ENTRADA_BANCO_ID'],$resultado['ENTRADA_AGENCIA'], $resultado['ENTRADA_NUMERO_CONTA']);
+            if($contaEntrada == null){
+                $contaEntrada = new Conta(new Banco(null,null,null,null,null, null),null,null,null);
+            }
+            $contaSaida = ContasBancoBanco::getContaBancoId($resultado['SAIDA_BANCO_ID'],$resultado['SAIDA_AGENCIA'], $resultado['SAIDA_NUMERO_CONTA']);
+            if($contaSaida == null){
+                $contaSaida = new Conta(new Banco(null,null,null,null,null, null),null,null,null);
+            }
             $movimento = new Movimento(
                 $resultado['MOVIMENTO_ID'],
                 $resultado['EMPRESA_ID'],
-                new Conta(
-                    new Banco(
-                        $resultado['BANCO_ID'],
-                        $resultado['NUMERO_BANCO'],
+                new Subconta(
+                    $resultado['SUBCONTA_ENTRADA_ID'],
+                    new GrupoContas(
+                        $resultado['ENTRADA_GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
-                        $resultado['NOME_BANCO'],
-                        $resultado['EXIGE_OFX'],
-                        $resultado['BANCO_ATIVO']
+                        $resultado['ENTRADA_NOME_GRUPOS_CONTAS'],
+                        $resultado['ENTRADA_RECEBIMENTO_VENDAS'],
+                        true
                     ),
-                    $resultado['AGENCIA'],
-                    $resultado['NUMERO_CONTA'],
+                    $contaEntrada,
+                    $resultado['ENTRADA_TIPO'],
+                    $resultado['ENTRADA_NOME_SUBCONTA'],
                     true
                 ),
                 new Subconta(
-                    $resultado['SUBCONTA_ID'],
+                    $resultado['SUBCONTA_SAIDA_ID'],
                     new GrupoContas(
-                        $resultado['GRUPO_CONTA_ID'],
+                        $resultado['SAIDA_GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
-                        $resultado['NOME_GRUPOS_CONTAS'],
-                        $resultado['RECEBIMENTO_VENDAS'],
+                        $resultado['SAIDA_NOME_GRUPOS_CONTAS'],
+                        $resultado['SAIDA_RECEBIMENTO_VENDAS'],
                         true
                     ),
-                    $resultado['TIPO'],
-                    $resultado['NOME_SUBCONTA'],
+                    $contaSaida,
+                    $resultado['SAIDA_TIPO'],
+                    $resultado['SAIDA_NOME_SUBCONTA'],
                     true
                 ),
                 $resultado['VALOR'],
@@ -257,50 +293,57 @@ class MovimentoBanco{
         $conexao->novaConexao();
     
         $sql =
-        "SELECT " .
-        "  MOV.MOVIMENTO_ID, " .
-        "  MOV.EMPRESA_ID,".
-        "  MOV.DATA_LANCAMENTO, " .
-        "  MOV.HISTORICO, " .
-        "  MOV.BANCO_ID,".
-        "  MOV.AGENCIA,".
-        "  MOV.NUMERO_CONTA,".
-        "  MOV.VALOR, " .
-        "  MOV.OBSERVACAO, " .
-        "  MOV.SUBCONTA_ID,".
-        "  MOV.NUMERO_DOCUMENTO,".
-        "  MOV.NUMERO_MOVIMENTO,".
-        "  MOV.TIPO_DOCUMENTO_ID,".
-        "  SUB.GRUPO_CONTA_ID,".
-        "  SUB.TIPO,".
-        "  SUB.NOME AS NOME_SUBCONTA,".
-        "  TPD.NOME AS NOME_TIPO_DOCUMENTO,".
-        "  GRP.NOME AS NOME_GRUPOS_CONTAS,".
-        "  GRP.RECEBIMENTO_VENDAS, ".
-        "  BNC.NOME AS NOME_BANCO,".
-        "  BNC.EXIGE_OFX,".
-        "  BNC.ATIVO AS BANCO_ATIVO,".
-        "  BNC.NUMERO_BANCO " .
+            "SELECT 
+            MOV.MOVIMENTO_ID, 
+            MOV.EMPRESA_ID,
+            MOV.DATA_LANCAMENTO, 
+            MOV.HISTORICO, 
+            MOV.VALOR, 
+            MOV.OBSERVACAO, 
+            MOV.SUBCONTA_ENTRADA_ID,
+            MOV.NUMERO_DOCUMENTO,
+            MOV.TIPO_DOCUMENTO_ID,
+            MOV.NUMERO_MOVIMENTO,
+            SUB.GRUPO_CONTA_ID AS ENTRADA_GRUPO_CONTA_ID,
+            SUB.TIPO AS ENTRADA_TIPO,
+            SUB.NOME AS ENTRADA_NOME_SUBCONTA,
+            SUB.BANCO_ID AS ENTRADA_BANCO_ID,
+            SUB.AGENCIA AS ENTRADA_AGENCIA,
+            SUB.NUMERO_CONTA AS ENTRADA_NUMERO_CONTA,
+            GRP.NOME AS ENTRADA_NOME_GRUPOS_CONTAS,
+            GRP.RECEBIMENTO_VENDAS as ENTRADA_RECEBIMENTO_VENDAS, 
+            SAI.GRUPO_CONTA_ID AS SAIDA_GRUPO_CONTA_ID,
+            SAI.TIPO AS SAIDA_TIPO,
+            SAI.NOME AS SAIDA_NOME_SUBCONTA,
+            SAI.BANCO_ID AS SAIDA_BANCO_ID,
+            SAI.AGENCIA AS SAIDA_AGENCIA,
+            SAI.NUMERO_CONTA AS SAIDA_NUMERO_CONTA,
+            GAI.NOME AS SAIDA_NOME_GRUPOS_CONTAS,
+            GAI.RECEBIMENTO_VENDAS as SAIDA_RECEBIMENTO_VENDAS, 
+            TPD.NOME AS NOME_TIPO_DOCUMENTO
 
-        "FROM MOVIMENTOS MOV " .
+            FROM MOVIMENTOS MOV 
 
-        "INNER JOIN EMPRESAS EMP " .
-        "ON MOV.EMPRESA_ID = EMP.EMPRESA_ID " .
+            INNER JOIN EMPRESAS EMP 
+            ON MOV.EMPRESA_ID = EMP.EMPRESA_ID 
 
-        "INNER JOIN SUBCONTAS SUB " .
-        "ON MOV.SUBCONTA_ID = SUB.SUBCONTA_ID " .
+            INNER JOIN SUBCONTAS SUB 
+            ON MOV.SUBCONTA_ENTRADA_ID = SUB.SUBCONTA_ID 
+            
+            INNER JOIN SUBCONTAS SAI 
+            ON MOV.SUBCONTA_SAIDA_ID = SAI.SUBCONTA_ID 
 
-        "LEFT JOIN TIPO_DOCUMENTOS TPD " .
-        "ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID " .
+            LEFT JOIN TIPO_DOCUMENTOS TPD 
+            ON MOV.TIPO_DOCUMENTO_ID = TPD.TIPO_DOCUMENTO_ID 
 
-        "INNER JOIN GRUPOS_CONTAS GRP " .
-        "ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID " .
+            INNER JOIN GRUPOS_CONTAS GRP 
+            ON SUB.GRUPO_CONTA_ID = GRP.GRUPO_CONTA_ID 
+            
+            INNER JOIN GRUPOS_CONTAS GAI
+            ON SAI.GRUPO_CONTA_ID = GAI.GRUPO_CONTA_ID 
 
-        "INNER JOIN BANCOS BNC " .
-        "ON MOV.BANCO_ID = BNC.BANCO_ID " .
-
-        "WHERE EMP.EMPRESA_ID = ? ".
-        "AND MOV.NUMERO_MOVIMENTO = ? ";
+            WHERE EMP.EMPRESA_ID = ? 
+            AND MOV.NUMERO_MOVIMENTO = ? ";
 
         $parametros = array($empresaId, $numeroMovimento);
 
@@ -308,33 +351,44 @@ class MovimentoBanco{
     
 
         foreach ($resultados as $resultado) {
+
+            $contaEntrada = ContasBancoBanco::getContaBancoId($resultado['ENTRADA_BANCO_ID'],$resultado['ENTRADA_AGENCIA'], $resultado['ENTRADA_NUMERO_CONTA']);
+            if($contaEntrada == null){
+                $contaEntrada = new Conta(new Banco(null,null,null,null,null, null),null,null,null);
+            }
+            $contaSaida = ContasBancoBanco::getContaBancoId($resultado['SAIDA_BANCO_ID'],$resultado['SAIDA_AGENCIA'], $resultado['SAIDA_NUMERO_CONTA']);
+            if($contaSaida == null){
+                $contaSaida = new Conta(new Banco(null,null,null,null,null, null),null,null,null);
+            }
+
             $movimento = new Movimento(
                 $resultado['MOVIMENTO_ID'],
-                $resultado['EMPRESA_ID'],
-                new Conta(
-                    new Banco(
-                        $resultado['BANCO_ID'],
-                        $resultado['NUMERO_BANCO'],
+                $resultado['EMPRESA_ID'],new Subconta(
+                    $resultado['SUBCONTA_ENTRADA_ID'],
+                    new GrupoContas(
+                        $resultado['ENTRADA_GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
-                        $resultado['NOME_BANCO'],
-                        $resultado['EXIGE_OFX'],
-                        $resultado['BANCO_ATIVO']
+                        $resultado['ENTRADA_NOME_GRUPOS_CONTAS'],
+                        $resultado['ENTRADA_RECEBIMENTO_VENDAS'],
+                        true
                     ),
-                    $resultado['AGENCIA'],
-                    $resultado['NUMERO_CONTA'],
+                    $contaEntrada,
+                    $resultado['ENTRADA_TIPO'],
+                    $resultado['ENTRADA_NOME_SUBCONTA'],
                     true
                 ),
                 new Subconta(
-                    $resultado['SUBCONTA_ID'],
+                    $resultado['SUBCONTA_SAIDA_ID'],
                     new GrupoContas(
-                        $resultado['GRUPO_CONTA_ID'],
+                        $resultado['SAIDA_GRUPO_CONTA_ID'],
                         $resultado['EMPRESA_ID'],
-                        $resultado['NOME_GRUPOS_CONTAS'],
-                        $resultado['RECEBIMENTO_VENDAS'],
+                        $resultado['SAIDA_NOME_GRUPOS_CONTAS'],
+                        $resultado['SAIDA_RECEBIMENTO_VENDAS'],
                         true
                     ),
-                    $resultado['TIPO'],
-                    $resultado['NOME_SUBCONTA'],
+                    $contaSaida,
+                    $resultado['SAIDA_TIPO'],
+                    $resultado['SAIDA_NOME_SUBCONTA'],
                     true
                 ),
                 $resultado['VALOR'],
@@ -360,10 +414,8 @@ class MovimentoBanco{
         $empresaId,
         $usuarioId, 
         $data, 
-        $subcontaId, 
-        $bancoId, 
-        $agencia, 
-        $numeroConta, 
+        $subcontaEntradaId, 
+        $subcontaSaidaId, 
         $historico, 
         $tipoDocumentoId, 
         $numeroDocumento, 
@@ -373,16 +425,13 @@ class MovimentoBanco{
     ){
             
         if($movimentoId !== 0){
-            echo("UPDAT");
             return MovimentoBanco::updateMovimento( 
             $movimentoId,
             $empresaId,
             $usuarioId, 
             $data, 
-            $subcontaId, 
-            $bancoId, 
-            $agencia, 
-            $numeroConta, 
+            $subcontaEntradaId, 
+            $subcontaSaidaId, 
             $historico, 
             $tipoDocumentoId, 
             $numeroDocumento, 
@@ -398,20 +447,18 @@ class MovimentoBanco{
             $sql =
             "INSERT INTO MOVIMENTOS( " .
             "  EMPRESA_ID, ".
-            "  SUBCONTA_ID, ".
+            "  SUBCONTA_ENTRADA_ID, ".
+            "  SUBCONTA_SAIDA_ID, ".
             "  VALOR, ".
             "  DATA_LANCAMENTO, ".
             "  HISTORICO, ".
             "  OBSERVACAO, ".
             "  TIPO_DOCUMENTO_ID, ".
             "  NUMERO_DOCUMENTO, " .
-            "  BANCO_ID, ".
-            "  AGENCIA, ".
-            "  NUMERO_CONTA, " .
             "  NUMERO_MOVIMENTO, ".
             "  USUARIO_CRIACAO_ID, " .
             "  USUARIO_ALTERACAO_ID) " .
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
             
             $valorSb = str_replace('.', '',$valor);
@@ -421,16 +468,14 @@ class MovimentoBanco{
 
             $parametros = array(
                 $empresaId,
-                $subcontaId,
+                $subcontaEntradaId,
+                $subcontaSaidaId,
                 $valorDec,
                 DateTime::createFromFormat('d/m/Y', $data)->format('Y-m-d'),
                 $historico,
                 $observacao,
                 $tipoDocumentoId === 0 ? null : $tipoDocumentoId,
                 $numeroDocumento,
-                $bancoId,
-                $agencia,
-                $numeroConta,
                 $numeroMovimento,
                 $usuarioId,
                 $usuarioId
@@ -485,10 +530,8 @@ class MovimentoBanco{
         $empresaId,
         $usuarioId, 
         $data, 
-        $subcontaId, 
-        $bancoId, 
-        $agencia, 
-        $numeroConta, 
+        $subcontaEntradaId, 
+        $subcontaSaidaId, 
         $historico, 
         $tipoDocumentoId, 
         $numeroDocumento, 
@@ -503,16 +546,14 @@ class MovimentoBanco{
         $sql =
         "UPDATE MOVIMENTOS SET " .
         "  EMPRESA_ID = ?, " .
-        "  SUBCONTA_ID = ?, " .
+        "  SUBCONTA_ENTRADA_ID = ?, " .
+        "  SUBCONTA_SAIDA_ID = ?, " .
         "  DATA_LANCAMENTO = ?, " .
         "  HISTORICO = ?, " .
         "  OBSERVACAO = ?, " .
         "  VALOR = ?, " .
         "  TIPO_DOCUMENTO_ID = ?, " .
         "  NUMERO_DOCUMENTO = ?, " .
-        "  BANCO_ID = ?, " .
-        "  AGENCIA = ?, " .
-        "  NUMERO_CONTA = ?, " .
         "  USUARIO_ALTERACAO_ID = ? " .
         "WHERE MOVIMENTO_ID = ? ";
 
@@ -522,16 +563,14 @@ class MovimentoBanco{
 
         $parametros = array(
             $empresaId,
-            $subcontaId,
-            DateTime::createFromFormat('m/d/Y', $data)->format('Y-m-d'),
+            $subcontaEntradaId,
+            $subcontaSaidaId,
+            DateTime::createFromFormat('d/m/Y', $data)->format('Y-m-d'),
             $historico,
             $observacao,
             $valorDec,
-            $tipoDocumentoId,
+            $tipoDocumentoId == 0 ? null : $tipoDocumentoId,
             $numeroDocumento,
-            $bancoId,
-            $agencia,
-            $numeroConta,
             $usuarioId,
             $movimentoId
         );

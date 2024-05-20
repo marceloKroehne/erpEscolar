@@ -30,7 +30,6 @@ class CargosBanco{
             $cargo = new Cargo(
                 $resultado["CARGO_ID"],
                 $resultado["EMPRESA_ID"],
-                $resultado["PERMISSAO_ID"],
                 $resultado["NOME"],
                 $resultado["ADMIN"],
                 $resultado["ATIVO"]

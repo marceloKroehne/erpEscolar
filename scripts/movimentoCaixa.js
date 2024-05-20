@@ -61,7 +61,15 @@ function iniciarComponentesMovimento(){
         $(this).on("click", function(){
             var dados = JSON.parse($(this).val()).dados;
             var subconta = JSON.parse(dados);
-            $("#subconta_id").val(subconta.subcontaId);
+            $("#subconta_entrada_id").val(subconta.subcontaId);
+        })
+    });
+
+    $("#lista_subcontas_saida option").each(function(){
+        $(this).on("click", function(){
+            var dados = JSON.parse($(this).val()).dados;
+            var subconta = JSON.parse(dados);
+            $("#subconta_saida_id").val(subconta.subcontaId);
         })
     });
 
@@ -176,8 +184,8 @@ function iniciarComponentesModalmovimento(movimento){
     if(movimento !== null){
         
         $("#modal_movimento_data").val(movimento.dataLancamento);
-        $("#input_subcontas").val(movimento.subconta == null ? "" : movimento.subconta.nome);
-        $("#input_contas").val(movimento.conta.banco.bancoId == null ? "" : movimento.conta.banco.nome + "- Ag: " + movimento.conta.agencia + " N°: " + movimento.conta.numeroConta);
+        $("#input_subcontas").val(movimento.subcontaEntrada.subcontaId == null ? "" : movimento.subcontaEntrada.nome);
+        $("#input_subcontas_saida").val(movimento.subcontaSaida.subcontaId == null ? "" : movimento.subcontaSaida.nome);
         $("#input_docs").val(movimento.tipoDocumento == null ? "" : movimento.tipoDocumento.nome);
         $("#modal_movimento_historico").val(movimento.historico);
         $("#modal_movimento_nr_documento").val(movimento.numeroDocumento);
@@ -185,7 +193,8 @@ function iniciarComponentesModalmovimento(movimento){
         $("#modal_movimento_obs").val(movimento.observacao);
 
         $("#movimento_id").val(movimento.movimentoId);
-        $("#subconta_id").val(movimento.subconta == null ? 0 : movimento.subconta.subcontaId);
+        $("#subconta_entrada_id").val(movimento.subcontaEntrada == null ? 0 : movimento.subcontaEntrada.subcontaId);
+        $("#subconta_saida_id").val(movimento.subcontaSaida== null ? 0 : movimento.subcontaSaida.subcontaId);
         $("#numero_movimento").val(movimento.numeroMovimento);
 
         if(movimento.numeroMovimento !== null){
@@ -195,13 +204,11 @@ function iniciarComponentesModalmovimento(movimento){
             $("#input_contas").prop("disabled", false);
         }
 
-        if(movimento.conta.banco.bancoId == null){
-            $("#agencia").val(0);
-            $("#numero_conta").val(0);
-            $("#banco_id").val(0);
+        if(movimento.importacaoOfx && movimento.subcontaEntrada.conta.banco.bancoId == null && movimento.subcontaSaida.conta.banco.bancoId == null){
+            var conta = movimento.subcontaEntrada.conta.banco.numeroBanco == null ? movimento.subcontaSaida.conta : movimento.subcontaEntrada.conta;
             $("#modal_movimento_bt_salvar").prop('disabled', true);
             $("#aviso").show();
-            $("#aviso").html("A conta do banco: " + movimento.conta.banco.numeroBanco + " - Ag: " + + movimento.conta.agencia + " N°: " + movimento.conta.numeroConta + "<br> não está cadastrada!")
+            $("#aviso").html("A conta do banco: " + conta.banco.numeroBanco + " - Ag: " + conta.agencia + " N°: " + conta.numeroConta + "<br> não está cadastrada!")
         }
         else{
             if(movimento.duplicado){
@@ -213,9 +220,6 @@ function iniciarComponentesModalmovimento(movimento){
                 $("#aviso").hide();
             }
             $("#modal_movimento_bt_salvar").text("Salvar");
-            $("#agencia").val(movimento.conta.agencia);
-            $("#numero_conta").val(movimento.conta.numeroConta);
-            $("#banco_id").val(movimento.conta.banco.bancoId);
             $("#modal_movimento_bt_salvar").prop('disabled', false);
            
         }
@@ -251,10 +255,8 @@ function iniciarComponentesModalmovimento(movimento){
         $("#numero_movimento").val("");
 
         $("#movimento_id").val(0);
-        $("#subconta_id").val(0);
-        $("#agencia").val(0);
-        $("#numero_conta").val(0);
-        $("#banco_id").val(0);
+        $("#subconta_entrada_id").val(0);
+        $("#subconta_saida_id").val(0);
         $("#tipo_documento_id").val(0);
         $("#modal_movimento_bt_deletar").hide();
         $("#aviso").html("");
@@ -287,7 +289,11 @@ function iniciarComponentesModalmovimento(movimento){
             return;
         }
         else if ($("#input_subcontas").val() === "") {
-            alert("O campo subconta é obrigatório!");
+            alert("O campo subconta de entrada é obrigatório!");
+            return;
+        }
+        else if ($("#input_subcontas_saida").val() === "") {
+            alert("O campo subconta de saída é obrigatório!");
             return;
         }
         else if ($("#input_contas").val() === "") {

@@ -56,10 +56,10 @@ function processarOFX($conteudo_ofx, $empresaId) {
 
         $data_formatada = date("d/m/Y", $timestamp);
 
-        $conta = ContasBancoBanco::getConta($bankid[1], $branchid[1], $acctid[1]);
+        $subconta = SubcontasBanco::getSubcontaPorBanco($bankid[1], $branchid[1], $acctid[1]);
 
-        if($conta === null){
-            $conta = new Conta(new Banco(null, $bankid[1], null, null, true, true), $branchid[1], $acctid[1], true);
+        if($subconta === null){
+            $subconta =  new Subconta(null, new GrupoContas(null, null, null, null, null), new Conta(new Banco(null, $bankid[1], null, null, true, true), $branchid[1], $acctid[1], true), null, null, null);
         }
 
         $movimentoDuplicado = MovimentoBanco::isMovimentoDuplicado($fitid[1], $empresaId);
@@ -69,19 +69,39 @@ function processarOFX($conteudo_ofx, $empresaId) {
             $objeto_movimento->setDuplicado(true);
         }
         else{
-            $objeto_movimento = new Movimento(
-                0,
-                $empresaId,
-                $conta,
-                new Subconta(null, new GrupoContas(null, null, null, null, null), null, null, null),
-                $trnamt[1],
-                $data_formatada,
-                $memo[1],
-                null,
-                null,
-                new TipoDocumento(null, null, null, null),
-                $fitid[1]
-            );
+            if(floatval($trnamt[1]) > 0){
+                $objeto_movimento = new Movimento(
+                    0,
+                    $empresaId,
+                    $subconta,
+                    new Subconta(null, new GrupoContas(null, null, null, null, null), new Conta(new Banco(null,null,null,null,null,null),null,null,null), null, null, null),
+                    $trnamt[1],
+                    $data_formatada,
+                    $memo[1],
+                    null,
+                    null,
+                    new TipoDocumento(null, null, null, null),
+                    $fitid[1],
+                    true
+                );
+            }
+            else if(floatval($trnamt[1]) < 0){
+                $objeto_movimento = new Movimento(
+                    0,
+                    $empresaId,
+                    new Subconta(null, new GrupoContas(null, null, null, null, null), new Conta(new Banco(null,null,null,null,null,null),null,null,null), null, null, null),
+                    $subconta,
+                    $trnamt[1],
+                    $data_formatada,
+                    $memo[1],
+                    null,
+                    null,
+                    new TipoDocumento(null, null, null, null),
+                    $fitid[1],
+                    true
+                );
+            }
+
         }
         array_push($lista_movimentos, $objeto_movimento->toJson());
     }

@@ -22,6 +22,22 @@
                                 <option value="0">Entrada</option>
                                 <option value="1">Saída</option>
                             </select>
+                            <?
+                            $inputId = "input_gerenciar_grupo";
+                            $listaId = "lista_gerenciar_grupo";
+
+                            $parametrosPesquisa = [];
+                            $placeHolderPesquisa = "grupos de contas";
+
+                            foreach($grupos as $grupo){
+                                if($grupo->isAtivo()){
+                                    $parametro = new Parametro($grupo->getGrupoContaId(), $grupo->getNome());
+                                    $parametro->dados = json_decode($grupo->toJson());
+                                    array_push($parametrosPesquisa, $parametro);
+                                }
+
+                            }
+                            ?>
 
                             <label for="<?=$listaId?>">Grupo de contas:</label>
 
@@ -30,6 +46,37 @@
                                     <?require('./usaveis/seletor.php');?>
                                 </div>
                             </div>
+                            
+                            <?
+                            $inputId = "input_contas";
+                            $listaId = "lista_contas";
+                            $placeHolderPesquisa = "contas";
+                            ?>
+
+                            <label for="input_contas">Conta: (Opcional)</label>
+                            
+                            <?
+               
+
+                            $parametrosPesquisa = [];
+                            
+                            foreach($contas as $conta){
+                                $parametro = new Parametro($conta->getNumeroConta(),$conta->getBanco()->getNome(). " - Ag:" . $conta->getAgencia()." N°: ".$conta->getNumeroConta());
+                                $parametro->dados = $conta->toJson();
+
+                                array_push($parametrosPesquisa, $parametro);
+                            }
+                            ?>
+
+                            <div class="bloco_pesquisa">
+                                <div class="input_pesquisa">
+                                    <?require('./usaveis/seletor.php');?>
+                                </div>
+                            </div>
+
+                            <input value="0" id="agencia" name="agencia" hidden>
+                            <input value="0" id="numero_conta" name="numero_conta" hidden>
+                            <input value="0" id="banco_id" name="banco_id" hidden>
 
                             <label>Ativo: <input type="checkbox" id="subconta_ativo" name="subconta_ativo"></label>
                         </div>
