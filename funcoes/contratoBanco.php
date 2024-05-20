@@ -63,6 +63,10 @@ class ContratoBanco{
 
             $bolsaAplicada = BolsaBanco::getBolsaPorId($resultado['BOLSA_ID']);
 
+            if($bolsaAplicada == null){
+                $bolsaAplicada = new Bolsa(null, null, null, null, null, null);
+            }
+
             $contrato =  new Contrato(
                 $resultado['CONTRATO_ID'],
                 $resultado['EMPRESA_ID'],
@@ -162,6 +166,11 @@ class ContratoBanco{
             $aluno = UsuarioBanco::getAlunoPorId( $resultado['ALUNO_ID']);
 
             $bolsaAplicada = BolsaBanco::getBolsaPorId($resultado['BOLSA_ID']);
+
+            
+            if($bolsaAplicada == null){
+                $bolsaAplicada = new Bolsa(null, null, null, null, null, null);
+            }
 
             $contrato =  new Contrato(
                 $resultado['CONTRATO_ID'],
@@ -303,7 +312,7 @@ class ContratoBanco{
 
             $valor = $valor * $desconto;
 
-            $retorno = ContratoBanco::inserirParcelas($conexao, $usuarioId, $empresaId, $contratoId, $plano, $valor);
+            $retorno = ContratoBanco::inserirParcelas($conexao, $usuarioId, $contratoId, $plano, $valor);
 
             if ($retorno->houveErro) {
                 return $retorno;
@@ -345,7 +354,7 @@ class ContratoBanco{
 
     }
 
-    private static function inserirParcelas(Conexao $conexao, $usuarioId, $empresaId, $contratoId, $plano, $valor){
+    private static function inserirParcelas(Conexao $conexao, $usuarioId, $contratoId, $plano, $valor){
 
         $sql ="DELETE FROM PARCELAS WHERE CONTRATO_ID = ? ";
         $parametros = array($contratoId);
@@ -358,13 +367,12 @@ class ContratoBanco{
 
         $sql =
         "INSERT INTO PARCELAS(" .
-        "  EMPRESA_ID, " .
         "  NOME, " .
         "  VALOR, " .
         "  CONTRATO_ID, " .
         "  USUARIO_CRIACAO_ID, " .
         "  USUARIO_ALTERACAO_ID) " .
-        "VALUES (?, ?, ?, ?, ?, ?) ";
+        "VALUES (?, ?, ?, ?, ?) ";
 
         if($plano != null){
 
@@ -374,7 +382,6 @@ class ContratoBanco{
 
                 $parametros = [];
                 $parametros = array(
-                    $empresaId,
                     "Parcela ".$i." - Contrato: ".$contratoId,
                     $valorParcela,
                     $contratoId,
@@ -391,7 +398,6 @@ class ContratoBanco{
         }
         else{
             $parametros = array(
-                $empresaId,
                 "Parcela única - Contrato: ".$contratoId,
                 $valor,
                 $contratoId,

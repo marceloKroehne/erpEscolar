@@ -51,6 +51,8 @@ function iniciarComponentesGerenciarcontrato(){
         $("#data_inicio").prop("disabled", true);
         $("#data_fim").prop("disabled", true);
         $("#observacao").prop("disabled", true);
+        $("#modal_contrato_bt_deletar").hide();
+
     });
 
     $("#tabela_contrato tbody td:last-child button").click(function() {
@@ -135,6 +137,7 @@ function iniciarComponentesModalcontrato(contrato){
         $("#data_fim").prop("disabled", true);
         $("#observacao").prop("disabled", true);
         $("#modal_contrato_bt_salvar").prop("disabled", true);
+        $("#modal_contrato_bt_deletar").show();
 
         valorCurso = contrato.turma.curso.valor;
        
@@ -174,6 +177,8 @@ function iniciarComponentesModalcontrato(contrato){
         $("#situacao_contrato_id").val(0);
         $("#tipo_contrato_id").val(0);
         $("#valor_total").val("");
+        $("#modal_contrato_bt_deletar").hide();
+
     }
 
     $("#modal_contrato_bt_fechar").on("click",function(){

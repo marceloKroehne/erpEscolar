@@ -183,7 +183,7 @@ class CursoBanco{
         "  BOL.NECESSITA_AUT_SUP, " .
         "  BOL.NOME ".
 
-        "FROM bolsas_cursos CBL " .
+        "FROM BOLSAS_CURSOS CBL " .
 
         "INNER JOIN BOLSAS BOL ".
         "ON CBL.BOLSA_ID = BOL.BOLSA_ID ".
@@ -294,7 +294,7 @@ class CursoBanco{
 
             $cursoId = intVal($retorno->dados);
 
-            $sql = "DELETE FROM bolsas_cursos WHERE CURSO_ID = ? ";
+            $sql = "DELETE FROM BOLSAS_CURSOS WHERE CURSO_ID = ? ";
 
             $parametros = array(
                 $cursoId
@@ -310,7 +310,7 @@ class CursoBanco{
             foreach($bolsasIds as $bolsaId){
 
                 $sql =
-                "INSERT INTO bolsas_cursos(" .
+                "INSERT INTO BOLSAS_CURSOS(" .
                 "  CURSO_ID, " .
                 "  BOLSA_ID) " .
                 "VALUES (?, ?) ";
@@ -383,7 +383,7 @@ class CursoBanco{
             return $retorno;
         }
 
-        $sql = "DELETE FROM bolsas_cursos WHERE CURSO_ID = ? ";
+        $sql = "DELETE FROM BOLSAS_CURSOS WHERE CURSO_ID = ? ";
 
         $parametros = array(
             $cursoId
@@ -399,7 +399,7 @@ class CursoBanco{
         foreach($bolsasIds as $bolsaId){
 
             $sql =
-            "INSERT INTO bolsas_cursos(" .
+            "INSERT INTO BOLSAS_CURSOS(" .
             "  CURSO_ID, " .
             "  BOLSA_ID) " .
             "VALUES (?, ?) ";

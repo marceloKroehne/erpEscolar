@@ -20,7 +20,7 @@ before update on USUARIOS
 for each row
 begin
 	declare qtd int;
-    set qtd = (select count(*) from USUARIOS where CPF = NEW.CPF or EMAIL = NEW.EMAIL);
+    set qtd = (select count(*) from USUARIOS where (CPF = NEW.CPF or EMAIL = NEW.EMAIL));
     if qtd > 0 and ( not (OLD.CPF = NEW.CPF or OLD.EMAIL = NEW.EMAIL)) then
         signal sqlstate'45000' set message_text = '|Usuário já cadastrado no sistema!';
     end if;

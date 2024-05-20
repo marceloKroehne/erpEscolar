@@ -13,6 +13,7 @@ require("./funcoes/bancoBanco.php");
 require("./funcoes/getDados.php");
 require("./usaveis/dadosCadastro.php");
 require("./objetos/aluno.php");
+require("./objetos/permissoes.php");
 
 $_SESSION['erros'] = null;
 $_SESSION['salvo'] = null;

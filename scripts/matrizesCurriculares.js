@@ -81,7 +81,7 @@ function iniciarComponentesModalmatriz(matriz){
             alert("O campo nome é obrigatório!");
             return;
         }
-        if(lista.length == 0 || lista[0] == 0){
+        if(lista.length == 0 || (lista[0] == 0 && lista.length == 1)){
             alert("Insira ao menos 1 disciplina!");
             return;
         }
