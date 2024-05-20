@@ -50,28 +50,46 @@ if(isset($_POST['movimentos_exportar'])){
             $mov->movimentoId,
             $mov->numeroMovimento,
             $mov->dataLancamento,
-            $mov->conta->banco->bancoId,
-            $mov->conta->agencia,
-            $mov->conta->numeroConta,
-            $mov->conta->banco->nome,
+            $mov->subcontaEntrada->conta->banco->bancoId,
+            $mov->subcontaEntrada->conta->agencia,
+            $mov->subcontaEntrada->conta->numeroConta,
+            $mov->subcontaEntrada->conta->banco->nome,
             $mov->historico,
-            $mov->subconta->grupoConta->nome,
-            $mov->subconta->nome,
+            $mov->subcontaEntrada->grupoConta->nome,
+            $mov->subcontaEntrada->nome,
             $mov->tipoDocumento->tipoDocumentoId,
             $mov->tipoDocumento->nome,
-            $mov->subconta->tipo == 0 ? $mov->valor : 0,
-            $mov->subconta->tipo == 1 ? $mov->valor : 0,
+            $mov->valor,
+            0,
             $mov->observacao
         ];
 
-        if($mov->subconta->tipo == 0){
-            $totalEntrada = $totalEntrada + $mov->valor;
-        }
-        else if($mov->subconta->tipo == 1){
-            $totalSaida = $totalSaida + $mov->valor;
-        }
+        $colunas2 = [
+            $mov->movimentoId,
+            $mov->numeroMovimento,
+            $mov->dataLancamento,
+            $mov->subcontaSaida->conta->banco->bancoId,
+            $mov->subcontaSaida->conta->agencia,
+            $mov->subcontaSaida->conta->numeroConta,
+            $mov->subcontaSaida->conta->banco->nome,
+            $mov->historico,
+            $mov->subcontaSaida->grupoConta->nome,
+            $mov->subcontaSaida->nome,
+            $mov->tipoDocumento->tipoDocumentoId,
+            $mov->tipoDocumento->nome,
+            0,
+            $mov->valor,
+            $mov->observacao
+        ];
+
+
+        $totalEntrada = $totalEntrada + $mov->valor;
+
+        $totalSaida = $totalSaida + $mov->valor;
+        
 
         fputcsv($planilha, $colunas,";");
+        fputcsv($planilha, $colunas2,";");
 
     }
 
