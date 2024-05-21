@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="modal_corpo">
-                    <form id="modal_modalidade_form" action="gerenciarmodalidades.php" method="post">
+                    <form id="modal_modalidade_form" action="gerenciarModalidades.php" method="post">
                         <label for="modal_modalidade_input_nome">Nome:</label>
                         <input name="modal_modalidade_input_nome" type="text" id="modal_modalidade_input_nome" required>
                         <label>Ativo: <input type="checkbox" id="modalidade_ativo" name="modalidade_ativo"></label>
