@@ -145,6 +145,7 @@ class MovimentoBanco{
                 $resultado['NUMERO_MOVIMENTO']
             );
     
+            $movimento->setParcelaId($resultado['PARCELA_ID']);
             array_push($movimentos, $movimento);
         }
     
