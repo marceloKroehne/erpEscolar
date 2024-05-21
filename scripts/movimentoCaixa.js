@@ -174,7 +174,7 @@ function iniciarComponentesModalmovimento(movimento){
 
 
     if(movimento !== null){
-        
+        $("#deletar_movimento_id").val(movimento.movimentoId);
         $("#modal_movimento_data").val(movimento.dataLancamento);
         $("#input_subcontas").val(movimento.subcontaEntrada.subcontaId == null ? "" : movimento.subcontaEntrada.nome);
         $("#input_subcontas_saida").val(movimento.subcontaSaida.subcontaId == null ? "" : movimento.subcontaSaida.nome);
@@ -276,7 +276,6 @@ function iniciarComponentesModalmovimento(movimento){
 
     $("#modal_movimento_bt_deletar").on("click",function(){
 
-        $("#deletar_movimento_id").val(movimento.movimentoId);
         $("#modal_movimento_form_delet").submit();
 
     });
