@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="modal_corpo">
-                    <form id="modal_parcela_form" action="gerenciarparcelas.php" method="post">
+                    <form id="modal_parcela_form" action="gerenciarParcelas.php" method="post">
                         <label for="modal_parcela_input_nome">Nome:</label>
                         <input name="modal_parcela_input_nome" type="text" id="modal_parcela_input_nome" required>
                         <?
