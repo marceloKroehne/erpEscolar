@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="modal_corpo">
-                    <form id="modal_curso_form" action="gerenciarcursos.php" method="post">
+                    <form id="modal_curso_form" action="gerenciarCursos.php" method="post">
                         <label for="modal_curso_input_nome">Nome:</label>
                         <input name="modal_curso_input_nome" type="text" id="modal_curso_input_nome" required>
                         <label>Ativo: <input type="checkbox" id="curso_ativo" name="curso_ativo"></label>

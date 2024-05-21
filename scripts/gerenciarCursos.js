@@ -49,6 +49,8 @@ function iniciarComponentesModalcurso(curso){
             lista.push(JSON.parse(element).bolsaId);
         });
 
+        atualizarCheckboxes();
+
         $("#modal_curso_titulo").text("Curso: " + curso.nome);
         $("#modal_curso_input_nome").val(curso.nome);
 
