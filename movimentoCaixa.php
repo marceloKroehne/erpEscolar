@@ -68,7 +68,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                 $numeroDocumento, 
                 $valor,
                 $observacao,
-                $numeroMovimento
+                $numeroMovimento,
+                $parcelaQuitar
             );
 
             if($retorno->houveErro){

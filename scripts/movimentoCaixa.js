@@ -73,11 +73,13 @@ function iniciarComponentesMovimento(){
 
             $("#parcela_quitar").mask("000000000");
 
-            if(subconta.grupoConta.recebimentoVendas){
+            if(subconta.grupoConta.recebimentoVendas == 1){
                 $("#parcela_quitar").show();
+                $("#lb_parcela_quitar").show();
             }
             else{
                 $("#parcela_quitar").hide();
+                $("#lb_parcela_quitar").hide();
             }
         })
     });
@@ -236,6 +238,7 @@ function iniciarComponentesModalmovimento(movimento){
         $("#modal_movimento_titulo").text("Novo movimento");
         $("#modal_movimento_data").val($("#data_hoje").val());
         $("#input_subcontas").val("");
+        $("#input_subcontas_saida").val("");
         $("#input_contas").val("");
         $("#input_docs").val("");
         $("#modal_movimento_historico").val("");
