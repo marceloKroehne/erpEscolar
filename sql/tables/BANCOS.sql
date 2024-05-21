@@ -1,7 +1,7 @@
 create table BANCOS(
     BANCO_ID int not null auto_increment,
     EMPRESA_ID int not null,
-    NUMERO_BANCO int not null unique,
+    NUMERO_BANCO int not null,
     NOME varchar(255) not null,
     EXIGE_OFX boolean default false,
     ATIVO boolean default true,

@@ -29,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
     }
     
-    else if(isset($_POST['modal_matriz_input_nome']) && isset($_POST['checkboxes'])){
+    else if(isset($_POST['modal_matriz_input_nome'])){
 
         $lista = [];
 
