@@ -70,6 +70,15 @@ function iniciarComponentesMovimento(){
             var dados = JSON.parse($(this).val()).dados;
             var subconta = JSON.parse(dados);
             $("#subconta_saida_id").val(subconta.subcontaId);
+
+            $("#parcela_quitar").mask("000000000");
+
+            if(subconta.grupoConta.recebimentoVendas){
+                $("#parcela_quitar").show();
+            }
+            else{
+                $("#parcela_quitar").hide();
+            }
         })
     });
 

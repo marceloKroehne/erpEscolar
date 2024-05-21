@@ -406,7 +406,8 @@ class MovimentoBanco{
         $numeroDocumento, 
         $valor,
         $observacao,
-        $numeroMovimento
+        $numeroMovimento,
+        $parcelaQuitar
     ){
             
         if($movimentoId !== 0){
@@ -421,7 +422,8 @@ class MovimentoBanco{
             $tipoDocumentoId, 
             $numeroDocumento, 
             $valor,
-            $observacao);
+            $observacao,
+            $parcelaQuitar);
         }
         else{
             $conexao = new Conexao();
@@ -472,7 +474,13 @@ class MovimentoBanco{
                 return $retorno;
             }
 
+            $movimentoId = $retorno->dados;
+
             $conexao->fecharConexao();
+            
+            if($parcelaQuitar > 0){
+                $retorno = ParcelaBanco::quitarParcela($parcelaQuitar, $movimentoId);
+            }
 
             return $retorno;
         }
@@ -521,7 +529,8 @@ class MovimentoBanco{
         $tipoDocumentoId, 
         $numeroDocumento, 
         $valor,
-        $observacao){
+        $observacao,
+        $parcelaQuitar){
 
         $conexao = new Conexao();
 
@@ -567,6 +576,11 @@ class MovimentoBanco{
         }
 
         $conexao->fecharConexao();
+
+        if($parcelaQuitar > 0){
+            $retorno = ParcelaBanco::quitarParcela($parcelaQuitar, $movimentoId);
+        }
+
 
         return $retorno;
     }

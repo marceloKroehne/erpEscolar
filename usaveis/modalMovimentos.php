@@ -59,6 +59,12 @@
                             
                             <?
                             require("./usaveis/seletor.php");
+                            ?>
+
+                            <label for="input_parcela">Parcela a quitar</label>
+                            <input hidden id="parcela_quitar" hint="Número da parcela para quitar" name="parcela_quitar">
+
+                            <?
 
                             $parametrosPesquisa = [];
 

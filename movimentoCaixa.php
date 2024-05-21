@@ -51,6 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $numeroMovimento = $_POST['numero_movimento'];
         $listaMovimentosOfx =  json_decode($_POST['lista_movimentos']);
         $posicao = intVal($_POST['posicao_lista']);
+        $parcelaQuitar = intVal($_POST['parcela_quitar']);
 
         if($listaMovimentosOfx == null || count($listaMovimentosOfx) == 0 || (!json_decode($listaMovimentosOfx[$posicao])->duplicado)){
 
