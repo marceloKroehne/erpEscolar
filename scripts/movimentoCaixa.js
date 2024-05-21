@@ -246,6 +246,8 @@ function iniciarComponentesModalmovimento(movimento){
         $("#modal_movimento_valor").val("");
         $("#modal_movimento_obs").val("");
         $("#numero_movimento").val("");
+        $("#parcela_quitar").hide();
+        $("#lb_parcela_quitar").hide();
 
         $("#movimento_id").val(0);
         $("#subconta_entrada_id").val(0);
