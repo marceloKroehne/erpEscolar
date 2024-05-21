@@ -5,11 +5,13 @@ require("./funcoes/getDados.php");
 require("./funcoes/movimentoBanco.php");
 require("./funcoes/subcontasBanco.php");
 require("./funcoes/contasBancoBanco.php");
+require("./funcoes/parcelaBanco.php");
 require("./funcoes/tipoDocumentoBanco.php");
 require("./objetos/grupoContas.php");
 require("./objetos/subconta.php");
 require("./objetos/movimento.php");
 require("./objetos/tipoDocumento.php");
+require("./objetos/parcela.php");
 
 if(!($usuario->getPermissaoId() == 3 || $usuario->getPermissaoId() == 0)){
     header('Location: index.php');

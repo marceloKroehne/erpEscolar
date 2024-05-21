@@ -23,6 +23,7 @@ class MovimentoBanco{
             MOV.NUMERO_DOCUMENTO,
             MOV.TIPO_DOCUMENTO_ID,
             MOV.NUMERO_MOVIMENTO,
+            PAR.PARCELA_ID,
             SUB.GRUPO_CONTA_ID AS ENTRADA_GRUPO_CONTA_ID,
             SUB.TIPO AS ENTRADA_TIPO,
             SUB.NOME AS ENTRADA_NOME_SUBCONTA,
@@ -45,6 +46,9 @@ class MovimentoBanco{
 
             INNER JOIN EMPRESAS EMP 
             ON MOV.EMPRESA_ID = EMP.EMPRESA_ID 
+
+            LEFT JOIN PARCELAS PAR
+            ON MOV.MOVIMENTO_ID = PAR.MOVIMENTO_ID
 
             INNER JOIN SUBCONTAS SUB 
             ON MOV.SUBCONTA_ENTRADA_ID = SUB.SUBCONTA_ID 
@@ -475,12 +479,16 @@ class MovimentoBanco{
             }
 
             $movimentoId = $retorno->dados;
-
-            $conexao->fecharConexao();
             
             if($parcelaQuitar > 0){
-                $retorno = ParcelaBanco::quitarParcela($parcelaQuitar, $movimentoId);
+                $retorno = ParcelaBanco::quitarParcela($conexao, $parcelaQuitar, $movimentoId, DateTime::createFromFormat('d/m/Y', $data)->format('Y-m-d'));
             }
+
+            if ($retorno->houveErro) {
+                return $retorno;
+            }
+
+            $conexao->fecharConexao();
 
             return $retorno;
         }
@@ -575,12 +583,16 @@ class MovimentoBanco{
             return $retorno;
         }
 
-        $conexao->fecharConexao();
-
         if($parcelaQuitar > 0){
-            $retorno = ParcelaBanco::quitarParcela($parcelaQuitar, $movimentoId);
+            $retorno = ParcelaBanco::quitarParcela($conexao, $parcelaQuitar, $movimentoId,DateTime::createFromFormat('d/m/Y', $data)->format('Y-m-d'));
         }
 
+        
+        if ($retorno->houveErro) {
+            return $retorno;
+        }
+        
+        $conexao->fecharConexao();
 
         return $retorno;
     }

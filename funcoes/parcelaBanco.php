@@ -123,25 +123,14 @@ class ParcelaBanco{
         return $parcelas;
     }
 
-    public static function quitarParcela($parcelaQuitar, $movimentoId){
+    public static function quitarParcela($conexao, $parcelaQuitar, $movimentoId, $data){
 
-                
-        $conexao = new Conexao();
 
-        $conexao->novaConexaoPDO();
-        $conexao->iniciarTranscacao();
+        $sql ="UPDATE PARCELAS SET STATUS_PAGAMENTO = 2, MOVIMENTO_ID = ?, DATA_PAGAMENTO = ? WHERE PARCELA_ID = ? ";
 
-        $sql ="UPDATE PARCELAS SET STATUS_PAGAMENTO = 2, MOVIMENTO_ID = ? WHERE PARCELA_ID = ? ";
-
-        $parametros = array($movimentoId,$parcelaQuitar);
+        $parametros = array($movimentoId,$parcelaQuitar, $data);
 
         $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
-
-        if ($retorno->houveErro) {
-            return $retorno;
-        }
-
-        $conexao->fecharConexao();
 
         return $retorno;
 

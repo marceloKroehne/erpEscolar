@@ -184,6 +184,9 @@ function iniciarComponentesModalmovimento(movimento){
         $("#modal_movimento_valor").val(movimento.valor.replace(/\./g, ",").replace(/\-/g, ""));
         $("#modal_movimento_obs").val(movimento.observacao);
 
+        if(movimento.parcelaId != null){
+            $("#parcela_quitar").val(movimento.parcelaId);
+        }
         $("#movimento_id").val(movimento.movimentoId);
         $("#subconta_entrada_id").val(movimento.subcontaEntrada == null ? 0 : movimento.subcontaEntrada.subcontaId);
         $("#subconta_saida_id").val(movimento.subcontaSaida== null ? 0 : movimento.subcontaSaida.subcontaId);
@@ -247,6 +250,7 @@ function iniciarComponentesModalmovimento(movimento){
         $("#modal_movimento_obs").val("");
         $("#numero_movimento").val("");
         $("#parcela_quitar").hide();
+        $("#parcela_quitar").val("");
         $("#lb_parcela_quitar").hide();
 
         $("#movimento_id").val(0);

@@ -16,6 +16,7 @@ class Movimento{
     private $numeroMovimento;
     private $duplicado;
     private $importacaoOfx;
+    private $parcelaId;
 
     function __construct(
         $movimentoId,
@@ -96,6 +97,13 @@ class Movimento{
         return $this->importacaoOfx;
     }
 
+    public function getParcelaId(){
+        return $this->parcelaId;
+    }
+
+    public function setParcelaId($parcelaId){
+        $this->parcelaId = $parcelaId;
+    }
     public function toJson() {
         return json_encode([
             'movimentoId' => $this->movimentoId,
@@ -109,6 +117,7 @@ class Movimento{
             'tipoDocumento' => $this->tipoDocumento->toJsonSemAspas(),
             'duplicado' => $this->duplicado,
             'importacaoOfx' => $this->importacaoOfx,
+            'parcelaId' => $this->parcelaId,
             'numeroMovimento' => $this->numeroMovimento 
         ]);
     }
@@ -126,6 +135,7 @@ class Movimento{
             'tipoDocumento' => $this->tipoDocumento->toJsonSemAspas(),
             'duplicado' => $this->duplicado,
             'importacaoOfx' => $this->importacaoOfx,
+            'parcelaId' => $this->parcelaId,
             'numeroMovimento' => $this->numeroMovimento 
         ];
     }
