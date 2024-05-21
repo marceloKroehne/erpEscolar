@@ -10,11 +10,11 @@ begin
 
     select count(*) into xQTD 
     from PARCELAS
-    where MOVIMENTO_ID = new.MOVIMENTO_ID 
-    and PARCELA_ID != new.PARCELA_ID; 
+    where MOVIMENTO_ID != new.MOVIMENTO_ID
+    and PARCELA_ID = new.PARCELA_ID; 
 
-     if xQTD >  0 then
-        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Já existe um movimento de quitação para essa parcela';
+    if xQTD >  0 then
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Já existe uma parcela quitada para este movimento';
     end if;
 
     select VALOR INTO xVALOR
@@ -46,11 +46,10 @@ begin
 
     select count(*) into xQTD 
     from PARCELAS
-    where MOVIMENTO_ID = new.MOVIMENTO_ID 
-    and PARCELA_ID != new.PARCELA_ID; 
+    where MOVIMENTO_ID = new.MOVIMENTO_ID; 
 
-     if xQTD >  0 then
-        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Já existe um movimento de quitação para essa parcela';
+    if xQTD >  0 then
+        SIGNAL SQLSTATE '45000' set MESSAGE_TEXT = '|Já existe uma parcela quitada para este movimento';
     end if;
 
 

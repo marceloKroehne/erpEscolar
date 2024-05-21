@@ -479,7 +479,7 @@ class MovimentoBanco{
                 return $retorno;
             }
 
-            $movimentoId = $retorno->dados;
+            $movimentoId = intval($retorno->dados);
             
             if($parcelaQuitar > 0){
                 $retorno = ParcelaBanco::quitarParcela($conexao, $parcelaQuitar, $movimentoId, DateTime::createFromFormat('d/m/Y', $data)->format('Y-m-d'));

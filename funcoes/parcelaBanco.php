@@ -128,7 +128,7 @@ class ParcelaBanco{
 
         $sql ="UPDATE PARCELAS SET STATUS_PAGAMENTO = 2, MOVIMENTO_ID = ?, DATA_PAGAMENTO = ? WHERE PARCELA_ID = ? ";
 
-        $parametros = array($movimentoId,$parcelaQuitar, $data);
+        $parametros = array($movimentoId, $data, $parcelaQuitar);
 
         $retorno = $conexao->insertUpdateExcluir($sql, $parametros);
 
