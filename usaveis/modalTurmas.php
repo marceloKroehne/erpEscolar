@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="modal_corpo">
-                    <form id="modal_turma_form" action="gerenciarturmas.php" method="post">
+                    <form id="modal_turma_form" action="gerenciarTurmas.php" method="post">
                         <label for="modal_turma_input_nome">Nome:</label>
                         <input name="modal_turma_input_nome" type="text" id="modal_turma_input_nome" required>
                         <label>Ativo: <input type="checkbox" id="turma_ativo" name="turma_ativo"></label>
