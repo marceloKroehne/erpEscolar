@@ -51,7 +51,7 @@ function iniciarComponentesModalmatriz(matriz){
             lista.push(JSON.parse(element).disciplinaId);
         });
 
-        $("#checkboxes").val(lista);
+        atualizarCheckboxes();
 
         $("#modal_matriz_titulo").text("Matriz curricular: " + matriz.nome);
         $("#modal_matriz_input_nome").val(matriz.nome);
