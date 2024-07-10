@@ -292,11 +292,11 @@ function iniciarComponentesModalmovimento(movimento){
             alert("O campo data é obrigatório!");
             return;
         }
-        else if ($("#subconta_entrada_id").val() === "") {
+        else if ($("#subconta_entrada_id").val() === "0") {
             alert("O campo subconta de entrada é obrigatório!");
             return;
         }
-        else if ($("#subconta_saida_id").val() === "") {
+        else if ($("#subconta_saida_id").val() === "0") {
             alert("O campo subconta de saída é obrigatório!");
             return;
         }
@@ -312,7 +312,7 @@ function iniciarComponentesModalmovimento(movimento){
             alert("O campo valor é obrigatório!");
             return;
         }
-        else if($("#input_docs").val() != "" && $("#tipo_documento_id").val() === ""){
+        else if($("#input_docs").val() != "" && $("#tipo_documento_id").val() === "0"){
             alert("Selecione uma opção válida para o tipo de documento");
             return;
         }
